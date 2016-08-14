@@ -9,14 +9,20 @@
 class ChessPiece
 {
 	private:
-		char pieceType;
+		char type;
+		char color;
 
 	public:
 		ChessPiece();
 		void setType(char);
+		void setColor(char);
 		char getType() const
 		{
-			return pieceType;
+			return type;
+		}
+		char getColor() const
+		{
+			return color;
 		}
 };
 

@@ -11,8 +11,10 @@ class Board
 {
 	private:
 		ChessPiece board[8][8];
+		void setPieces(int);
 
 	public:
+		Board();
 		void printBoard() const;
 };
 
