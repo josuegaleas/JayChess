@@ -9,10 +9,16 @@ using namespace std;
 
 ChessPiece::ChessPiece()
 {
-	pieceType = 'E';
+	type = 'E';
+	color = 'E';
 }
 
-void ChessPiece::setType(char type)
+void ChessPiece::setType(char newType)
 {
-	pieceType = type;
+	type = newType;
+}
+
+void ChessPiece::setColor(char newColor)
+{
+	color = newColor;
 }

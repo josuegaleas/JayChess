@@ -14,7 +14,7 @@
 ### Notes
 - 16 pieces each side, 32 total
 - White goes first
-- White king at d1, black king directly across
+- White king at `e1`, black king directly across at `e8`
 - Each cell on board should have
 	- Algebraic chess notation
 	- What kind of piece it has
