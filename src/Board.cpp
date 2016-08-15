@@ -6,6 +6,7 @@
 #include "Board.h"
 #include <cstdlib>
 #include <iostream>
+#include <string>
 using namespace std;
 
 void Board::setPieces(int row)
@@ -18,6 +19,53 @@ void Board::setPieces(int row)
 	board[row][5].setType('B');
 	board[row][6].setType('N');
 	board[row][7].setType('R');
+}
+
+int *Board::askLocation()
+{
+	int *output = new int[2];
+
+	while (true)
+	{
+		cout << "x? ";
+		cin >> output[0];
+
+		if (output[0] >= 0 && output[0] <= 7)
+			break;
+		else
+			cout << "ERROR: x is out of bounds, try again." << endl;
+	}
+
+	while (true)
+	{
+		cout << "y? ";
+		cin >> output[1];
+
+		if (output[1] >= 0 && output[1] <= 7)
+			break;
+		else
+			cout << "ERROR: y is out of bounds, try again." << endl;
+	}
+
+	return output;
+}
+
+char *Board::getPiece(int *location)
+{
+	char *output = new char[4];
+	int x = location[0];
+	int y = location[1];
+
+	output[0] = board[x][y].getColor();
+	output[1] = board[x][y].getType();
+	output[2] = y + 97;
+	output[3] = '8' - x;
+
+	// TODO: DEBUG
+	cout << output[0] << output[1] << " at ";
+	cout << output[2] << output[3] << endl;
+
+	return output;
 }
 
 Board::Board()
@@ -42,41 +90,13 @@ Board::Board()
 	setPieces(7);
 }
 
-char *Board::getPiece(int x, int y)
-{
-	char *output = new char[4];
-
-	// TODO: Bound checking for inputs
-
-	output[0] = board[x][y].getColor();
-	output[1] = board[x][y].getType();
-	output[2] = y + 97;
-	output[3] = '8' - x;
-
-	// TODO: DEBUG
-	cout << output[0] << output[1] << " at ";
-	cout << output[2] << output[3] << endl;
-
-	return output;
-}
-
 void Board::movePiece()
 {
-	int xi, yi, xf, yf;
+	int *init = askLocation();
+	char *movingPiece = getPiece(init);
 
-	cout << "x initial? ";
-	cin >> xi;
-	cout << "y initial? ";
-	cin >> yi;
-
-	char *movingPiece = getPiece(xi, yi);
-
-	cout << "x final? ";
-	cin >> xf;
-	cout << "y final? ";
-	cin >> yf;
-
-	char *newLocation = getPiece(xf, yf);
+	int *fin = askLocation();
+	char *stationaryPiece = getPiece(fin);
 
 	// TODO: Things to check:
 	// If new location has a piece
@@ -84,8 +104,10 @@ void Board::movePiece()
 	// If current piece is allowed to move to new location
 	// Must check if path is clear, etc.
 
+	delete[] init;
 	delete[] movingPiece;
-	delete[] newLocation;
+	delete[] fin;
+	delete[] stationaryPiece;
 }
 
 void Board::printBoard() const

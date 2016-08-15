@@ -13,10 +13,11 @@ class Board
 		ChessPiece board[8][8];
 		// Linked list for moves done?
 		void setPieces(int);
+		int *askLocation();
+		char *getPiece(int *);
 
 	public:
 		Board();
-		char *getPiece(int, int);
 		void movePiece();
 		void printBoard() const;
 };
