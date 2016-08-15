@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 13th, 2016
+ * Last Edit: August 15th, 2016
  */
 
 #ifndef BOARD_H
@@ -11,10 +11,13 @@ class Board
 {
 	private:
 		ChessPiece board[8][8];
+		// Linked list for moves done?
 		void setPieces(int);
 
 	public:
 		Board();
+		char *getPiece(int, int);
+		void movePiece();
 		void printBoard() const;
 };
 
