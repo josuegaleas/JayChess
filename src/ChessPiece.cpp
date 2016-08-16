@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 13th, 2016
+ * Last Edit: August 16th, 2016
  */
 
 #include "ChessPiece.h"
@@ -11,6 +11,7 @@ ChessPiece::ChessPiece()
 {
 	type = 'E';
 	color = 'E';
+	tile = 'E';
 }
 
 void ChessPiece::setType(char newType)
@@ -21,4 +22,9 @@ void ChessPiece::setType(char newType)
 void ChessPiece::setColor(char newColor)
 {
 	color = newColor;
+}
+
+void ChessPiece::setTile(char newTile)
+{
+	tile = newTile;
 }
