@@ -12,6 +12,8 @@ class Game
 	private:
 		Board game;
 		int *askLocation();
+		bool verifyMove(char *, int *, int *);
+		void checkIfCapture(); // TODO: Declaration
 
 	public:
 		void movePiece();

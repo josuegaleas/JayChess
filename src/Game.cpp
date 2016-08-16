@@ -4,6 +4,7 @@
  */
 
 #include "Game.h"
+#include "Verification.h"
 #include <cstdlib>
 #include <cstdio>
 using namespace std;
@@ -32,6 +33,19 @@ int *Game::askLocation()
 			break;
 		else
 			printf("ERROR: y is out of bounds, try again.\n");
+	}
+
+	return output;
+}
+
+bool Game::verifyMove(char *piece, int *init, int *fin)
+{
+	bool output = false;
+
+	switch (piece[1])
+	{
+		case 'K':
+			ifKing(piece[0], init, fin);
 	}
 
 	return output;

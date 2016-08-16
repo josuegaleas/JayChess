@@ -40,6 +40,28 @@ Board::Board()
 	// Setting up non-pawns
 	setupPieces(0);
 	setupPieces(7);
+
+	// Setting up tile colors
+	for (int row = 0; row < 8; row++)
+	{
+		for (int col = 0; col < 8; col++)
+		{
+			if (row % 2 == 0)
+			{
+				if (col % 2 == 0)
+					board[row][col].setTile('L');
+				else
+					board[row][col].setTile('D');
+			}
+			else
+			{
+				if (col % 2 != 0)
+					board[row][col].setTile('L');
+				else
+					board[row][col].setTile('D');
+			}
+		}
+	}
 }
 
 char *Board::getPiece(int *location)
@@ -67,7 +89,8 @@ void Board::printBoard() const
 		for (int j = 0; j < 8; j++)
 		{
 			printf("%c", board[i][j].getColor());
-			printf("%c, ", board[i][j].getType());
+			printf("%c", board[i][j].getType());
+			printf("%c, ", board[i][j].getTile());
 		}
 		printf("\n");
 	}
