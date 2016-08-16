@@ -1,15 +1,14 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 15th, 2016
+ * Last Edit: August 16th, 2016
  */
 
 #include "Board.h"
 #include <cstdlib>
-#include <iostream>
-#include <string>
+#include <cstdio>
 using namespace std;
 
-void Board::setPieces(int row)
+void Board::setupPieces(int row)
 {
 	board[row][0].setType('R');
 	board[row][1].setType('N');
@@ -19,53 +18,6 @@ void Board::setPieces(int row)
 	board[row][5].setType('B');
 	board[row][6].setType('N');
 	board[row][7].setType('R');
-}
-
-int *Board::askLocation()
-{
-	int *output = new int[2];
-
-	while (true)
-	{
-		cout << "x? ";
-		cin >> output[0];
-
-		if (output[0] >= 0 && output[0] <= 7)
-			break;
-		else
-			cout << "ERROR: x is out of bounds, try again." << endl;
-	}
-
-	while (true)
-	{
-		cout << "y? ";
-		cin >> output[1];
-
-		if (output[1] >= 0 && output[1] <= 7)
-			break;
-		else
-			cout << "ERROR: y is out of bounds, try again." << endl;
-	}
-
-	return output;
-}
-
-char *Board::getPiece(int *location)
-{
-	char *output = new char[4];
-	int x = location[0];
-	int y = location[1];
-
-	output[0] = board[x][y].getColor();
-	output[1] = board[x][y].getType();
-	output[2] = y + 97;
-	output[3] = '8' - x;
-
-	// TODO: DEBUG
-	cout << output[0] << output[1] << " at ";
-	cout << output[2] << output[3] << endl;
-
-	return output;
 }
 
 Board::Board()
@@ -86,28 +38,26 @@ Board::Board()
 	}
 
 	// Setting up non-pawns
-	setPieces(0);
-	setPieces(7);
+	setupPieces(0);
+	setupPieces(7);
 }
 
-void Board::movePiece()
+char *Board::getPiece(int *location)
 {
-	int *init = askLocation();
-	char *movingPiece = getPiece(init);
+	char *output = new char[4];
+	int x = location[0];
+	int y = location[1];
 
-	int *fin = askLocation();
-	char *stationaryPiece = getPiece(fin);
+	output[0] = board[x][y].getColor();
+	output[1] = board[x][y].getType();
+	output[2] = y + 'a';
+	output[3] = '8' - x;
 
-	// TODO: Things to check:
-	// If new location has a piece
-	// If said piece is enemy piece
-	// If current piece is allowed to move to new location
-	// Must check if path is clear, etc.
+	// TODO: DEBUG
+	printf("%c%c at ", output[0], output[1]);
+	printf("%c%c\n", output[2], output[3]);
 
-	delete[] init;
-	delete[] movingPiece;
-	delete[] fin;
-	delete[] stationaryPiece;
+	return output;
 }
 
 void Board::printBoard() const
@@ -116,9 +66,9 @@ void Board::printBoard() const
 	{
 		for (int j = 0; j < 8; j++)
 		{
-			cout << board[i][j].getColor();
-			cout << board[i][j].getType() << ", ";
+			printf("%c", board[i][j].getColor());
+			printf("%c, ", board[i][j].getType());
 		}
-		cout << endl;
+		printf("\n");
 	}
 }

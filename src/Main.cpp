@@ -1,15 +1,15 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 15th, 2016
+ * Last Edit: August 16th, 2016
  */
 
-#include "Board.h"
+#include "Game.h"
 #include <cstdlib>
 using namespace std;
 
 int main()
 {
-	Board game;
+	Game game;
 
 	game.printBoard();
 
