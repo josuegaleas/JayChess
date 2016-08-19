@@ -1,9 +1,10 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 16th, 2016
+ * Last Edit: August 19th, 2016
  */
 
 #include "Board.h"
+#include "MovingPiece.h"
 #include <cstdlib>
 #include <cstdio>
 using namespace std;
@@ -64,21 +65,24 @@ Board::Board()
 	}
 }
 
-char *Board::getPiece(int *location)
+MovingPiece *Board::getPiece(int *location)
 {
-	char *output = new char[4];
+	MovingPiece *output = new MovingPiece;
+
 	int x = location[0];
 	int y = location[1];
 
-	output[0] = board[x][y].getColor();
-	output[1] = board[x][y].getType();
-	output[2] = y + 'a';
-	output[3] = '8' - x;
+	output->piece = &board[x][y];
+	output->arrayLocation[0] = x;
+	output->arrayLocation[1] = y;
+	output->gameLocation[0] = y + 'a';
+	output->gameLocation[1] = '8' - x;
 
 	// TODO: DEBUG
-	printf("%c%c at ", output[0], output[1]);
-	printf("%c%c\n", output[2], output[3]);
+	printf("%c%c at ", output->piece->getColor(), output->piece->getType());
+	printf("%c%c\n", output->gameLocation[0], output->gameLocation[1]);
 
+	delete[] location;
 	return output;
 }
 

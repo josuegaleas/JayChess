@@ -1,9 +1,10 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 16th, 2016
+ * Last Edit: August 19th, 2016
  */
 
 #include "Game.h"
+#include "MovingPiece.h"
 #include "Verification.h"
 #include <cstdlib>
 #include <cstdio>
@@ -38,26 +39,38 @@ int *Game::askLocation()
 	return output;
 }
 
-bool Game::verifyMove(char *piece, int *init, int *fin)
+bool Game::verifyMove(MovingPiece *init, MovingPiece *fin)
 {
-	bool output = false;
-
-	switch (piece[1])
+	switch (init->piece->getType())
 	{
 		case 'K':
-			ifKing(piece[0], init, fin);
+			return ifKing(init, fin);
+		default:
+			return false;
 	}
+}
 
-	return output;
+bool Game::verifyCapture(MovingPiece *init, MovingPiece *fin)
+{
+	char initColor = init->piece->getColor();
+	char finColor = fin->piece->getColor();
+
+	if (initColor != finColor)
+		return true;
+	else
+		return false;
 }
 
 void Game::movePiece()
 {
-	int *init = askLocation();
-	char *movingPiece = game.getPiece(init);
+	MovingPiece *initialPiece = game.getPiece(askLocation());
+	MovingPiece *finalPiece = game.getPiece(askLocation());
 
-	int *fin = askLocation();
-	char *stationaryPiece = game.getPiece(fin);
+	bool validMove = verifyMove(initialPiece, finalPiece);
+	bool validCapture = verifyCapture(initialPiece, finalPiece);
+
+	printf("Valid move? %d\n", validMove);
+	printf("Valid capture? %d\n", validCapture);
 
 	// TODO: Things to check:
 	// If new location has a piece
@@ -65,8 +78,6 @@ void Game::movePiece()
 	// If current piece is allowed to move to new location
 	// Must check if path is clear, etc.
 
-	delete[] init;
-	delete[] movingPiece;
-	delete[] fin;
-	delete[] stationaryPiece;
+	delete initialPiece;
+	delete finalPiece;
 }

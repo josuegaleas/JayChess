@@ -1,22 +1,22 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 16th, 2016
+ * Last Edit: August 19th, 2016
  */
 
 #ifndef BOARD_H
 #define BOARD_H
 #include "ChessPiece.h"
+#include "MovingPiece.h"
 
 class Board
 {
 	private:
 		ChessPiece board[8][8];
-		// Linked list for moves done?
 		void setupPieces(int);
 
 	public:
 		Board();
-		char *getPiece(int *);
+		MovingPiece *getPiece(int *);
 		void printBoard() const;
 };
 
