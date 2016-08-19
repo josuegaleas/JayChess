@@ -4,16 +4,19 @@ SRC = ./src/
 CC = g++
 FLAGS = -Wall
 
-all: Main.o Game.o Board.o ChessPiece.o
-	$(CC) $(FLAGS) $(BIN)Main.o $(BIN)Game.o $(BIN)Board.o $(BIN)ChessPiece.o -o $(BIN)Chess.out
+all: Main.o Verification.o Game.o Board.o ChessPiece.o
+	$(CC) $(FLAGS) $(BIN)Main.o $(BIN)Verification.o $(BIN)Game.o $(BIN)Board.o $(BIN)ChessPiece.o -o $(BIN)Chess.out
 
 Main.o: $(SRC)Main.cpp $(SRC)Game.h
 	$(CC) $(FLAGS) -c $(SRC)Main.cpp -o $(BIN)Main.o
 
-Game.o: $(SRC)Game.cpp $(SRC)Game.h
+Verification.o: $(SRC)Verification.cpp $(SRC)Verification.h $(SRC)MovingPiece.h
+	$(CC) $(FLAGS) -c $(SRC)Verification.cpp -o $(BIN)Verification.o
+
+Game.o: $(SRC)Game.cpp $(SRC)Game.h $(SRC)MovingPiece.h $(SRC)Verification.h
 	$(CC) $(FLAGS) -c $(SRC)Game.cpp -o $(BIN)Game.o
 
-Board.o: $(SRC)Board.cpp $(SRC)Board.h
+Board.o: $(SRC)Board.cpp $(SRC)Board.h $(SRC)MovingPiece.h
 	$(CC) $(FLAGS) -c $(SRC)Board.cpp -o $(BIN)Board.o
 
 ChessPiece.o: $(SRC)ChessPiece.cpp $(SRC)ChessPiece.h

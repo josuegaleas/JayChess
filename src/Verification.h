@@ -1,11 +1,12 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 16th, 2016
+ * Last Edit: August 19th, 2016
  */
 
 #ifndef VERIFICATION_H
 #define VERIFICATION_H
+#include "MovingPiece.h"
 
-void ifKing(char, int *, int *);
+bool ifKing(MovingPiece *, MovingPiece *);
 
 #endif
