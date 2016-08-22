@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 19th, 2016
+ * Last Edit: August 22nd, 2016
  */
 
 #include "Game.h"
@@ -45,6 +45,8 @@ bool Game::verifyMove(MovingPiece *init, MovingPiece *fin)
 	{
 		case 'K':
 			return ifKing(init, fin);
+		case 'Q':
+			return ifQueen(init, fin);
 		default:
 			return false;
 	}

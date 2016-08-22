@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 16th, 2016
+ * Last Edit: August 22nd, 2016
  */
 
 #include "Game.h"
@@ -11,7 +11,7 @@ int main()
 {
 	Game game;
 
-	game.printBoard();
+	game.getBoard().printBoard();
 
 	game.movePiece();
 

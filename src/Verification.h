@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 19th, 2016
+ * Last Edit: August 22nd, 2016
  */
 
 #ifndef VERIFICATION_H
@@ -8,5 +8,6 @@
 #include "MovingPiece.h"
 
 bool ifKing(MovingPiece *, MovingPiece *);
+bool ifQueen(MovingPiece *, MovingPiece *);
 
 #endif
