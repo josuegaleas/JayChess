@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 19th, 2016
+ * Last Edit: August 22nd, 2016
  */
 
 #ifndef GAME_H
@@ -18,9 +18,9 @@ class Game
 
 	public:
 		void movePiece();
-		void printBoard() const
+		Board getBoard()
 		{
-			game.printBoard();
+			return game;
 		}
 };
 

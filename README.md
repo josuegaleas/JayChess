@@ -1,2 +1,2 @@
 # PlebeianChess
-My attempt at making Chess from scratch. C++ back-end; Java front-end.
+My attempt at making Chess from scratch. C/C++ back-end; Java front-end.
