@@ -1,13 +1,13 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 19th, 2016
+ * Last Edit: August 23rd, 2016
  */
 
-#ifndef MOVINGPIECE_H
-#define MOVINGPIECE_H
+#ifndef ACTIVEPIECE_H
+#define ACTIVEPIECE_H
 #include "ChessPiece.h"
 
-struct MovingPiece
+struct ActivePiece
 {
 	ChessPiece *piece;
 	int arrayLocation[2];

@@ -1,12 +1,12 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 19th, 2016
+ * Last Edit: August 23rd, 2016
  */
 
 #ifndef BOARD_H
 #define BOARD_H
 #include "ChessPiece.h"
-#include "MovingPiece.h"
+#include "ActivePiece.h"
 
 class Board
 {
@@ -16,7 +16,8 @@ class Board
 
 	public:
 		Board();
-		MovingPiece *getPiece(int *);
+		ActivePiece *getActivePiece(int *);
+		ChessPiece *getChessPiece(int, int);
 		void printBoard() const;
 };
 

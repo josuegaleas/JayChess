@@ -1,10 +1,11 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 19th, 2016
+ * Last Edit: August 23rd, 2016
  */
 
 #include "Board.h"
-#include "MovingPiece.h"
+#include "ActivePiece.h"
+#include "ChessPiece.h"
 #include <cstdlib>
 #include <cstdio>
 using namespace std;
@@ -65,9 +66,9 @@ Board::Board()
 	}
 }
 
-MovingPiece *Board::getPiece(int *location)
+ActivePiece *Board::getActivePiece(int *location)
 {
-	MovingPiece *output = new MovingPiece;
+	ActivePiece *output = new ActivePiece;
 
 	int x = location[0];
 	int y = location[1];
@@ -86,6 +87,12 @@ MovingPiece *Board::getPiece(int *location)
 	return output;
 }
 
+ChessPiece *Board::getChessPiece(int x, int y)
+{
+	return &board[x][y];
+}
+
+// TODO: DEBUG
 void Board::printBoard() const
 {
 	for (int i = 0; i < 8; i++)

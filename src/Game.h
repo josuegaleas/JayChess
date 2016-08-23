@@ -1,26 +1,26 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 22nd, 2016
+ * Last Edit: August 23rd, 2016
  */
 
 #ifndef GAME_H
 #define GAME_H
 #include "Board.h"
-#include "MovingPiece.h"
+#include "ActivePiece.h"
 
 class Game
 {
 	private:
-		Board game;
+		Board chessBoard;
 		int *askLocation();
-		bool verifyMove(MovingPiece *, MovingPiece *);
-		bool verifyCapture(MovingPiece *, MovingPiece *);
+		bool verifyMove(ActivePiece *, ActivePiece *);
+		bool verifyCapture(ActivePiece *, ActivePiece *);
 
 	public:
 		void movePiece();
 		Board getBoard()
 		{
-			return game;
+			return chessBoard;
 		}
 };
 
