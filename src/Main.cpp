@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 22nd, 2016
+ * Last Edit: August 23rd, 2016
  */
 
 #include "Game.h"
@@ -9,11 +9,11 @@ using namespace std;
 
 int main()
 {
-	Game game;
+	Game theGame;
 
-	game.getBoard().printBoard();
+	theGame.getBoard().printBoard();
 
-	game.movePiece();
+	theGame.movePiece();
 
 	return 0;
 }

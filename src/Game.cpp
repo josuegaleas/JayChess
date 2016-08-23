@@ -1,10 +1,10 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 22nd, 2016
+ * Last Edit: August 23rd, 2016
  */
 
 #include "Game.h"
-#include "MovingPiece.h"
+#include "ActivePiece.h"
 #include "Verification.h"
 #include <cstdlib>
 #include <cstdio>
@@ -39,7 +39,7 @@ int *Game::askLocation()
 	return output;
 }
 
-bool Game::verifyMove(MovingPiece *init, MovingPiece *fin)
+bool Game::verifyMove(ActivePiece *init, ActivePiece *fin)
 {
 	switch (init->piece->getType())
 	{
@@ -47,12 +47,14 @@ bool Game::verifyMove(MovingPiece *init, MovingPiece *fin)
 			return ifKing(init, fin);
 		case 'Q':
 			return ifQueen(init, fin);
+		case 'B':
+			return ifBishop(init, fin, &chessBoard);
 		default:
 			return false;
 	}
 }
 
-bool Game::verifyCapture(MovingPiece *init, MovingPiece *fin)
+bool Game::verifyCapture(ActivePiece *init, ActivePiece *fin)
 {
 	char initColor = init->piece->getColor();
 	char finColor = fin->piece->getColor();
@@ -65,8 +67,8 @@ bool Game::verifyCapture(MovingPiece *init, MovingPiece *fin)
 
 void Game::movePiece()
 {
-	MovingPiece *initialPiece = game.getPiece(askLocation());
-	MovingPiece *finalPiece = game.getPiece(askLocation());
+	ActivePiece *initialPiece = chessBoard.getActivePiece(askLocation());
+	ActivePiece *finalPiece = chessBoard.getActivePiece(askLocation());
 
 	bool validMove = verifyMove(initialPiece, finalPiece);
 	bool validCapture = verifyCapture(initialPiece, finalPiece);
