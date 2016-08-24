@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 23rd, 2016
+ * Last Edit: August 24th, 2016
  */
 
 #include "Game.h"
@@ -46,9 +46,15 @@ bool Game::verifyMove(ActivePiece *init, ActivePiece *fin)
 		case 'K':
 			return ifKing(init, fin);
 		case 'Q':
-			return ifQueen(init, fin);
+			return ifQueen(init, fin, &chessBoard);
 		case 'B':
 			return ifBishop(init, fin, &chessBoard);
+		case 'N':
+			return ifKnight(init, fin);
+		case 'R':
+			return ifRook(init, fin, &chessBoard);
+		case 'P':
+			return ifPawn(init, fin);
 		default:
 			return false;
 	}
