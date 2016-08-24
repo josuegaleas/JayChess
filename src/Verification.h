@@ -9,10 +9,10 @@
 #include "Board.h"
 
 bool ifKing(ActivePiece *, ActivePiece *);
-bool ifQueen(ActivePiece *, ActivePiece *);
+bool ifQueen(ActivePiece *, ActivePiece *, Board *);
 bool ifBishop(ActivePiece *, ActivePiece *, Board *);
 bool ifKnight(ActivePiece *, ActivePiece *);
-bool ifRook(ActivePiece *, ActivePiece *);
+bool ifRook(ActivePiece *, ActivePiece *, Board *);
 bool ifPawn(ActivePiece *, ActivePiece *);
 
 #endif

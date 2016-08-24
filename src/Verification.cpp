@@ -24,12 +24,9 @@ bool ifKing(ActivePiece *init, ActivePiece *fin)
 		return false;
 }
 
-bool ifQueen(ActivePiece *init, ActivePiece *fin)
+bool ifQueen(ActivePiece *init, ActivePiece *fin, Board *chessGame)
 {
-	int *from = init->arrayLocation;
-	int *to = fin->arrayLocation;
-
-	return false;
+	return ifBishop(init, fin, chessGame) || ifRook(init, fin, chessGame);
 }
 
 bool ifBishop(ActivePiece *init, ActivePiece *fin, Board *chessGame)
@@ -54,18 +51,84 @@ bool ifBishop(ActivePiece *init, ActivePiece *fin, Board *chessGame)
 				if (tempX == to[0] && tempY == to[1])
 					return true;
 
-				// Checks if there is a piece blocking the path
-				if (chessGame->getChessPiece(tempX, tempY)->getType() != 'E')
-					break;
-
 				// Checks if adjacent location is out of bounds
 				if (tempX < 0 || tempX > 7)
 					break;
 				if (tempY < 0 || tempY > 7)
 					break;
+
+				// Checks if there is a piece blocking the path
+				if (chessGame->getChessPiece(tempX, tempY)->getType() != 'E')
+					break;
 			}
 		}
 	}
 
+	return false;
+}
+
+bool ifKnight(ActivePiece *init, ActivePiece *fin)
+{
+	return false;
+}
+
+bool ifRook(ActivePiece *init, ActivePiece *fin, Board *chessGame)
+{
+	int *from = init->arrayLocation;
+	int *to = fin->arrayLocation;
+	int tempX, tempY;
+
+	if (from[0] != to[0] && from[1] != to[1])
+		return false;
+
+	for (int i = -1; i <= 1; i += 2)
+	{
+		tempX = from[0];
+
+		while (true)
+		{
+			tempX += i;
+
+			// Checks if adjacent location is the target
+			if (tempX == to[0] && from[1] == to[1])
+				return true;
+
+			// Checks if adjacent location is out of bounds
+			if (tempX < 0 || tempX > 7)
+				break;
+
+			// Checks if there is a piece blocking the path
+			if (chessGame->getChessPiece(tempX, from[1])->getType() != 'E')
+				break;
+		}
+	}
+
+	for (int j = -1; j <= 1; j += 2)
+	{
+		tempY = from[1];
+
+		while (true)
+		{
+			tempY += j;
+
+			// Checks if adjacent location is the target
+			if (from[0] == to[0] && tempY == to[1])
+				return true;
+
+			// Checks if adjacent location is out of bounds
+			if (tempY < 0 || tempY > 7)
+				break;
+
+			// Checks if there is a piece blocking the path
+			if (chessGame->getChessPiece(from[0], tempY)->getType() != 'E')
+				break;
+		}
+	}
+
+	return false;
+}
+
+bool ifPawn(ActivePiece *init, ActivePiece *fin)
+{
 	return false;
 }
