@@ -75,18 +75,24 @@ void Game::movePiece()
 {
 	ActivePiece *initialPiece = chessBoard.getActivePiece(askLocation());
 	ActivePiece *finalPiece = chessBoard.getActivePiece(askLocation());
+	bool validCapture, validMove;
 
-	bool validMove = verifyMove(initialPiece, finalPiece);
-	bool validCapture = verifyCapture(initialPiece, finalPiece);
+	validCapture = verifyCapture(initialPiece, finalPiece);
 
+	if (validCapture)
+	{
+		validMove = verifyMove(initialPiece, finalPiece);
+
+		if (validMove)
+		{
+			finalPiece->piece->setType(initialPiece->piece->getType());
+			finalPiece->piece->setColor(initialPiece->piece->getColor());
+		}
+	}
+
+	// TODO: DEBUG
 	printf("Valid move? %d\n", validMove);
 	printf("Valid capture? %d\n", validCapture);
-
-	// TODO: Things to check:
-	// If new location has a piece
-	// If said piece is enemy piece
-	// If current piece is allowed to move to new location
-	// Must check if path is clear, etc.
 
 	delete initialPiece;
 	delete finalPiece;
