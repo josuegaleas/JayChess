@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 23rd, 2016
+ * Last Edit: August 24th, 2016
  */
 
 #include "Verification.h"
@@ -69,59 +69,91 @@ bool ifBishop(ActivePiece *init, ActivePiece *fin, Board *chessGame)
 
 bool ifKnight(ActivePiece *init, ActivePiece *fin)
 {
+	int *from = init->arrayLocation;
+	int *to = fin->arrayLocation;
+	int tempX, tempY;
+
+	for (int i = -2; i <= 2; i += 4)
+	{
+		for (int j = -1; j <= 1; j += 2)
+		{
+			tempX = from[0] + i;
+			tempY = from[1] + j;
+
+			if (tempX == to[0] && tempY == to[1])
+				return true;
+		}
+	}
+
+	for (int i = -1; i <= 1; i += 2)
+	{
+		for (int j = -2; j <= 2; j += 4)
+		{
+			tempX = from[0] + i;
+			tempY = from[1] + j;
+
+			if (tempX == to[0] && tempY == to[1])
+				return true;
+		}
+	}
+
 	return false;
 }
 
 bool ifRook(ActivePiece *init, ActivePiece *fin, Board *chessGame)
 {
+	// TODO: Rook movement needs improvement
 	int *from = init->arrayLocation;
 	int *to = fin->arrayLocation;
 	int tempX, tempY;
 
-	if (from[0] != to[0] && from[1] != to[1])
-		return false;
-
-	for (int i = -1; i <= 1; i += 2)
+	if (from[1] == to[1])
 	{
-		tempX = from[0];
-
-		while (true)
+		for (int i = -1; i <= 1; i += 2)
 		{
-			tempX += i;
+			tempX = from[0];
 
-			// Checks if adjacent location is the target
-			if (tempX == to[0] && from[1] == to[1])
-				return true;
+			while (true)
+			{
+				tempX += i;
 
-			// Checks if adjacent location is out of bounds
-			if (tempX < 0 || tempX > 7)
-				break;
+				// Checks if adjacent location is the target
+				if (tempX == to[0])
+					return true;
 
-			// Checks if there is a piece blocking the path
-			if (chessGame->getChessPiece(tempX, from[1])->getType() != 'E')
-				break;
+				// Checks if adjacent location is out of bounds
+				if (tempX < 0 || tempX > 7)
+					break;
+
+				// Checks if there is a piece blocking the path
+				if (chessGame->getChessPiece(tempX, from[1])->getType() != 'E')
+					break;
+			}
 		}
 	}
 
-	for (int j = -1; j <= 1; j += 2)
+	if (from[0] == to[0])
 	{
-		tempY = from[1];
-
-		while (true)
+		for (int j = -1; j <= 1; j += 2)
 		{
-			tempY += j;
+			tempY = from[1];
 
-			// Checks if adjacent location is the target
-			if (from[0] == to[0] && tempY == to[1])
-				return true;
+			while (true)
+			{
+				tempY += j;
 
-			// Checks if adjacent location is out of bounds
-			if (tempY < 0 || tempY > 7)
-				break;
+				// Checks if adjacent location is the target
+				if (tempY == to[1])
+					return true;
 
-			// Checks if there is a piece blocking the path
-			if (chessGame->getChessPiece(from[0], tempY)->getType() != 'E')
-				break;
+				// Checks if adjacent location is out of bounds
+				if (tempY < 0 || tempY > 7)
+					break;
+
+				// Checks if there is a piece blocking the path
+				if (chessGame->getChessPiece(from[0], tempY)->getType() != 'E')
+					break;
+			}
 		}
 	}
 
