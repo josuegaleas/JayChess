@@ -11,6 +11,8 @@ public class GUI extends JFrame implements ActionListener
 		setTitle("PlebeianChess");
 		setLayout(new FlowLayout());
 
+		add(new Board());
+
 		pack();
 		setResizable(false);
 		setVisible(true);

@@ -4,6 +4,9 @@ SRC = ./src/
 CC = g++
 FLAGS = -Wall
 
+JC = javac
+JVM = java
+
 all: Main.o Verification.o Game.o Board.o ChessPiece.o
 	$(CC) $(FLAGS) $(BIN)Main.o $(BIN)Verification.o $(BIN)Game.o $(BIN)Board.o $(BIN)ChessPiece.o -o $(BIN)Chess.out
 
@@ -27,3 +30,9 @@ run:
 
 clean:
 	rm -rf $(BIN)*
+
+GUI:
+	$(JC) -cp $(BIN) -d $(BIN) $(SRC)*.java
+
+runGUI:
+	$(JVM) -cp $(BIN) GUI
