@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 24th, 2016
+ * Last Edit: August 26th, 2016
  */
 
 #include "Verification.h"
@@ -102,7 +102,6 @@ bool ifKnight(ActivePiece *init, ActivePiece *fin)
 
 bool ifRook(ActivePiece *init, ActivePiece *fin, Board *chessGame)
 {
-	// TODO: Rook movement needs improvement
 	int *from = init->arrayLocation;
 	int *to = fin->arrayLocation;
 	int tempX, tempY;
@@ -162,5 +161,7 @@ bool ifRook(ActivePiece *init, ActivePiece *fin, Board *chessGame)
 
 bool ifPawn(ActivePiece *init, ActivePiece *fin)
 {
+	// TODO: Continue here for Pawn movement
+
 	return false;
 }

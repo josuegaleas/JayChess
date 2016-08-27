@@ -1,8 +1,14 @@
+/*
+ * Author: Josue Galeas
+ * Last Edit: August 26th, 2016
+ */
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
+
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -13,7 +19,7 @@ public class Board extends JPanel
 	public Board()
 	{
 		setLayout(new BorderLayout());
-		setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
 		add(new ChessBoard());
 		add(new FilesBar(), BorderLayout.NORTH);
