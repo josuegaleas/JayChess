@@ -1,7 +1,15 @@
+/*
+ * Author: Josue Galeas
+ * Last Edit: August 26th, 2016
+ */
+
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class GUI extends JFrame implements ActionListener
@@ -12,6 +20,7 @@ public class GUI extends JFrame implements ActionListener
 		setLayout(new FlowLayout());
 
 		add(new Board());
+		add(new SideBar());
 
 		pack();
 		setResizable(false);
@@ -19,6 +28,14 @@ public class GUI extends JFrame implements ActionListener
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+	}
+
+	private class SideBar extends JPanel
+	{
+		public SideBar()
+		{
+			setPreferredSize(new Dimension(150, 540));
+		}
 	}
 
 	public static void main(String[] args)
