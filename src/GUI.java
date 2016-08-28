@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 26th, 2016
+ * Last Edit: August 27th, 2016
  */
 
 import java.awt.Dimension;
@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public class GUI extends JFrame implements ActionListener
+public class GUI extends JFrame
 {
 	public GUI()
 	{
@@ -30,22 +30,22 @@ public class GUI extends JFrame implements ActionListener
 
 	}
 
-	private class SideBar extends JPanel
+	private class SideBar extends JPanel implements ActionListener
 	{
 		public SideBar()
 		{
-			setPreferredSize(new Dimension(150, 540));
+			setPreferredSize(new Dimension(100, 540));
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+
 		}
 	}
 
 	public static void main(String[] args)
 	{
 		new GUI();
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-
 	}
 }
