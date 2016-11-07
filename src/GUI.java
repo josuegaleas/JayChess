@@ -5,9 +5,11 @@
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -34,7 +36,13 @@ public class GUI extends JFrame
 	{
 		public SideBar()
 		{
+			setLayout(new GridLayout(8, 1));
 			setPreferredSize(new Dimension(100, 540));
+
+			for (int c = 0; c < 8; c++)
+			{
+				add(new JButton(Integer.toString(c)));
+			}
 		}
 
 		@Override
