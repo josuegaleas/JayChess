@@ -1,24 +1,27 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 23rd, 2016
+ * Last Edit: Feb 6, 2017
  */
 
 #ifndef BOARD_H
 #define BOARD_H
-#include "ChessPiece.h"
-#include "ActivePiece.h"
+
+#include "Piece.h"
+/* #include "ActivePiece.h" */
 
 class Board
 {
 	private:
-		ChessPiece board[8][8];
+		Piece board[8][8];
 		void setupPieces(int);
+		void setupSymbols();
 
 	public:
 		Board();
-		ActivePiece *getActivePiece(int *);
-		ChessPiece *getChessPiece(int, int);
+		/* ActivePiece *getActivePiece(int *); */
+		Piece *getPiece(int, int);
 		void printBoard() const;
+		void drawBoard() const;
 };
 
 #endif
