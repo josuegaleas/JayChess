@@ -1,21 +1,22 @@
 /*
  * Author: Josue Galeas
- * Last Edit: Feb 6, 2017
+ * Last Edit: Feb 9, 2017
  */
 
 #include "Board.h"
-/* #include "ActivePiece.h" */
+#include <cassert>
+#include <cstdio>
 
 void Board::setupPieces(int row)
 {
-	board[row][0].setType('R');
-	board[row][1].setType('N');
-	board[row][2].setType('B');
-	board[row][3].setType('Q');
-	board[row][4].setType('K');
-	board[row][5].setType('B');
-	board[row][6].setType('N');
-	board[row][7].setType('R');
+	getPiece(row, 0)->setType('R');
+	getPiece(row, 1)->setType('N');
+	getPiece(row, 2)->setType('B');
+	getPiece(row, 3)->setType('Q');
+	getPiece(row, 4)->setType('K');
+	getPiece(row, 5)->setType('B');
+	getPiece(row, 6)->setType('N');
+	getPiece(row, 7)->setType('R');
 }
 
 void Board::setupSymbols()
@@ -88,19 +89,21 @@ void Board::setupSymbols()
 
 Board::Board()
 {
+	board = new Piece[64];
+
 	for (int col = 0; col < 8; col++)
 	{
 		// Setting top two rows to all black
-		board[0][col].setColor('B');
-		board[1][col].setColor('B');
+		getPiece(0, col)->setColor('B');
+		getPiece(1, col)->setColor('B');
 
 		// Setting bottom two rows to all white
-		board[6][col].setColor('W');
-		board[7][col].setColor('W');
+		getPiece(6, col)->setColor('W');
+		getPiece(7, col)->setColor('W');
 
 		// Setting up pawns
-		board[1][col].setType('P');
-		board[6][col].setType('P');
+		getPiece(1, col)->setType('P');
+		getPiece(6, col)->setType('P');
 	}
 
 	// Setting up non-pawns
@@ -111,30 +114,21 @@ Board::Board()
 	setupSymbols();
 }
 
-/* ActivePiece *Board::getActivePiece(int *location) */
-/* { */
-/* 	ActivePiece *output = new ActivePiece; */
-
-/* 	int x = location[0]; */
-/* 	int y = location[1]; */
-
-/* 	output->piece = &board[x][y]; */
-/* 	output->arrayLocation[0] = x; */
-/* 	output->arrayLocation[1] = y; */
-/* 	output->gameLocation[0] = y + 'a'; */
-/* 	output->gameLocation[1] = '8' - x; */
-
-/* 	// TODO: DEBUG */
-/* 	printf("%c%c at ", output->piece->getColor(), output->piece->getType()); */
-/* 	printf("%c%c\n", output->gameLocation[0], output->gameLocation[1]); */
-
-/* 	delete[] location; */
-/* 	return output; */
-/* } */
-
-Piece *Board::getPiece(int x, int y)
+Board::~Board()
 {
-	return &board[x][y];
+	delete[] board;
+}
+
+Piece *Board::getPiece(int x, int y) const
+{
+	return board + (x * 8) + y;
+}
+
+Piece *Board::getPiece(int *p) const
+{
+	assert(p);
+
+	return board + (p[0] * 8) + p[1];
 }
 
 void Board::printBoard() const
@@ -143,7 +137,8 @@ void Board::printBoard() const
 	{
 		for (int j = 0; j < 8; j++)
 		{
-			printf("%c%c ", board[i][j].getColor(), board[i][j].getType());
+			Piece *p = getPiece(i, j);
+			printf("%c%c ", p->getColor(), p->getType());
 		}
 		printf("\n");
 	}
@@ -163,7 +158,7 @@ void Board::drawBoard() const
 
 		for (int y = 0; y < 8; y++)
 		{
-			printf("| %s ", board[x][y].getSymbol().c_str());
+			printf("| %s ", getPiece(x, y)->getSymbol().c_str());
 		}
 
 		printf("| %d |\n", 8 - x);
