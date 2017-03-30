@@ -5,8 +5,8 @@
 
 #ifndef VERIFICATION_H
 #define VERIFICATION_H
-#include "ActivePiece.h"
-#include "Board.h"
+#include "ActivePiece.hpp"
+#include "Board.hpp"
 
 bool ifKing(ActivePiece *, ActivePiece *);
 bool ifQueen(ActivePiece *, ActivePiece *, Board *);

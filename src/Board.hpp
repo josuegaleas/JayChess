@@ -1,12 +1,12 @@
 /*
  * Author: Josue Galeas
- * Last Edit: Feb 9, 2017
+ * Last Edit: March 29, 2017
  */
 
 #ifndef BOARD_H
 #define BOARD_H
 
-#include "Piece.h"
+#include "Piece.hpp"
 
 class Board
 {

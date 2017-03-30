@@ -1,9 +1,9 @@
 /*
  * Author: Josue Galeas
- * Last Edit: Feb 6, 2016
+ * Last Edit: March 29, 2016
  */
 
-#include "Board.h"
+#include "Board.hpp"
 
 int main()
 {
