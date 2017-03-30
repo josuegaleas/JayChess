@@ -1,9 +1,9 @@
 /*
  * Author: Josue Galeas
- * Last Edit: Feb 9, 2017
+ * Last Edit: March 29, 2017
  */
 
-#include "Move.h"
+#include "Move.hpp"
 
 Move::Move(int ix, int iy, int fx, int fy)
 {

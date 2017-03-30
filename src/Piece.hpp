@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: Feb 6, 2017
+ * Last Edit: March 29, 2017
  */
 
 #ifndef PIECE_H

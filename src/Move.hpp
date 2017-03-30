@@ -1,13 +1,10 @@
 /*
  * Author: Josue Galeas
- * Last Edit: Feb 9, 2017
+ * Last Edit: March 29, 2017
  */
 
 #ifndef MOVE_H
 #define MOVE_H
-
-#include "Piece.h"
-#include "Board.h"
 
 class Move
 {

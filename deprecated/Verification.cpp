@@ -3,8 +3,8 @@
  * Last Edit: August 26th, 2016
  */
 
-#include "Verification.h"
-#include "ActivePiece.h"
+#include "Verification.hpp"
+#include "ActivePiece.hpp"
 #include "Board.h"
 #include <cstdlib>
 #include <cmath>

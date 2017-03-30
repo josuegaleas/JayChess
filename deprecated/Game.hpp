@@ -5,8 +5,8 @@
 
 #ifndef GAME_H
 #define GAME_H
-#include "Board.h"
-#include "ActivePiece.h"
+#include "Board.hpp"
+#include "ActivePiece.hpp"
 
 class Game
 {

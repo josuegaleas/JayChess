@@ -3,7 +3,7 @@
  * Last Edit: August 23rd, 2016
  */
 
-#include "Game.h"
+#include "Game.hpp"
 #include <cstdlib>
 using namespace std;
 

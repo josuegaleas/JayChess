@@ -3,7 +3,7 @@
  * Last Edit: August 24th, 2016
  */
 
-#include "Game.h"
+#include "Game.hpp"
 #include "ActivePiece.h"
 #include "Verification.h"
 #include <cstdlib>
