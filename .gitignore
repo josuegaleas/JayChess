@@ -46,5 +46,6 @@
 jni.h
 jni_md.h
 
-#### Other
+### Other
+*.DS_Store
 *.dSYM/

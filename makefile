@@ -4,7 +4,7 @@ LIB = lib/
 SRC = src/
 RM = rm -rf
 
-CXX = g++-6
+CXX = g++-7
 CXXFLAGS = -g -Wall
 VGFLAGS = -v --leak-check=full --show-leak-kinds=all --track-origins=yes
 
@@ -12,7 +12,7 @@ JC = javac
 JH = javah -jni
 J = java
 
-JAVA_HOME = /Library/Java/JavaVirtualMachines/jdk1.8.0_92.jdk/Contents/Home
+JAVA_HOME = /Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home
 JNICXXFLAGS = -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/darwin
 JNILFLAGS = -dynamiclib
 
