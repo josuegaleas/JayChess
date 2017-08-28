@@ -2,11 +2,11 @@
 BIN = bin/
 LIB = lib/
 SRC = src/
-RM = rm -rf
 
 CXX = g++-7
 CXXFLAGS = -g -Wall
-VGFLAGS = -v --leak-check=full --show-leak-kinds=all --track-origins=yes
+# VGFLAGS = -v --leak-check=full --show-leak-kinds=all --track-origins=yes
+VGFLAGS =
 
 JC = javac
 JH = javah -jni
@@ -20,7 +20,7 @@ JNILFLAGS = -dynamiclib
 all: clean ChessCPP ChessJAVA
 
 clean:
-	$(RM) $(BIN)*
+	rm -rf $(BIN)*
 
 run:
 	$(BIN)ChessCPP
