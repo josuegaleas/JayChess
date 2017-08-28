@@ -1,9 +1,10 @@
 /*
  * Author: Josue Galeas
- * Last Edit: March 29, 2017
+ * Last Edit: August 28, 2017
  */
 
 #include "Piece.hpp"
+#include <cassert>
 
 Piece::Piece()
 {
@@ -31,4 +32,22 @@ void Piece::setMoved()
 void Piece::setSymbol(std::string newSymbol)
 {
 	symbol = newSymbol;
+}
+
+void Piece::setPiece(char newType, char newColor, std::string newSymbol)
+{
+	type = newType;
+	color = newColor;
+	moved = true;
+	symbol = newSymbol;
+}
+
+void Piece::setPiece(Piece *newPiece)
+{
+	assert(newPiece);
+
+	type = newPiece->getType();
+	color = newPiece->getColor();
+	moved = true;
+	symbol = newPiece->getSymbol();
 }

@@ -1,12 +1,11 @@
 ### Variables ###
 BIN = bin/
-LIB = lib/
 SRC = src/
 
 CXX = g++-7
 CXXFLAGS = -g -Wall
 # VGFLAGS = -v --leak-check=full --show-leak-kinds=all --track-origins=yes
-VGFLAGS =
+VGFLAGS = -v
 
 JC = javac
 JH = javah -jni
@@ -41,11 +40,31 @@ $(BIN)Move.o: $(SRC)Move.cpp
 $(BIN)Board.o: $(SRC)Board.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+$(BIN)King.o: $(SRC)King.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(BIN)Pawn.o: $(SRC)Pawn.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(BIN)Others.o: $(SRC)Others.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(BIN)Verification.o: $(SRC)Verification.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
 $(BIN)Testing.o: $(SRC)Testing.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-ChessCPP: $(BIN)Piece.o $(BIN)Move.o $(BIN)Board.o $(BIN)Testing.o
-	$(CXX) $(CXXFLAGS) $^ -o $(BIN)$@
+$(BIN)libMain.a: $(BIN)Piece.o $(BIN)Move.o $(BIN)Board.o $(BIN)Testing.o
+	ar rc $@ $^
+	ranlib $@
+
+$(BIN)libMovement.a: $(BIN)King.o $(BIN)Pawn.o $(BIN)Others.o $(BIN)Verification.o
+	ar rc $@ $^
+	ranlib $@
+
+ChessCPP: $(BIN)libMain.a $(BIN)libMovement.a
+	$(CXX) $(CXXFLAGS) -L. $^ -o $(BIN)$@
 
 ChessJAVA:
 	$(JC) -cp $(BIN) -d $(BIN) $(SRC)*.java
