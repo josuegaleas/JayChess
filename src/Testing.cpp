@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: March 29, 2016
+ * Last Edit: August 31, 2017
  */
 
 #include "Board.hpp"
@@ -12,7 +12,7 @@ int main()
 	b->printBoard();
 	b->drawBoard();
 
-	delete(b);
+	delete b;
 
 	return 0;
 }

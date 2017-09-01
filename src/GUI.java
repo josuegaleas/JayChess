@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 27th, 2016
+ * Last Edit: August 28, 2017
  */
 
 import java.awt.Dimension;
@@ -18,7 +18,7 @@ public class GUI extends JFrame
 {
 	public GUI()
 	{
-		setTitle("PlebeianChess");
+		setTitle("JNIChess");
 		setLayout(new FlowLayout());
 
 		add(new Board());
