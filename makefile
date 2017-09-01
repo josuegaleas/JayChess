@@ -4,8 +4,6 @@ SRC = src/
 
 CXX = g++-7
 CXXFLAGS = -g -Wall
-# VGFLAGS = -v --leak-check=full --show-leak-kinds=all --track-origins=yes
-VGFLAGS = -v
 
 JC = javac
 JH = javah -jni
@@ -23,9 +21,6 @@ clean:
 
 run:
 	$(BIN)ChessCPP
-
-runVal:
-	valgrind $(VGFLAGS) $(BIN)ChessCPP
 
 runGUI:
 	$(J) -cp $(BIN) GUI
