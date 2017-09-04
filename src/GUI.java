@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 28, 2017
+ * Last Edit: September 4, 2017
  */
 
 import java.awt.Dimension;
@@ -21,15 +21,14 @@ public class GUI extends JFrame
 		setTitle("JNIChess");
 		setLayout(new FlowLayout());
 
-		add(new Board());
-		add(new SideBar());
+		add(new ChessBoard());
+		// add(new SideBar());
 
 		pack();
 		setResizable(false);
 		setVisible(true);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 	}
 
 	private class SideBar extends JPanel implements ActionListener

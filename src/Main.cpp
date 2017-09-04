@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 31, 2017
+ * Last Edit: September 4, 2017
  */
 
 #include "Board.hpp"

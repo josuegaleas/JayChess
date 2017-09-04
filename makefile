@@ -4,6 +4,7 @@ SRC = src/
 
 CXX = g++-7
 CXXFLAGS = -g -Wall
+ARFLAGS = -rv
 
 JC = javac
 JH = javah -jni
@@ -11,71 +12,41 @@ J = java
 
 JAVA_HOME = /Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home
 JNICXXFLAGS = -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/darwin
-JNILFLAGS = -dynamiclib
 
 ### Convenience Targets ###
-all: clean ChessCPP ChessJAVA
+all: clean compileCPP compileJAVA JNI1 JNI2
 
 clean:
 	rm -rf $(BIN)*
 
 run:
-	$(BIN)ChessCPP
+	$(BIN)BACKEND.out
 
 runGUI:
-	$(J) -cp $(BIN) GUI
+	$(J) -cp $(BIN) -Djava.library.path=$(BIN) GUI
 
 ### Compilation Rules ###
-$(BIN)Piece.o: $(SRC)Piece.cpp
+$(BIN)%.o: $(SRC)%.cpp $(SRC)%.hpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-$(BIN)Move.o: $(SRC)Move.cpp
+$(BIN)libObjects.a: $(BIN)Piece.o $(BIN)Board.o $(BIN)Move.o
+	ar $(ARFLAGS) $@ $^
+
+$(BIN)Main.o: $(SRC)Main.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-$(BIN)Board.o: $(SRC)Board.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+compileCPP: $(BIN)libObjects.a $(BIN)Main.o
+	$(CXX) $(CXXFLAGS) $(BIN)Main.o -L. $(BIN)libObjects.a -o $(BIN)BACKEND.out
 
-$(BIN)King.o: $(SRC)King.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(BIN)Pawn.o: $(SRC)Pawn.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(BIN)Others.o: $(SRC)Others.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(BIN)Verification.o: $(SRC)Verification.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(BIN)Testing.o: $(SRC)Testing.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(BIN)libMain.a: $(BIN)Piece.o $(BIN)Move.o $(BIN)Board.o $(BIN)Testing.o
-	ar rc $@ $^
-	ranlib $@
-
-$(BIN)libMovement.a: $(BIN)King.o $(BIN)Pawn.o $(BIN)Others.o $(BIN)Verification.o
-	ar rc $@ $^
-	ranlib $@
-
-ChessCPP: $(BIN)libMain.a $(BIN)libMovement.a
-	$(CXX) $(CXXFLAGS) -L. $^ -o $(BIN)$@
-
-ChessJAVA:
+compileJAVA:
 	$(JC) -cp $(BIN) -d $(BIN) $(SRC)*.java
 
-# JNItest:
-# 	$(JC) -cp $(BIN) -d $(BIN) $(SRC)X.java
-# 	$(JH) $(BIN)X -d $(SRC)
-# 	$(CXX) $(CXXFLAGS) $(JNICXXFLAGS) -c $(SRC)X.cpp -o $(BIN)X.o
-# 	$(CXX) $(CXXFLAGS) $(JNILFLAGS) -o $(LIB)libX.jnilib $(BIN)X.o
-# 	$(J) -cp $(BIN):$(LIB) X
+JNI1:
+	$(JH) -cp $(BIN) -d $(SRC) ChessPanel
+	$(CXX) $(CXXFLAGS) $(JNICXXFLAGS) -c $(SRC)ChessPanel.cpp -o $(BIN)ChessPanel.o
+	$(CXX) $(CXXFLAGS) -dynamiclib -o $(BIN)libChessPanel.jnilib $(BIN)ChessPanel.o
 
-# JNIheader:
-# 	$(JC) -cp $(BIN) -d $(BIN) $(SRC)X.java
-# 	$(JH) $(BIN)X -d $(SRC)
-
-# JNIcompile:
-# 	$(CXX) $(CXXFLAGS) $(JNICXXFLAGS) -c $(SRC)X.cpp -o $(BIN)X.o
-# 	$(CXX) $(CXXFLAGS) $(JNILFLAGS) -o $(LIB)libX.jnilib $(BIN)X.o
-# 	$(J) -cp $(BIN):$(LIB) X
+JNI2:
+	$(JH) -cp $(BIN) -d $(SRC) ChessBoard
+	$(CXX) $(CXXFLAGS) $(JNICXXFLAGS) -c $(SRC)ChessBoard.cpp -o $(BIN)ChessBoard.o
+	$(CXX) $(CXXFLAGS) -dynamiclib -o $(BIN)libChessBoard.jnilib $(BIN)ChessBoard.o -L. $(BIN)libObjects.a
