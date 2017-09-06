@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 4, 2017
+ * Last Edit: September 5, 2017
  */
 
 import java.awt.Color;
@@ -15,8 +15,8 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class ChessPanel extends JPanel implements MouseListener
 {
-	private int r;
-	private int c;
+	private int x;
+	private int y;
 	private JLabel label;
 
 	public ChessPanel(int x, int y)
@@ -24,8 +24,8 @@ public class ChessPanel extends JPanel implements MouseListener
 		setLayout(new GridBagLayout());
 		addMouseListener(this);
 
-		r = x;
-		c = y;
+		this.x = x;
+		this.y = y;
 
 		if (x % 2 == 0)
 		{
@@ -42,7 +42,7 @@ public class ChessPanel extends JPanel implements MouseListener
 				setBackground(new Color(210, 140, 70));
 		}
 
-		label = new JLabel("?");
+		label = new JLabel("E");
 		label.setFont(new Font("Sans Serif", Font.PLAIN, 24));
 		add(label);
 	}
@@ -62,7 +62,7 @@ public class ChessPanel extends JPanel implements MouseListener
 	@Override
 	public void mouseClicked(MouseEvent e)
 	{
-		printClick(r, c);
+		printClick(x, y);
 	}
 
 	@Override
