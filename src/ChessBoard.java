@@ -1,13 +1,13 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 5, 2017
+ * Last Edit: September 6, 2017
  */
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -16,59 +16,16 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class ChessBoard extends JPanel
 {
-	private Board game;
-
 	public ChessBoard()
 	{
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
 
-		game = new Board();
-		add(game);
+		add(new Board());
 		add(new FilesBar(), BorderLayout.NORTH);
 		add(new RanksBar(), BorderLayout.EAST);
 		add(new FilesBar(), BorderLayout.SOUTH);
 		add(new RanksBar(), BorderLayout.WEST);
-
-		createBoard();
-		updateBoard(game);
-	}
-
-	static
-	{
-		System.loadLibrary("ChessBoard");
-	}
-
-	public native void createBoard();
-
-	public native void updateBoard(Board g);
-
-	public native void deleteBoard();
-
-	private class Board extends JPanel
-	{
-		private ChessPanel[][] board = new ChessPanel[8][8];
-
-		public Board()
-		{
-			setLayout(new GridLayout(8, 8));
-			setPreferredSize(new Dimension(500, 500));
-			setBackground(Color.GRAY);
-
-			for (int x = 0; x < 8; x++)
-			{
-				for (int y = 0; y < 8; y++)
-				{
-					board[x][y] = new ChessPanel(x, y);
-					add(board[x][y]);
-				}
-			}
-		}
-
-		public void updateLabelOf(int x, int y, String l)
-		{
-			board[x][y].setLabel(l);
-		}
 	}
 
 	private class RanksBar extends JPanel

@@ -1,23 +1,20 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 4, 2017
+ * Last Edit: September 6, 2017
  */
 
-#include "ChessBoard.h"
-#include "ChessBoard_Board.h"
-#include "ChessBoard_FilesBar.h"
-#include "ChessBoard_RanksBar.h"
+#include "Board.h"
 #include "Board.hpp"
 #include <cstdio>
 
 static Board *b;
 
-JNIEXPORT void JNICALL Java_ChessBoard_createBoard(JNIEnv *env, jobject obj)
+JNIEXPORT void JNICALL Java_Board_createBoard(JNIEnv *env, jobject obj)
 {
 	b = new Board();
 }
 
-JNIEXPORT void JNICALL Java_ChessBoard_updateBoard(JNIEnv *env, jobject obj, jobject game)
+JNIEXPORT void JNICALL Java_Board_updateBoard(JNIEnv *env, jobject obj, jobject game)
 {
 	jclass clazz = env->GetObjectClass(game);
 	jmethodID mid;
@@ -34,7 +31,7 @@ JNIEXPORT void JNICALL Java_ChessBoard_updateBoard(JNIEnv *env, jobject obj, job
 	}
 }
 
-JNIEXPORT void JNICALL Java_ChessBoard_deleteBoard(JNIEnv *env, jobject obj)
+JNIEXPORT void JNICALL Java_Board_deleteBoard(JNIEnv *env, jobject obj)
 {
 	delete b;
 }
