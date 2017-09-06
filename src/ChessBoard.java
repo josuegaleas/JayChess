@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 4, 2017
+ * Last Edit: September 5, 2017
  */
 
 import java.awt.BorderLayout;
@@ -60,7 +60,7 @@ public class ChessBoard extends JPanel
 				for (int y = 0; y < 8; y++)
 				{
 					board[x][y] = new ChessPanel(x, y);
-					add(new ChessPanel(x, y));
+					add(board[x][y]);
 				}
 			}
 		}
