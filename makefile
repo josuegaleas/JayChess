@@ -14,7 +14,7 @@ JAVA_HOME = /Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home
 JNICXXFLAGS = -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/darwin
 
 ### Convenience Targets ###
-all: clean compileCPP compileJAVA JNI
+all: clean CPP JAVA JNI
 
 clean:
 	rm -rf $(BIN)*
@@ -32,13 +32,9 @@ $(BIN)libObjects.a: $(BIN)Piece.o $(BIN)Board.o $(BIN)Move.o
 $(BIN)libMovement.a: $(BIN)Checking.o $(BIN)King.o $(BIN)Pawn.o $(BIN)Others.o $(BIN)Verification.o $(BIN)Movement.o
 	ar $(ARFLAGS) $@ $^
 
-$(BIN)Main.o: $(SRC)Main.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+CPP: $(BIN)libObjects.a $(BIN)libMovement.a
 
-compileCPP: $(BIN)libObjects.a $(BIN)libMovement.a $(BIN)Main.o
-	$(CXX) $(CXXFLAGS) $(BIN)Main.o -L. $(BIN)libObjects.a $(BIN)libMovement.a -o $(BIN)BACKEND.out
-
-compileJAVA:
+JAVA:
 	$(JC) -cp $(BIN) -d $(BIN) $(SRC)*.java
 
 JNI:
