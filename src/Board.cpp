@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 27, 2017
+ * Last Edit: September 6, 2017
  */
 
 #include "Board.hpp"
@@ -112,11 +112,6 @@ Board::Board()
 
 	// Setting up symbols
 	setupSymbols();
-}
-
-Board::~Board()
-{
-	delete[] board;
 }
 
 Piece *Board::getPiece(int x, int y) const

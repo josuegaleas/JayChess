@@ -19,7 +19,7 @@ all: clean compileCPP compileJAVA JNI
 clean:
 	rm -rf $(BIN)*
 
-run: all
+run:
 	$(J) -cp $(BIN) -Djava.library.path=$(BIN) GUI
 
 ### Compilation Rules ###
@@ -29,11 +29,14 @@ $(BIN)%.o: $(SRC)%.cpp $(SRC)%.hpp
 $(BIN)libObjects.a: $(BIN)Piece.o $(BIN)Board.o $(BIN)Move.o
 	ar $(ARFLAGS) $@ $^
 
+$(BIN)libMovement.a: $(BIN)Checking.o $(BIN)King.o $(BIN)Pawn.o $(BIN)Others.o $(BIN)Verification.o $(BIN)Movement.o
+	ar $(ARFLAGS) $@ $^
+
 $(BIN)Main.o: $(SRC)Main.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-compileCPP: $(BIN)libObjects.a $(BIN)Main.o
-	$(CXX) $(CXXFLAGS) $(BIN)Main.o -L. $(BIN)libObjects.a -o $(BIN)BACKEND.out
+compileCPP: $(BIN)libObjects.a $(BIN)libMovement.a $(BIN)Main.o
+	$(CXX) $(CXXFLAGS) $(BIN)Main.o -L. $(BIN)libObjects.a $(BIN)libMovement.a -o $(BIN)BACKEND.out
 
 compileJAVA:
 	$(JC) -cp $(BIN) -d $(BIN) $(SRC)*.java
@@ -41,4 +44,4 @@ compileJAVA:
 JNI:
 	$(JH) -cp $(BIN) -d $(SRC) Board
 	$(CXX) $(CXXFLAGS) $(JNICXXFLAGS) -c $(SRC)BoardJNI.cpp -o $(BIN)BoardJNI.o
-	$(CXX) $(CXXFLAGS) -dynamiclib -o $(BIN)libBoardJNI.jnilib $(BIN)BoardJNI.o -L. $(BIN)libObjects.a
+	$(CXX) $(CXXFLAGS) -dynamiclib -o $(BIN)libBoardJNI.jnilib $(BIN)BoardJNI.o -L. $(BIN)libObjects.a $(BIN)libMovement.a

@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: April 13, 2017
+ * Last Edit: September 6, 2017
  */
 
 #ifndef BOARD_H
@@ -17,8 +17,7 @@ class Board
 
 	public:
 		Board();
-		~Board();
-		Piece *getBoard() const {return board;};
+		~Board() {delete[] board;};
 		Piece *getPiece(int, int) const;
 		Piece *getPiece(int *) const;
 		void printBoard() const;

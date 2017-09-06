@@ -22,6 +22,7 @@ public class ChessPanel extends JPanel implements MouseListener
 	private static boolean click = false;
 	private static int[] init = new int[2];
 	private static int[] fin = new int[2];
+	private static Board board;
 
 	public ChessPanel(int x, int y)
 	{
@@ -56,6 +57,11 @@ public class ChessPanel extends JPanel implements MouseListener
 		label.setText(l);
 	}
 
+	public void setBoard(Board b)
+	{
+		board = b;
+	}
+
 	@Override
 	public void mouseClicked(MouseEvent e)
 	{
@@ -71,11 +77,14 @@ public class ChessPanel extends JPanel implements MouseListener
 			fin[1] = y;
 			click = false;
 
-			System.out.printf("(%d, %d) -> (%d, %d)\n", init[0], init[1], fin[0], fin[1]);
+			boolean move = board.verifyMove(init, fin);
 			init[0] = -1;
 			init[1] = -1;
 			fin[0] = -1;
 			fin[1] = -1;
+
+			if (move)
+				board.updateBoard(board);
 		}
 	}
 

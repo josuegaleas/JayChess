@@ -1,9 +1,10 @@
 /*
  * Author: Josue Galeas
- * Last Edit: April 1, 2017
+ * Last Edit: September 6, 2017
  */
 
 #include "Move.hpp"
+#include <cassert>
 
 Move::Move(int ix, int iy, int fx, int fy)
 {
@@ -16,8 +17,11 @@ Move::Move(int ix, int iy, int fx, int fy)
 	fin[1] = fy;
 }
 
-Move::~Move()
+Move::Move(int *i, int *f)
 {
-	delete[] init;
-	delete[] fin;
+	assert(i);
+	assert(f);
+
+	init = i;
+	fin = f;
 }

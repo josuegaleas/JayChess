@@ -123,6 +123,14 @@ JNIEXPORT void JNICALL Java_Board_updateBoard
 JNIEXPORT void JNICALL Java_Board_deleteBoard
   (JNIEnv *, jobject);
 
+/*
+ * Class:     Board
+ * Method:    verifyMove
+ * Signature: ([I[I)Z
+ */
+JNIEXPORT jboolean JNICALL Java_Board_verifyMove
+  (JNIEnv *, jobject, jintArray, jintArray);
+
 #ifdef __cplusplus
 }
 #endif
