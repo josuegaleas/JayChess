@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 5, 2017
+ * Last Edit: September 6, 2017
  */
 
 import java.awt.Color;
@@ -18,6 +18,10 @@ public class ChessPanel extends JPanel implements MouseListener
 	private int x;
 	private int y;
 	private JLabel label;
+
+	private static boolean click = false;
+	private static int[] init = new int[2];
+	private static int[] fin = new int[2];
 
 	public ChessPanel(int x, int y)
 	{
@@ -43,16 +47,9 @@ public class ChessPanel extends JPanel implements MouseListener
 		}
 
 		label = new JLabel("E");
-		label.setFont(new Font("Sans Serif", Font.PLAIN, 24));
+		label.setFont(new Font("Sans Serif", Font.PLAIN, 32));
 		add(label);
 	}
-
-	static
-	{
-		System.loadLibrary("ChessPanel");
-	}
-
-	public native void printClick(int x, int y);
 
 	public void setLabel(String l)
 	{
@@ -62,7 +59,24 @@ public class ChessPanel extends JPanel implements MouseListener
 	@Override
 	public void mouseClicked(MouseEvent e)
 	{
-		printClick(x, y);
+		if (!click)
+		{
+			init[0] = x;
+			init[1] = y;
+			click = true;
+		}
+		else
+		{
+			fin[0] = x;
+			fin[1] = y;
+			click = false;
+
+			System.out.printf("(%d, %d) -> (%d, %d)\n", init[0], init[1], fin[0], fin[1]);
+			init[0] = -1;
+			init[1] = -1;
+			fin[0] = -1;
+			fin[1] = -1;
+		}
 	}
 
 	@Override

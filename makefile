@@ -4,7 +4,7 @@ SRC = src/
 
 CXX = g++-7
 CXXFLAGS = -g -Wall
-ARFLAGS = -rv
+ARFLAGS = -rc
 
 JC = javac
 JH = javah -jni
@@ -14,15 +14,12 @@ JAVA_HOME = /Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home
 JNICXXFLAGS = -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/darwin
 
 ### Convenience Targets ###
-all: clean compileCPP compileJAVA JNI1 JNI2
+all: clean compileCPP compileJAVA JNI
 
 clean:
 	rm -rf $(BIN)*
 
-run:
-	$(BIN)BACKEND.out
-
-runGUI:
+run: all
 	$(J) -cp $(BIN) -Djava.library.path=$(BIN) GUI
 
 ### Compilation Rules ###
@@ -41,12 +38,7 @@ compileCPP: $(BIN)libObjects.a $(BIN)Main.o
 compileJAVA:
 	$(JC) -cp $(BIN) -d $(BIN) $(SRC)*.java
 
-JNI1:
-	$(JH) -cp $(BIN) -d $(SRC) ChessPanel
-	$(CXX) $(CXXFLAGS) $(JNICXXFLAGS) -c $(SRC)ChessPanel.cpp -o $(BIN)ChessPanel.o
-	$(CXX) $(CXXFLAGS) -dynamiclib -o $(BIN)libChessPanel.jnilib $(BIN)ChessPanel.o
-
-JNI2:
-	$(JH) -cp $(BIN) -d $(SRC) ChessBoard
-	$(CXX) $(CXXFLAGS) $(JNICXXFLAGS) -c $(SRC)ChessBoard.cpp -o $(BIN)ChessBoard.o
-	$(CXX) $(CXXFLAGS) -dynamiclib -o $(BIN)libChessBoard.jnilib $(BIN)ChessBoard.o -L. $(BIN)libObjects.a
+JNI:
+	$(JH) -cp $(BIN) -d $(SRC) Board
+	$(CXX) $(CXXFLAGS) $(JNICXXFLAGS) -c $(SRC)BoardJNI.cpp -o $(BIN)BoardJNI.o
+	$(CXX) $(CXXFLAGS) -dynamiclib -o $(BIN)libBoardJNI.jnilib $(BIN)BoardJNI.o -L. $(BIN)libObjects.a
