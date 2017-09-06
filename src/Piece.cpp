@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 28, 2017
+ * Last Edit: September 6, 2017
  */
 
 #include "Piece.hpp"
@@ -22,11 +22,6 @@ void Piece::setType(char newType)
 void Piece::setColor(char newColor)
 {
 	color = newColor;
-}
-
-void Piece::setMoved()
-{
-	moved = true;
 }
 
 void Piece::setSymbol(std::string newSymbol)

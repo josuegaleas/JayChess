@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 28, 2017
+ * Last Edit: September 9, 2017
  */
 
 #ifndef PIECE_H
@@ -20,7 +20,6 @@ class Piece
 		Piece();
 		void setType(char);
 		void setColor(char);
-		void setMoved();
 		void setSymbol(std::string);
 		void setPiece(char, char, std::string);
 		void setPiece(Piece *);

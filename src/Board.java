@@ -30,6 +30,7 @@ public class Board extends JPanel
 			}
 		}
 
+		board[0][0].setBoard(this);
 		createBoard();
 		updateBoard(this);
 	}
@@ -44,6 +45,8 @@ public class Board extends JPanel
 	public native void updateBoard(Board g);
 
 	public native void deleteBoard();
+
+	public native boolean verifyMove(int[] i, int[] f);
 
 	public void updateLabelOf(int x, int y, String l)
 	{
