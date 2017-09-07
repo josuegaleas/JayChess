@@ -29,7 +29,7 @@ $(BIN)%.o: $(SRC)%.cpp $(SRC)%.hpp
 $(BIN)libObjects.a: $(BIN)Piece.o $(BIN)Board.o $(BIN)Move.o
 	ar $(ARFLAGS) $@ $^
 
-$(BIN)libMovement.a: $(BIN)Checking.o $(BIN)King.o $(BIN)Pawn.o $(BIN)Others.o $(BIN)Verification.o $(BIN)Movement.o
+$(BIN)libMovement.a: $(BIN)Checking.o $(BIN)King.o $(BIN)Pawn.o $(BIN)Others.o $(BIN)Verification.o
 	ar $(ARFLAGS) $@ $^
 
 CPP: $(BIN)libObjects.a $(BIN)libMovement.a
