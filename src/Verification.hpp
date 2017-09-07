@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 27, 2017
+ * Last Edit: September 7, 2017
  */
 
 #ifndef VERIFICATION_H
@@ -9,6 +9,7 @@
 #include "Move.hpp"
 #include "Board.hpp"
 
+void updatePieces(Move *, Board *);
 bool verifyCapture(Move *, Board *);
 bool verifyMove(Move *, Board*);
 

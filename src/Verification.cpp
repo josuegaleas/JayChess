@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 27, 2017
+ * Last Edit: September 7, 2017
  */
 
 #include "Verification.hpp"
@@ -8,6 +8,37 @@
 #include "Pawn.hpp"
 #include "Others.hpp"
 #include <cassert>
+
+static King k;
+
+void updatePieces(Move *m, Board *b)
+{
+	assert(m);
+	assert(b);
+
+	Piece *initPiece = b->getPiece(m->getInit());
+	Piece *finPiece = b->getPiece(m->getFin());
+
+	finPiece->setPiece(initPiece);
+	initPiece->setPiece('E', 'E', " ");
+
+	if (k.getCastling())
+	{
+		int *rook = k.getRookPos();
+		Piece *rookInit = b->getPiece(rook);
+		Piece *rookFin;
+
+		if (rook[2] == 0)
+			rookFin = b->getPiece(rook[0], rook[1] + 3);
+		else
+			rookFin = b->getPiece(rook[0], rook[1] - 2);
+
+		rookFin->setPiece(rookInit);
+		rookInit->setPiece('E', 'E', " ");
+
+		k.setCastling();
+	}
+}
 
 bool verifyCapture(Move *m, Board *b)
 {
@@ -30,7 +61,7 @@ bool verifyMove(Move *m, Board *b)
 	switch (initType)
 	{
 		case 'K':
-			return ifKing(m, b);
+			return k.ifKing(m, b);
 		case 'Q':
 			return ifQueen(m, b);
 		case 'B':

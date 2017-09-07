@@ -1,12 +1,11 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 6, 2017
+ * Last Edit: September 7, 2017
  */
 
 #include "Board.h"
 #include "Board.hpp"
 #include "Verification.hpp"
-#include "Movement.hpp"
 #include <cstdio>
 
 static Board *b;

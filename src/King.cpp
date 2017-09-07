@@ -1,13 +1,13 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 31, 2017
+ * Last Edit: September 7, 2017
  */
 
 #include "King.hpp"
 #include "Checking.hpp"
 #include <cassert>
 
-bool ifCastling(int *f, char p, char e, Board *b)
+bool King::ifCastling(int *f, char p, char e, Board *b)
 {
 	assert(f);
 	assert(b);
@@ -28,8 +28,15 @@ bool ifCastling(int *f, char p, char e, Board *b)
 				int queenPos[2] = {f[0], 3};
 
 				if (!inDanger(bishopPos, p, e, b))
+				{
 					if (!inDanger(queenPos, p, e, b))
+					{
+						rookPos[0] = f[0];
+						rookPos[1] = 0;
+						rookPos[2] = 0;
 						return true;
+					}
+				}
 			}
 		}
 	}
@@ -49,8 +56,15 @@ bool ifCastling(int *f, char p, char e, Board *b)
 				int bishopPos[2] = {f[0], 5};
 
 				if (!inDanger(knightPos, p, e, b))
+				{
 					if (!inDanger(bishopPos, p, e, b))
+					{
+						rookPos[0] = f[0];
+						rookPos[1] = 7;
+						rookPos[2] = 1;
 						return true;
+					}
+				}
 			}
 		}
 	}
@@ -58,7 +72,7 @@ bool ifCastling(int *f, char p, char e, Board *b)
 	return false;
 }
 
-bool ifKing(Move *m, Board *b)
+bool King::ifKing(Move *m, Board *b)
 {
 	assert(m);
 	assert(b);
@@ -70,15 +84,15 @@ bool ifKing(Move *m, Board *b)
 	int yDiff = abs(fin[1] - init[1]);
 
 	if (xDiff <= 1 && yDiff <= 1)
-		return true;
+		return !(castling = false);
 
 	if (xDiff == 0 && !b->getPiece(init)->getMoved())
 	{
 		if (init[0] == 7)
-			return ifCastling(fin, 'W', 'B', b);
+			return castling = ifCastling(fin, 'W', 'B', b);
 
 		if (init[0] == 0)
-			return ifCastling(fin, 'B', 'W', b);
+			return castling = ifCastling(fin, 'B', 'W', b);
 	}
 
 	return false;
