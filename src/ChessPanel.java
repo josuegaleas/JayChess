@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 6, 2017
+ * Last Edit: September 8, 2017
  */
 
 import java.awt.Color;
@@ -84,7 +84,7 @@ public class ChessPanel extends JPanel implements MouseListener
 			fin[1] = -1;
 
 			if (move)
-				board.updateBoard(board);
+				board.updateBoard();
 		}
 	}
 

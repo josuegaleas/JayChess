@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 7, 2017
+ * Last Edit: September 8, 2017
  */
 
 #ifndef KING_H
@@ -8,8 +8,6 @@
 
 #include "Move.hpp"
 #include "Board.hpp"
-
-bool ifKing(Move *, Board *);
 
 class King
 {

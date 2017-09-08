@@ -110,10 +110,10 @@ JNIEXPORT void JNICALL Java_Board_createBoard
 /*
  * Class:     Board
  * Method:    updateBoard
- * Signature: (LBoard;)V
+ * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_Board_updateBoard
-  (JNIEnv *, jobject, jobject);
+  (JNIEnv *, jobject);
 
 /*
  * Class:     Board
