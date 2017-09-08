@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 6, 2017
+ * Last Edit: September 8, 2017
  */
 
 import java.awt.Color;
@@ -32,7 +32,7 @@ public class Board extends JPanel
 
 		board[0][0].setBoard(this);
 		createBoard();
-		updateBoard(this);
+		updateBoard();
 	}
 
 	static
@@ -42,7 +42,7 @@ public class Board extends JPanel
 
 	public native void createBoard();
 
-	public native void updateBoard(Board g);
+	public native void updateBoard();
 
 	public native void deleteBoard();
 

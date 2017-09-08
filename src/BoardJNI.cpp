@@ -17,12 +17,13 @@ Java_Board_createBoard(JNIEnv *env, jobject obj)
 }
 
 JNIEXPORT void JNICALL
-Java_Board_updateBoard(JNIEnv *env, jobject obj, jobject game)
+Java_Board_updateBoard(JNIEnv *env, jobject obj)
 {
-	jclass clazz = env->GetObjectClass(game);
+	jclass clazz = env->GetObjectClass(obj);
+	jmethodID mid = env->GetMethodID(clazz, "updateLabelOf", "(IILjava/lang/String;)V");
+
 	std::string symbol;
 	jstring label;
-	jmethodID mid;
 
 	for (int x = 0; x < 8; x++)
 	{
@@ -30,8 +31,7 @@ Java_Board_updateBoard(JNIEnv *env, jobject obj, jobject game)
 		{
 			symbol = b->getPiece(x, y)->getSymbol();
 			label = env->NewStringUTF(symbol.c_str());
-			mid = env->GetMethodID(clazz, "updateLabelOf", "(IILjava/lang/String;)V");
-			env->CallVoidMethod(game, mid, (jint)x, (jint)y, label);
+			env->CallVoidMethod(obj, mid, (jint)x, (jint)y, label);
 		}
 	}
 }
@@ -46,10 +46,10 @@ JNIEXPORT jboolean JNICALL
 Java_Board_verifyMove(JNIEnv *env, jobject obj, jintArray i, jintArray f)
 {
 	jboolean isCopy;
-	jint *init = env->GetIntArrayElements(i, &isCopy);
-	jint *fin = env->GetIntArrayElements(f, &isCopy);
+	jint *I = env->GetIntArrayElements(i, &isCopy);
+	jint *F = env->GetIntArrayElements(f, &isCopy);
 
-	Move *m = new Move(init, fin);
+	Move *m = new Move((int)I[0], (int)I[1], (int)F[0], (int)F[1]);
 
 	if (verifyCapture(m, b))
 	{
