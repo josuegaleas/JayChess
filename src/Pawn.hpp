@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 27, 2017
+ * Last Edit: September 9, 2017
  */
 
 #ifndef PAWN_H
@@ -9,6 +9,19 @@
 #include "Move.hpp"
 #include "Board.hpp"
 
-bool ifPawn(Move *, Board *);
+class Pawn
+{
+	private:
+		bool promo;
+		bool passant;
+		bool ifPawnHelper(Move *, char, Board *);
+
+	public:
+		bool ifPawn(Move *, Board *);
+		void setPromo() {promo = false;};
+		bool getPromo() {return promo;};
+		void setPassant() {passant = false;};
+		bool getPassant() {return passant;};
+};
 
 #endif

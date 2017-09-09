@@ -6,7 +6,8 @@ Chess from scratch using the JNI framework.
 - Java front-end
 
 ## To Do
-- [ ] Add support for en passant and pawn promotion
+- [x] Add support for pawn promotion
+- [ ] Add support for en passant
 - [ ] Implement self-learning AI, probably with R
 - [ ] Add more features to the GUI, such as saving games and a timer
 
