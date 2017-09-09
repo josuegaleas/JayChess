@@ -1,13 +1,13 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 8, 2017
+ * Last Edit: September 9, 2017
  */
 
 #include "Pawn.hpp"
 #include "Piece.hpp"
 #include <cassert>
 
-bool ifPawnHelper(Move *m, char p, Board *b)
+bool Pawn::ifPawnHelper(Move *m, char p, Board *b)
 {
 	assert(m);
 	assert(b);
@@ -21,12 +21,16 @@ bool ifPawnHelper(Move *m, char p, Board *b)
 	{
 		if (fin[0] >= init[0])
 			return false;
+		if (fin[0] == 0)
+			promo = true;
 		e = 'B';
 	}
 	else
 	{
 		if (fin[0] <= init[0])
 			return false;
+		if (fin[0] == 7)
+			promo = true;
 		e = 'W';
 	}
 
@@ -71,11 +75,15 @@ bool ifPawnHelper(Move *m, char p, Board *b)
 	}
 }
 
-bool ifPawn(Move *m, Board *b)
+bool Pawn::ifPawn(Move *m, Board *b)
 {
 	assert(m);
 	assert(b);
 
 	char initColor = b->getPiece(m->getInit())->getColor();
-	return ifPawnHelper(m, initColor, b);
+
+	if (ifPawnHelper(m, initColor, b))
+		return true;
+	else
+		return promo = false;
 }

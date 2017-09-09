@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 7, 2017
+ * Last Edit: September 9, 2017
  */
 
 #include "Verification.hpp"
@@ -10,6 +10,7 @@
 #include <cassert>
 
 static King k;
+static Pawn p;
 
 void updatePieces(Move *m, Board *b)
 {
@@ -37,6 +38,20 @@ void updatePieces(Move *m, Board *b)
 		rookInit->setPiece('E', 'E', " ");
 
 		k.setCastling();
+	}
+
+	if (p.getPromo())
+	{
+		// TODO: Need to ask user what piece they want!
+		// However, in almost all cases, they pick queen.
+		finPiece->setType('Q');
+		// FIXME: Temporary way to set symbol
+		if (finPiece->getColor() == 'W')
+			finPiece->setSymbol("♕");
+		else
+			finPiece->setSymbol("♛");
+
+		p.setPromo();
 	}
 }
 
@@ -71,7 +86,7 @@ bool verifyMove(Move *m, Board *b)
 		case 'R':
 			return ifRook(m, b);
 		case 'P':
-			return ifPawn(m, b);
+			return p.ifPawn(m, b);
 		default:
 			return false;
 	}
