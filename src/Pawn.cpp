@@ -4,7 +4,6 @@
  */
 
 #include "Pawn.hpp"
-#include "Piece.hpp"
 #include <cassert>
 
 bool Pawn::ifPawnHelper(Move *m, char p, Board *b)

@@ -19,9 +19,9 @@ class Pawn
 	public:
 		bool ifPawn(Move *, Board *);
 		void setPromo() {promo = false;};
-		bool getPromo() {return promo;};
 		void setPassant() {passant = false;};
-		bool getPassant() {return passant;};
+		bool getPromo() const {return promo;};
+		bool getPassant() const {return passant;};
 };
 
 #endif

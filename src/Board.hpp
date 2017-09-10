@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 6, 2017
+ * Last Edit: September 9, 2017
  */
 
 #ifndef BOARD_H
@@ -20,7 +20,6 @@ class Board
 		~Board() {delete[] board;};
 		Piece *getPiece(int, int) const;
 		Piece *getPiece(int *) const;
-		void printBoard() const;
 		void drawBoard() const;
 };
 
