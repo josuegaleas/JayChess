@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 6, 2017
+ * Last Edit: September 9, 2017
  */
 
 #ifndef MOVE_H
@@ -14,7 +14,6 @@ class Move
 
 	public:
 		Move(int, int, int, int);
-		Move(int *, int *);
 		~Move() {delete[] init; delete[] fin;};
 		int *getInit() const {return init;};
 		int *getFin() const {return fin;};

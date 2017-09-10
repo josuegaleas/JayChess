@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 6, 2017
+ * Last Edit: September 9, 2017
  */
 
 #include "Board.hpp"
@@ -124,19 +124,6 @@ Piece *Board::getPiece(int *p) const
 	assert(p);
 
 	return board + (p[0] * 8) + p[1];
-}
-
-void Board::printBoard() const
-{
-	for (int i = 0; i < 8; i++)
-	{
-		for (int j = 0; j < 8; j++)
-		{
-			Piece *p = getPiece(i, j);
-			printf("%c%c ", p->getColor(), p->getType());
-		}
-		printf("\n");
-	}
 }
 
 void Board::drawBoard() const
