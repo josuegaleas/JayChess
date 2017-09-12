@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 8, 2017
+ * Last Edit: September 12, 2017
  */
 
 import java.awt.Color;
@@ -46,7 +46,9 @@ public class Board extends JPanel
 
 	public native void deleteBoard();
 
-	public native boolean verifyMove(int[] i, int[] f);
+	public native char getColorOf(int x, int y);
+
+	public native boolean verifyMove(int ix, int iy, int fx, int fy);
 
 	public void updateLabelOf(int x, int y, String l)
 	{

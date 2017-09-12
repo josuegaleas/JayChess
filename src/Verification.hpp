@@ -1,16 +1,17 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 7, 2017
+ * Last Edit: September 12, 2017
  */
 
 #ifndef VERIFICATION_H
 #define VERIFICATION_H
 
 #include "Move.hpp"
-#include "Board.hpp"
+#include "Game.hpp"
 
-void updatePieces(Move *, Board *);
-bool verifyCapture(Move *, Board *);
-bool verifyMove(Move *, Board*);
+void updatePieces(Move *, Game *);
+bool verifyCapture(Move *, Game *);
+bool verifyMove(Move *, Game *);
+bool verifyMove(Move *, Board *);
 
 #endif

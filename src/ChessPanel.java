@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 8, 2017
+ * Last Edit: September 12, 2017
  */
 
 import java.awt.Color;
@@ -19,10 +19,11 @@ public class ChessPanel extends JPanel implements MouseListener
 	private int y;
 	private JLabel label;
 
+	private static Board board;
 	private static boolean click = false;
+	private static char turn = 'W';
 	private static int[] init = new int[2];
 	private static int[] fin = new int[2];
-	private static Board board;
 
 	public ChessPanel(int x, int y)
 	{
@@ -67,6 +68,19 @@ public class ChessPanel extends JPanel implements MouseListener
 	{
 		if (!click)
 		{
+			char color = board.getColorOf(x, y);
+
+			if (color == 'E')
+			{
+				System.out.println("There is nothing there!");
+				return;
+			}
+			else if (color != turn)
+			{
+				System.out.println("Not your piece!");
+				return;
+			}
+
 			init[0] = x;
 			init[1] = y;
 			click = true;
@@ -77,14 +91,19 @@ public class ChessPanel extends JPanel implements MouseListener
 			fin[1] = y;
 			click = false;
 
-			boolean move = board.verifyMove(init, fin);
-			init[0] = -1;
-			init[1] = -1;
-			fin[0] = -1;
-			fin[1] = -1;
+			boolean move = board.verifyMove(init[0], init[1], fin[0], fin[1]);
+			init[0] = init[1] = -1;
+			fin[0] = fin[1] = -1;
 
 			if (move)
+			{
 				board.updateBoard();
+				turn = turn == 'W' ? 'B':'W';
+			}
+			else
+			{
+				System.out.println("Not a valid move!");
+			}
 		}
 	}
 
