@@ -1,21 +1,23 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 9, 2017
+ * Last Edit: September 12, 2017
  */
 
 #include "Verification.hpp"
-#include "King.hpp"
-#include "Pawn.hpp"
 #include "Others.hpp"
 #include <cassert>
 
-static King k;
-static Pawn p;
-
-void updatePieces(Move *m, Board *b)
+void updatePieces(Move *m, Game *g)
 {
 	assert(m);
+	assert(g);
+
+	Board *b = g->getBoard();
+	King *k = g->getKing();
+	Pawn *p = g->getPawn();
 	assert(b);
+	assert(k);
+	assert(p);
 
 	Piece *initPiece = b->getPiece(m->getInit());
 	Piece *finPiece = b->getPiece(m->getFin());
@@ -23,9 +25,9 @@ void updatePieces(Move *m, Board *b)
 	finPiece->setPiece(initPiece);
 	initPiece->setPiece('E', 'E', " ");
 
-	if (k.getCastling())
+	if (k->getCastling())
 	{
-		int *rook = k.getRookPos();
+		int *rook = k->getRookPos();
 		Piece *rookInit = b->getPiece(rook);
 		Piece *rookFin;
 
@@ -37,10 +39,10 @@ void updatePieces(Move *m, Board *b)
 		rookFin->setPiece(rookInit);
 		rookInit->setPiece('E', 'E', " ");
 
-		k.setCastling();
+		k->setCastling();
 	}
 
-	if (p.getPromo())
+	if (p->getPromo())
 	{
 		// TODO: Need to ask user what piece they want!
 		// However, in almost all cases, they pick queen.
@@ -51,13 +53,16 @@ void updatePieces(Move *m, Board *b)
 		else
 			finPiece->setSymbol("♛");
 
-		p.setPromo();
+		p->setPromo();
 	}
 }
 
-bool verifyCapture(Move *m, Board *b)
+bool verifyCapture(Move *m, Game *g)
 {
 	assert(m);
+	assert(g);
+
+	Board *b = g->getBoard();
 	assert(b);
 
 	char initColor = b->getPiece(m->getInit())->getColor();
@@ -66,12 +71,48 @@ bool verifyCapture(Move *m, Board *b)
 	return initColor != finColor;
 }
 
+bool verifyMove(Move *m, Game *g)
+{
+	assert(m);
+	assert(g);
+
+	Board *b = g->getBoard();
+	King *k = g->getKing();
+	Pawn *p = g->getPawn();
+	assert(b);
+	assert(k);
+	assert(p);
+
+	char initType = b->getPiece(m->getInit())->getType();
+
+	switch (initType)
+	{
+		case 'K':
+			return k->ifKing(m, b);
+		case 'Q':
+			return ifQueen(m, b);
+		case 'B':
+			return ifBishop(m, b);
+		case 'N':
+			return ifKnight(m, b);
+		case 'R':
+			return ifRook(m, b);
+		case 'P':
+			return p->ifPawn(m, b);
+		default:
+			return false;
+	}
+}
+
+// FIXME: Need to find a better solution to this
 bool verifyMove(Move *m, Board *b)
 {
 	assert(m);
 	assert(b);
 
 	char initType = b->getPiece(m->getInit())->getType();
+	King k;
+	Pawn p;
 
 	switch (initType)
 	{

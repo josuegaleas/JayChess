@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 31, 2017
+ * Last Edit: September 12, 2017
  */
 
 #ifndef CHECKING_H
@@ -8,6 +8,6 @@
 
 #include "Board.hpp"
 
-bool inDanger(int *, char, char, Board *);
+bool inDanger(int *, char, Board *);
 
 #endif

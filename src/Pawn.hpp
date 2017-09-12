@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 9, 2017
+ * Last Edit: September 12, 2017
  */
 
 #ifndef PAWN_H
@@ -17,6 +17,7 @@ class Pawn
 		bool ifPawnHelper(Move *, char, Board *);
 
 	public:
+		Pawn() {promo = false; passant = false;};
 		bool ifPawn(Move *, Board *);
 		void setPromo() {promo = false;};
 		void setPassant() {passant = false;};

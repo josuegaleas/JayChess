@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 9, 2017
+ * Last Edit: September 12, 2017
  */
 
 #include "Pawn.hpp"
@@ -35,7 +35,7 @@ bool Pawn::ifPawnHelper(Move *m, char p, Board *b)
 
 	int xDiff = abs(fin[0] - init[0]);
 	int yDiff = abs(fin[1] - init[1]);
-	char finColor = b->getPiece(fin)->getColor(), adjColor;
+	char adjColor, finColor = b->getPiece(fin)->getColor();
 
 	if (b->getPiece(init)->getMoved())
 	{

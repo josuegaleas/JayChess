@@ -1,20 +1,19 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 31, 2017
+ * Last Edit: September 12, 2017
  */
 
 #include "Checking.hpp"
-#include "Move.hpp"
 #include "Verification.hpp"
 #include <cassert>
 
-bool inDanger(int *c, char p, char e, Board *b)
+bool inDanger(int *c, char p, Board *b)
 {
 	assert(c);
 	assert(b);
 
 	int tempX, tempY;
-	char color, type;
+	char color, type, e = p == 'W' ? 'B':'W';
 
 	/* These for-loops look for knights */
 	for (int i = -1; i <= 1; i += 2)
