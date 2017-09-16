@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 12, 2017
+ * Last Edit: September 16, 2017
  */
 
 import java.awt.Color;
@@ -19,38 +19,22 @@ public class ChessPanel extends JPanel implements MouseListener
 	private int y;
 	private JLabel label;
 
-	private static Board board;
-	private static boolean click = false;
-	private static char turn = 'W';
+	private static boolean click;
+	private static char turn;
 	private static int[] init = new int[2];
 	private static int[] fin = new int[2];
+	private static Board board;
 
 	public ChessPanel(int x, int y)
 	{
-		setLayout(new GridBagLayout());
-		addMouseListener(this);
-
 		this.x = x;
 		this.y = y;
 
-		if (x % 2 == 0)
-		{
-			if (y % 2 == 0)
-				setBackground(new Color(250, 210, 160));
-			else
-				setBackground(new Color(210, 140, 70));
-		}
-		else
-		{
-			if (y % 2 != 0)
-				setBackground(new Color(250, 210, 160));
-			else
-				setBackground(new Color(210, 140, 70));
-		}
-
+		setLayout(new GridBagLayout());
 		label = new JLabel("E");
-		label.setFont(new Font("Sans Serif", Font.PLAIN, 32));
+		label.setFont(new Font("Serif", Font.PLAIN, 32));
 		add(label);
+		addMouseListener(this);
 	}
 
 	public void setLabel(String l)
@@ -58,9 +42,18 @@ public class ChessPanel extends JPanel implements MouseListener
 		label.setText(l);
 	}
 
-	public void setBoard(Board b)
+	public static void setBoard(Board b)
 	{
+		click = false;
+		turn = 'W';
+		init[0] = init[1] = -1;
+		fin[0] = fin[1] = -1;
 		board = b;
+	}
+
+	public static char getTurn()
+	{
+		return turn;
 	}
 
 	@Override
@@ -71,11 +64,8 @@ public class ChessPanel extends JPanel implements MouseListener
 			char color = board.getColorOf(x, y);
 
 			if (color == 'E')
-			{
-				System.out.println("There is nothing there!");
 				return;
-			}
-			else if (color != turn)
+			if (color != turn)
 			{
 				System.out.println("Not your piece!");
 				return;
@@ -84,6 +74,7 @@ public class ChessPanel extends JPanel implements MouseListener
 			init[0] = x;
 			init[1] = y;
 			click = true;
+			setBackground(Color.GREEN);
 		}
 		else
 		{
@@ -92,12 +83,15 @@ public class ChessPanel extends JPanel implements MouseListener
 			click = false;
 
 			boolean move = board.verifyMove(init[0], init[1], fin[0], fin[1]);
+			board.updateTileOf(init[0], init[1]);
+
 			init[0] = init[1] = -1;
 			fin[0] = fin[1] = -1;
 
 			if (move)
 			{
 				board.updateBoard();
+				board.updateSideBar();
 				turn = turn == 'W' ? 'B':'W';
 			}
 			else

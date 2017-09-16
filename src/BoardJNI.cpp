@@ -1,15 +1,16 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 12, 2017
+ * Last Edit: September 16, 2017
  */
 
 #include "Board.h"
 #include "Verification.hpp"
+#include "AN.hpp"
 
 static Game *g;
 
 JNIEXPORT void JNICALL
-Java_Board_createBoard(JNIEnv *env, jobject obj)
+Java_Board_createBoard(JNIEnv *, jobject)
 {
 	g = new Game();
 }
@@ -35,13 +36,13 @@ Java_Board_updateBoard(JNIEnv *env, jobject obj)
 }
 
 JNIEXPORT void JNICALL
-Java_Board_deleteBoard(JNIEnv *env, jobject obj)
+Java_Board_deleteBoard(JNIEnv *, jobject)
 {
 	delete g;
 }
 
 JNIEXPORT jchar JNICALL
-Java_Board_getColorOf(JNIEnv *env, jobject obj, jint x, jint y)
+Java_Board_getColorOf(JNIEnv *, jobject, jint x, jint y)
 {
 	return (jchar)g->getBoard()->getPiece(x, y)->getColor();
 }
@@ -55,6 +56,10 @@ Java_Board_verifyMove(JNIEnv *env, jobject obj, jint ix, jint iy, jint fx, jint 
 	{
 		if (verifyMove(m, g))
 		{
+			jclass clazz = env->GetObjectClass(obj);
+			jfieldID fid = env->GetFieldID(clazz, "an", "Ljava/lang/String;");
+			jstring an = env->NewStringUTF(getAN(m, g).c_str());
+			env->SetObjectField(obj, fid, an);
 			updatePieces(m, g);
 
 			delete m;

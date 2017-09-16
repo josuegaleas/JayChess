@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 12, 2017
+ * Last Edit: September 16, 2017
  */
 
 #include "Checking.hpp"
@@ -92,11 +92,9 @@ bool inDanger(int *c, char p, Board *b)
 						delete enemy;
 						return true;
 					}
-					else
-					{
-						delete enemy;
-						break;
-					}
+
+					delete enemy;
+					break;
 				}
 			}
 		}
