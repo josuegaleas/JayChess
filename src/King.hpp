@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 12, 2017
+ * Last Edit: September 16, 2017
  */
 
 #ifndef KING_H
@@ -13,16 +13,17 @@ class King
 {
 	private:
 		bool castling;
-		int *rookPos;
+		int *rook;
 		bool ifCastling(int *, char, Board *);
 
 	public:
-		King() {castling = false; rookPos = new int[3];};
-		~King() {delete[] rookPos;};
-		bool ifKing(Move *, Board *);
+		King() {castling = false; rook = new int[3];};
+		~King() {delete[] rook;};
 		void setCastling() {castling = false;};
+		void setRook() {rook[0] = rook[1] = rook[2] = -1;};
 		bool getCastling() const {return castling;};
-		int *getRookPos() const {return rookPos;};
+		int *getRook() const {return rook;};
+		bool ifKing(Move *, Board *);
 };
 
 #endif

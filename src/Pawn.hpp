@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 12, 2017
+ * Last Edit: September 16, 2017
  */
 
 #ifndef PAWN_H
@@ -18,11 +18,11 @@ class Pawn
 
 	public:
 		Pawn() {promo = false; passant = false;};
-		bool ifPawn(Move *, Board *);
 		void setPromo() {promo = false;};
 		void setPassant() {passant = false;};
 		bool getPromo() const {return promo;};
 		bool getPassant() const {return passant;};
+		bool ifPawn(Move *, Board *);
 };
 
 #endif

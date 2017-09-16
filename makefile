@@ -3,7 +3,7 @@ BIN = bin/
 SRC = src/
 
 CXX = g++-7
-CXXFLAGS = -g -Wall
+CXXFLAGS = -g -Wall -Wextra -Wpedantic
 ARFLAGS = -rc
 
 JC = javac
@@ -29,7 +29,7 @@ $(BIN)%.o: $(SRC)%.cpp $(SRC)%.hpp
 $(BIN)libObjects.a: $(BIN)Piece.o $(BIN)Board.o $(BIN)Move.o $(BIN)King.o $(BIN)Pawn.o
 	ar $(ARFLAGS) $@ $^
 
-$(BIN)libMovement.a: $(BIN)Checking.o $(BIN)Others.o $(BIN)Verification.o
+$(BIN)libMovement.a: $(BIN)Checking.o $(BIN)Others.o $(BIN)Verification.o $(BIN)AN.o
 	ar $(ARFLAGS) $@ $^
 
 CPP: $(BIN)libObjects.a $(BIN)libMovement.a

@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 6, 2017
+ * Last Edit: September 16, 2017
  */
 
 import java.awt.BorderLayout;
@@ -16,16 +16,29 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class ChessBoard extends JPanel
 {
+	private Board board;
+
 	public ChessBoard()
 	{
 		setLayout(new BorderLayout());
-		setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
+		setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
 
-		add(new Board());
+		board = new Board();
+		add(board);
 		add(new FilesBar(), BorderLayout.NORTH);
 		add(new RanksBar(), BorderLayout.EAST);
 		add(new FilesBar(), BorderLayout.SOUTH);
 		add(new RanksBar(), BorderLayout.WEST);
+	}
+
+	public void setSideBar(SideBar sb)
+	{
+		board.setSideBar(sb);
+	}
+
+	public void newGame()
+	{
+		board.newGame();
 	}
 
 	private class RanksBar extends JPanel

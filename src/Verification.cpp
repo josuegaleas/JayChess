@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 12, 2017
+ * Last Edit: September 16, 2017
  */
 
 #include "Verification.hpp"
@@ -27,7 +27,7 @@ void updatePieces(Move *m, Game *g)
 
 	if (k->getCastling())
 	{
-		int *rook = k->getRookPos();
+		int *rook = k->getRook();
 		Piece *rookInit = b->getPiece(rook);
 		Piece *rookFin;
 
@@ -40,6 +40,7 @@ void updatePieces(Move *m, Game *g)
 		rookInit->setPiece('E', 'E', " ");
 
 		k->setCastling();
+		k->setRook();
 	}
 
 	if (p->getPromo())
@@ -47,12 +48,7 @@ void updatePieces(Move *m, Game *g)
 		// TODO: Need to ask user what piece they want!
 		// However, in almost all cases, they pick queen.
 		finPiece->setType('Q');
-		// FIXME: Temporary way to set symbol
-		if (finPiece->getColor() == 'W')
-			finPiece->setSymbol("♕");
-		else
-			finPiece->setSymbol("♛");
-
+		b->setupSymbolOf(finPiece);
 		p->setPromo();
 	}
 }

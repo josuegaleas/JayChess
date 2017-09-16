@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 9, 2017
+ * Last Edit: September 16, 2017
  */
 
 #ifndef BOARD_H
@@ -13,14 +13,13 @@ class Board
 	private:
 		Piece *board;
 		void setupPieces(int);
-		void setupSymbols();
 
 	public:
 		Board();
 		~Board() {delete[] board;};
 		Piece *getPiece(int, int) const;
 		Piece *getPiece(int *) const;
-		void drawBoard() const;
+		void setupSymbolOf(Piece *);
 };
 
 #endif
