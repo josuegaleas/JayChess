@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 16, 2017
+ * Last Edit: September 19, 2017
  */
 
 #ifndef PAWN_H
@@ -14,7 +14,7 @@ class Pawn
 	private:
 		bool promo;
 		bool passant;
-		bool ifPawnHelper(Move *, char, Board *);
+		bool ifPawnHelper(Move *, Board *);
 
 	public:
 		Pawn() {promo = false; passant = false;};

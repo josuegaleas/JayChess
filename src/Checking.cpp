@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 16, 2017
+ * Last Edit: September 19, 2017
  */
 
 #include "Checking.hpp"
@@ -13,13 +13,17 @@ bool inDanger(int *c, char p, Board *b)
 	assert(b);
 
 	int tempX, tempY;
-	char color, type, e = p == 'W' ? 'B':'W';
+	char color, type;
+	char e = p == 'W' ? 'B':'W';
 
-	/* These for-loops look for knights */
-	for (int i = -1; i <= 1; i += 2)
+	/* This for-loop looks for kings */
+	for (int i = -1; i <= 1; i++)
 	{
-		for (int j = -2; j <= 2; j += 4)
+		for (int j = -1; j <= 1; j++)
 		{
+			if (i == 0 && j == 0)
+				continue;
+
 			tempX = c[0] + i;
 			tempY = c[1] + j;
 
@@ -31,15 +35,24 @@ bool inDanger(int *c, char p, Board *b)
 			color = b->getPiece(tempX, tempY)->getColor();
 			type = b->getPiece(tempX, tempY)->getType();
 
-			if (color == e && type == 'N')
+			if (color == e && type == 'K')
 				return true;
 		}
 	}
 
-	for (int i = -2; i <= 2; i += 4)
+	/* This for-loop looks for knights */
+	for (int i = -2; i <= 2; i++)
 	{
-		for (int j = -1; j <= 1; j += 2)
+		if (i == 0)
+			continue;
+
+		for (int j = -2; j <= 2; j++)
 		{
+			if (j == 0)
+				continue;
+			if (abs(i) == abs(j))
+				continue;
+
 			tempX = c[0] + i;
 			tempY = c[1] + j;
 
@@ -85,15 +98,26 @@ bool inDanger(int *c, char p, Board *b)
 					break;
 				if (color == e)
 				{
-					Move *enemy = new Move(tempX, tempY, c[0], c[1]);
+					Move enemy(tempX, tempY, c[0], c[1]);
 
-					if (verifyMove(enemy, b))
+					if (b->getPiece(tempX, tempY)->getType() == 'P')
 					{
-						delete enemy;
-						return true;
+						Piece backup;
+						backup.setPiece(b->getPiece(c));
+						b->getPiece(c)->setPiece('Q', p, "T");
+
+						if (verifyMove(&enemy, b))
+						{
+							b->getPiece(c)->setPiece(&backup);
+							return true;
+						}
+
+						b->getPiece(c)->setPiece(&backup);
+						break;
 					}
 
-					delete enemy;
+					if (verifyMove(&enemy, b))
+						return true;
 					break;
 				}
 			}

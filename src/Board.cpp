@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 16, 2017
+ * Last Edit: September 19, 2017
  */
 
 #include "Board.hpp"
@@ -22,6 +22,12 @@ void Board::setupPieces(int row)
 Board::Board()
 {
 	board = new Piece[64];
+	m['P'] = 0;
+	m['N'] = 1;
+	m['B'] = 2;
+	m['R'] = 3;
+	m['Q'] = 4;
+	m['K'] = 5;
 
 	for (int col = 0; col < 8; col++)
 	{
@@ -44,12 +50,8 @@ Board::Board()
 
 	// Setting up symbols
 	for (int i = 0; i < 8; i++)
-	{
 		for (int j = 0; j < 8; j++)
-		{
 			setupSymbolOf(getPiece(i, j));
-		}
-	}
 }
 
 Piece *Board::getPiece(int x, int y) const
@@ -68,59 +70,13 @@ void Board::setupSymbolOf(Piece *p)
 {
 	if (p->getColor() == 'E')
 		return;
-	
-	if (p->getColor() == 'W')
+
+	std::string symbols[12] =
 	{
-		switch (p->getType())
-		{
-			case 'P':
-				p->setSymbol("♙");
-				break;
-			case 'N':
-				p->setSymbol("♘");
-				break;
-			case 'B':
-				p->setSymbol("♗");
-				break;
-			case 'R':
-				p->setSymbol("♖");
-				break;
-			case 'Q':
-				p->setSymbol("♕");
-				break;
-			case 'K':
-				p->setSymbol("♔");
-				break;
-			default:
-				p->setSymbol("?");
-				break;
-		}
-	}
-	else
-	{
-		switch (p->getType())
-		{
-			case 'P':
-				p->setSymbol("♟");
-				break;
-			case 'N':
-				p->setSymbol("♞");
-				break;
-			case 'B':
-				p->setSymbol("♝");
-				break;
-			case 'R':
-				p->setSymbol("♜");
-				break;
-			case 'Q':
-				p->setSymbol("♛");
-				break;
-			case 'K':
-				p->setSymbol("♚");
-				break;
-			default:
-				p->setSymbol("?");
-				break;
-		}
-	}
+		"♙", "♘", "♗", "♖", "♕", "♔",
+		"♟", "♞", "♝", "♜", "♛", "♚"
+	};
+
+	int o = p->getColor() == 'W' ? 0:6;
+	p->setSymbol(symbols[m[p->getType()] + o]);
 }
