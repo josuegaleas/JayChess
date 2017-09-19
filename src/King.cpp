@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 16, 2017
+ * Last Edit: September 19, 2017
  */
 
 #include "King.hpp"
@@ -75,14 +75,15 @@ bool King::ifKing(Move *m, Board *b)
 	int *init = m->getInit();
 	int *fin = m->getFin();
 	Piece *player = b->getPiece(init);
+	char color = player->getColor();
 
 	int xDiff = abs(fin[0] - init[0]);
 	int yDiff = abs(fin[1] - init[1]);
 
 	if (xDiff <= 1 && yDiff <= 1)
-		return true;
+		return !inDanger(fin, color, b);
 	else if (xDiff == 0 && !player->getMoved())
-		return ifCastling(fin, player->getColor(), b);
+		return !inDanger(init, color, b) && ifCastling(fin, color, b);
 
 	return false;
 }

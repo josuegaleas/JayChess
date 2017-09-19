@@ -1,20 +1,20 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 12, 2017
+ * Last Edit: September 19, 2017
  */
 
 #include "Pawn.hpp"
 #include <cassert>
 
-bool Pawn::ifPawnHelper(Move *m, char p, Board *b)
+bool Pawn::ifPawnHelper(Move *m, Board *b)
 {
 	assert(m);
 	assert(b);
 
 	int *init = m->getInit();
 	int *fin = m->getFin();
-	bool cond = p == 'W';
-	char e;
+	bool cond = b->getPiece(init)->getColor() == 'W';
+	char e = cond ? 'B':'W';
 
 	if (cond)
 	{
@@ -22,7 +22,6 @@ bool Pawn::ifPawnHelper(Move *m, char p, Board *b)
 			return false;
 		if (fin[0] == 0)
 			promo = true;
-		e = 'B';
 	}
 	else
 	{
@@ -30,7 +29,6 @@ bool Pawn::ifPawnHelper(Move *m, char p, Board *b)
 			return false;
 		if (fin[0] == 7)
 			promo = true;
-		e = 'W';
 	}
 
 	int xDiff = abs(fin[0] - init[0]);
@@ -79,9 +77,7 @@ bool Pawn::ifPawn(Move *m, Board *b)
 	assert(m);
 	assert(b);
 
-	char initColor = b->getPiece(m->getInit())->getColor();
-
-	if (ifPawnHelper(m, initColor, b))
+	if (ifPawnHelper(m, b))
 		return true;
 	else
 		return promo = false;
