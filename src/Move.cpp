@@ -1,18 +1,21 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 9, 2017
+ * Last Edit: September 22, 2017
  */
 
 #include "Move.hpp"
 #include <cassert>
 
-Move::Move(int ix, int iy, int fx, int fy)
+Move::Move(int *i, int *f)
 {
+	assert(i);
+	assert(f);
+
 	init = new int[2];
 	fin = new int[2];
 
-	init[0] = ix;
-	init[1] = iy;
-	fin[0] = fx;
-	fin[1] = fy;
+	init[0] = i[0];
+	init[1] = i[1];
+	fin[0] = f[0];
+	fin[1] = f[1];
 }

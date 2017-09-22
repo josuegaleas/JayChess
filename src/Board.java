@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 16, 2017
+ * Last Edit: September 22, 2017
  */
 
 import java.awt.Color;
@@ -14,6 +14,11 @@ public class Board extends JPanel
 {
 	private SideBar sideBar;
 	private ChessPanel[][] board = new ChessPanel[8][8];
+
+	private boolean click = false;
+	private char turn = 'W';
+	private int init[] = {-1, -1};
+	private int fin[] = {-1, -1};
 	private String an = "EMPTY";
 
 	public Board()
@@ -27,7 +32,7 @@ public class Board extends JPanel
 			for (int y = 0; y < 8; y++)
 			{
 				board[x][y] = new ChessPanel(x, y);
-				updateTileOf(x, y);
+				setTile(x, y);
 				add(board[x][y]);
 			}
 		}
@@ -48,21 +53,21 @@ public class Board extends JPanel
 
 	public native void deleteBoard();
 
-	public native char getColorOf(int x, int y);
+	public native char getColor(int x, int y);
 
-	public native boolean verifyMove(int ix, int iy, int fx, int fy);
+	public native boolean verifyMove(int i[], int f[]);
 
 	public void setSideBar(SideBar sb)
 	{
 		sideBar = sb;
 	}
 
-	public void updateLabelOf(int x, int y, String l)
+	public void setLabel(int x, int y, String l)
 	{
 		board[x][y].setLabel(l);
 	}
 
-	public void updateTileOf(int x, int y)
+	public void setTile(int x, int y)
 	{
 		int t = x * 8 + y + x % 2;
 
@@ -74,8 +79,7 @@ public class Board extends JPanel
 
 	public void updateSideBar()
 	{
-		boolean cond = ChessPanel.getTurn() == 'W';
-		sideBar.updateTextBox(an, cond);
+		sideBar.updateTextBox(an, turn == 'W');
 		an = "CLEAR";
 	}
 
@@ -84,6 +88,58 @@ public class Board extends JPanel
 		deleteBoard();
 		createBoard();
 		updateBoard();
-		ChessPanel.setBoard(this);
+
+		if (click)
+			setTile(init[0], init[1]);
+		click = false;
+		turn = 'W';
+		init[0] = init[1] = -1;
+		fin[0] = fin[1] = -1;
+		an = "EMPTY";
+		repaint();
+	}
+
+	public void processClick(int x, int y)
+	{
+		if (!click)
+		{
+			char color = getColor(x, y);
+
+			if (color == 'E')
+				return;
+			if (color != turn)
+			{
+				System.out.println("Not your piece!");
+				return;
+			}
+
+			init[0] = x;
+			init[1] = y;
+			click = true;
+			board[x][y].setBackground(Color.GREEN);
+		}
+		else
+		{
+			fin[0] = x;
+			fin[1] = y;
+			click = false;
+
+			boolean move = verifyMove(init, fin);
+			setTile(init[0], init[1]);
+
+			init[0] = init[1] = -1;
+			fin[0] = fin[1] = -1;
+
+			if (move)
+			{
+				updateBoard();
+				updateSideBar();
+				turn = turn == 'W' ? 'B':'W';
+			}
+			else
+			{
+				System.out.println("Not a valid move!");
+			}
+		}
 	}
 }

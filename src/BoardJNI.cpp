@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 16, 2017
+ * Last Edit: September 22, 2017
  */
 
 #include "Board.h"
@@ -19,7 +19,7 @@ JNIEXPORT void JNICALL
 Java_Board_updateBoard(JNIEnv *env, jobject obj)
 {
 	jclass clazz = env->GetObjectClass(obj);
-	jmethodID mid = env->GetMethodID(clazz, "updateLabelOf", "(IILjava/lang/String;)V");
+	jmethodID mid = env->GetMethodID(clazz, "setLabel", "(IILjava/lang/String;)V");
 
 	std::string symbol;
 	jstring label;
@@ -42,31 +42,34 @@ Java_Board_deleteBoard(JNIEnv *, jobject)
 }
 
 JNIEXPORT jchar JNICALL
-Java_Board_getColorOf(JNIEnv *, jobject, jint x, jint y)
+Java_Board_getColor(JNIEnv *, jobject, jint x, jint y)
 {
 	return (jchar)g->getBoard()->getPiece(x, y)->getColor();
 }
 
 JNIEXPORT jboolean JNICALL
-Java_Board_verifyMove(JNIEnv *env, jobject obj, jint ix, jint iy, jint fx, jint fy)
+Java_Board_verifyMove(JNIEnv *env, jobject obj, jintArray i, jintArray f)
 {
-	Move *m = new Move(ix, iy, fx, fy);
+	jboolean isCopy;
+	jint *init = env->GetIntArrayElements(i, &isCopy);
+	jint *fin = env->GetIntArrayElements(f, &isCopy);
 
-	if (verifyCapture(m, g))
+	Move m(init, fin);
+
+	if (verifyCapture(&m, g))
 	{
-		if (verifyMove(m, g))
+		if (verifyMove(&m, g))
 		{
 			jclass clazz = env->GetObjectClass(obj);
 			jfieldID fid = env->GetFieldID(clazz, "an", "Ljava/lang/String;");
-			jstring an = env->NewStringUTF(getAN(m, g).c_str());
+			std::string AN = getAN(&m, g);
+			updatePieces(&m, g);
+			jstring an = env->NewStringUTF(getANCheck(AN, g).c_str());
 			env->SetObjectField(obj, fid, an);
-			updatePieces(m, g);
 
-			delete m;
 			return JNI_TRUE;
 		}
 	}
 
-	delete m;
 	return JNI_FALSE;
 }

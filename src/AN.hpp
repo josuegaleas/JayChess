@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 16, 2017
+ * Last Edit: September 22, 2017
  */
 
 #ifndef AN_H
@@ -10,5 +10,6 @@
 #include "Game.hpp"
 
 std::string getAN(Move *, Game *);
+std::string getANCheck(std::string, Game *);
 
 #endif

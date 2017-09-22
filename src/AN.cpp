@@ -1,9 +1,10 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 16, 2017
+ * Last Edit: September 22, 2017
  */
 
 #include "AN.hpp"
+#include "Checking.hpp"
 #include <cassert>
 
 std::string getAN(Move *m, Game *g)
@@ -56,5 +57,27 @@ std::string getAN(Move *m, Game *g)
 		return capture + end;
 	}
 
-	return "undef";
+	return "UNDEF";
+}
+
+std::string getANCheck(std::string an, Game *g)
+{
+	assert(g);
+
+	Board *b = g->getBoard();
+	King *k = g->getKing();
+	assert(b);
+	assert(k);
+
+	bool whiteCheckmate = inCheckmate(k, 'W', b);
+	bool blackCheckmate = inCheckmate(k, 'B', b);
+	bool whiteCheck = inDanger(k->getKing('W'), 'W', b);
+	bool blackCheck = inDanger(k->getKing('B'), 'B', b);
+
+	if (whiteCheckmate || blackCheckmate)
+		return an + "#";
+	else if (whiteCheck || blackCheck)
+		return an + "+";
+
+	return an;
 }

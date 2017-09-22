@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 6, 2017
+ * Last Edit: September 22, 2017
  */
 
 #include "Piece.hpp"
@@ -29,11 +29,11 @@ void Piece::setSymbol(std::string newSymbol)
 	symbol = newSymbol;
 }
 
-void Piece::setPiece(char newType, char newColor, std::string newSymbol)
+void Piece::setPiece(char newType, char newColor, bool newMoved, std::string newSymbol)
 {
 	type = newType;
 	color = newColor;
-	moved = true;
+	moved = newMoved;
 	symbol = newSymbol;
 }
 
@@ -43,6 +43,6 @@ void Piece::setPiece(Piece *newPiece)
 
 	type = newPiece->getType();
 	color = newPiece->getColor();
-	moved = true;
+	moved = newPiece->getMoved();
 	symbol = newPiece->getSymbol();
 }

@@ -125,19 +125,19 @@ JNIEXPORT void JNICALL Java_Board_deleteBoard
 
 /*
  * Class:     Board
- * Method:    getColorOf
+ * Method:    getColor
  * Signature: (II)C
  */
-JNIEXPORT jchar JNICALL Java_Board_getColorOf
+JNIEXPORT jchar JNICALL Java_Board_getColor
   (JNIEnv *, jobject, jint, jint);
 
 /*
  * Class:     Board
  * Method:    verifyMove
- * Signature: (IIII)Z
+ * Signature: ([I[I)Z
  */
 JNIEXPORT jboolean JNICALL Java_Board_verifyMove
-  (JNIEnv *, jobject, jint, jint, jint, jint);
+  (JNIEnv *, jobject, jintArray, jintArray);
 
 #ifdef __cplusplus
 }
