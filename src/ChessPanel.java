@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 16, 2017
+ * Last Edit: September 22, 2017
  */
 
 import java.awt.Color;
@@ -18,11 +18,6 @@ public class ChessPanel extends JPanel implements MouseListener
 	private int x;
 	private int y;
 	private JLabel label;
-
-	private static boolean click;
-	private static char turn;
-	private static int[] init = new int[2];
-	private static int[] fin = new int[2];
 	private static Board board;
 
 	public ChessPanel(int x, int y)
@@ -44,61 +39,13 @@ public class ChessPanel extends JPanel implements MouseListener
 
 	public static void setBoard(Board b)
 	{
-		click = false;
-		turn = 'W';
-		init[0] = init[1] = -1;
-		fin[0] = fin[1] = -1;
 		board = b;
-	}
-
-	public static char getTurn()
-	{
-		return turn;
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e)
 	{
-		if (!click)
-		{
-			char color = board.getColorOf(x, y);
-
-			if (color == 'E')
-				return;
-			if (color != turn)
-			{
-				System.out.println("Not your piece!");
-				return;
-			}
-
-			init[0] = x;
-			init[1] = y;
-			click = true;
-			setBackground(Color.GREEN);
-		}
-		else
-		{
-			fin[0] = x;
-			fin[1] = y;
-			click = false;
-
-			boolean move = board.verifyMove(init[0], init[1], fin[0], fin[1]);
-			board.updateTileOf(init[0], init[1]);
-
-			init[0] = init[1] = -1;
-			fin[0] = fin[1] = -1;
-
-			if (move)
-			{
-				board.updateBoard();
-				board.updateSideBar();
-				turn = turn == 'W' ? 'B':'W';
-			}
-			else
-			{
-				System.out.println("Not a valid move!");
-			}
-		}
+		board.processClick(x, y);
 	}
 
 	@Override

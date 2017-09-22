@@ -1,11 +1,57 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 19, 2017
+ * Last Edit: September 22, 2017
  */
 
 #include "King.hpp"
 #include "Checking.hpp"
 #include <cassert>
+
+King::King()
+{
+	castling = false;
+	rook = new int[3];
+	white = new int[2];
+	black = new int[2];
+
+	rook[0] = rook[1] = rook[2] = -1;
+	white[0] = 7;
+	black[0] = 0;
+	white[1] = black[1] = 4;
+}
+
+King::~King()
+{
+	delete[] rook;
+	delete[] white;
+	delete[] black;
+}
+
+void King::setKing(char c, int *p)
+{
+	assert(p);
+
+	if (c == 'W')
+	{
+		white[0] = p[0];
+		white[1] = p[1];
+	}
+	else if (c == 'B')
+	{
+		black[0] = p[0];
+		black[1] = p[1];
+	}
+}
+
+int *King::getKing(char c) const
+{
+	if (c == 'W')
+		return white;
+	else if (c == 'B')
+		return black;
+	else
+		return nullptr;
+}
 
 bool King::ifCastling(int *f, char p, Board *b)
 {
@@ -76,14 +122,18 @@ bool King::ifKing(Move *m, Board *b)
 	int *fin = m->getFin();
 	Piece *player = b->getPiece(init);
 	char color = player->getColor();
+	bool valid;
 
 	int xDiff = abs(fin[0] - init[0]);
 	int yDiff = abs(fin[1] - init[1]);
 
 	if (xDiff <= 1 && yDiff <= 1)
-		return !inDanger(fin, color, b);
+		valid = !inDanger(fin, color, b);
 	else if (xDiff == 0 && !player->getMoved())
-		return !inDanger(init, color, b) && ifCastling(fin, color, b);
+		valid = !inDanger(init, color, b) && ifCastling(fin, color, b);
 
-	return false;
+	if (valid)
+		setKing(color, fin);
+
+	return valid;
 }

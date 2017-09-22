@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 16, 2017
+ * Last Edit: September 22, 2017
  */
 
 import java.awt.Dimension;
@@ -53,18 +53,19 @@ public class SideBar extends JPanel
 
 	private class ButtonPanel extends JPanel implements ActionListener
 	{
-		private JButton[] buttons = new JButton[4];
+		private JButton[] buttons = new JButton[5];
 
 		public ButtonPanel()
 		{
-			setLayout(new GridLayout(4, 1));
+			setLayout(new GridLayout(5, 1));
 
 			buttons[0] = new JButton("New Game");
 			buttons[1] = new JButton("Save Game");
-			buttons[2] = new JButton("Settings");
-			buttons[3] = new JButton("Quit");
+			buttons[2] = new JButton("Undo");
+			buttons[3] = new JButton("Settings");
+			buttons[4] = new JButton("Quit");
 
-			for (int c = 0; c < 4; c++)
+			for (int c = 0; c < 5; c++)
 			{
 				buttons[c].addActionListener(this);
 				add(buttons[c]);
@@ -74,6 +75,7 @@ public class SideBar extends JPanel
 			buttons[1].setEnabled(false);
 			buttons[2].setEnabled(false);
 			buttons[3].setEnabled(false);
+			buttons[4].setEnabled(false);
 		}
 
 		@Override

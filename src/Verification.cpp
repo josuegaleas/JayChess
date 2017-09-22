@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 16, 2017
+ * Last Edit: September 22, 2017
  */
 
 #include "Verification.hpp"
@@ -23,7 +23,7 @@ void updatePieces(Move *m, Game *g)
 	Piece *finPiece = b->getPiece(m->getFin());
 
 	finPiece->setPiece(initPiece);
-	initPiece->setPiece('E', 'E', " ");
+	initPiece->setPiece('E', 'E', false, " ");
 
 	if (k->getCastling())
 	{
@@ -37,7 +37,7 @@ void updatePieces(Move *m, Game *g)
 			rookFin = b->getPiece(rook[0], rook[1] - 2);
 
 		rookFin->setPiece(rookInit);
-		rookInit->setPiece('E', 'E', " ");
+		rookInit->setPiece('E', 'E', false, " ");
 
 		k->setCastling();
 		k->setRook();
