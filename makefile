@@ -29,10 +29,11 @@ $(BIN)%.o: $(SRC)%.cpp $(SRC)%.hpp
 $(BIN)libObjects.a: $(BIN)Piece.o $(BIN)Board.o $(BIN)Move.o $(BIN)King.o $(BIN)Pawn.o
 	ar $(ARFLAGS) $@ $^
 
-$(BIN)libMovement.a: $(BIN)Checking.o $(BIN)Others.o $(BIN)Verification.o $(BIN)AN.o
+$(BIN)libMovement.a: $(BIN)Checking.o $(BIN)Others.o $(BIN)Verification.o $(BIN)Checkmate.o $(BIN)AN.o
 	ar $(ARFLAGS) $@ $^
 
 CPP: $(BIN)libObjects.a $(BIN)libMovement.a
+	$(CXX) $(CXXFLAGS) $(SRC)main.cpp -L. $^ -o $(BIN)BACKEND.out
 
 JAVA:
 	$(JC) -cp $(BIN) -d $(BIN) $(SRC)*.java

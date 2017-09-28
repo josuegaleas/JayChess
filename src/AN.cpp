@@ -5,6 +5,7 @@
 
 #include "AN.hpp"
 #include "Checking.hpp"
+#include "Checkmate.hpp"
 #include <cassert>
 
 std::string getAN(Move *m, Game *g)

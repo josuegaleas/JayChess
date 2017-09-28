@@ -22,6 +22,7 @@ class Board
 		Piece *getPiece(int, int) const;
 		Piece *getPiece(int *) const;
 		void setupSymbolOf(Piece *);
+		void drawBoard() const;
 };
 
 #endif
