@@ -6,8 +6,7 @@
 #ifndef CHECKMATE_H
 #define CHECKMATE_H
 
-#include "Board.hpp"
-#include "King.hpp"
+#include "Game.hpp"
 
 bool inCheckmate(King *, char, Board *b);
 

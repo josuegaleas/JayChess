@@ -6,7 +6,6 @@
 #ifndef VERIFICATION_H
 #define VERIFICATION_H
 
-#include "Move.hpp"
 #include "Game.hpp"
 
 void updatePieces(Move *, Game *);

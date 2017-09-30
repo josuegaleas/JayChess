@@ -8,6 +8,7 @@
 #include "Verification.hpp"
 #include <cassert>
 #include <vector>
+#include <algorithm>
 
 struct Vectors
 {
@@ -22,8 +23,7 @@ void addPos(std::vector<int *> *v, int *p)
 	assert(p);
 
 	int *pos = new int[2];
-	pos[0] = p[0];
-	pos[1] = p[1];
+	std::copy(p, p + 2, pos);
 	v->push_back(pos);
 }
 
@@ -87,6 +87,7 @@ bool inCheckmate(King *k, char p, Board *b)
 	int temp[2], enemy[2];
 	int *king = k->getKing(p);
 	bool output = inDangerEnemy(king, p, b, enemy);
+	bool capture = false;
 	if (!output)
 		return false;
 
@@ -131,7 +132,6 @@ bool inCheckmate(King *k, char p, Board *b)
 		}
 	}
 
-	bool capture;
 	if (output)
 		capture = captureEnemy(&v, king, p, b);
 	if (capture)
@@ -139,6 +139,8 @@ bool inCheckmate(King *k, char p, Board *b)
 	printf("Safe escape: %s\n", capture ? "true":"false");
 
 	// FIXME: Might still prematurely end the game!
+	printf("Attempting to delete vectors!\n");
 	deleteVectors(&v);
+	printf("Successfully deleted vectors!\n");
 	return output;
 }
