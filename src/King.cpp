@@ -1,57 +1,12 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 22, 2017
+ * Last Edit: September 29, 2017
  */
 
 #include "King.hpp"
 #include "Checking.hpp"
 #include <cassert>
-
-King::King()
-{
-	castling = false;
-	rook = new int[3];
-	white = new int[2];
-	black = new int[2];
-
-	rook[0] = rook[1] = rook[2] = -1;
-	white[0] = 7;
-	black[0] = 0;
-	white[1] = black[1] = 4;
-}
-
-King::~King()
-{
-	delete[] rook;
-	delete[] white;
-	delete[] black;
-}
-
-void King::setKing(char c, int *p)
-{
-	assert(p);
-
-	if (c == 'W')
-	{
-		white[0] = p[0];
-		white[1] = p[1];
-	}
-	else if (c == 'B')
-	{
-		black[0] = p[0];
-		black[1] = p[1];
-	}
-}
-
-int *King::getKing(char c) const
-{
-	if (c == 'W')
-		return white;
-	else if (c == 'B')
-		return black;
-	else
-		return nullptr;
-}
+#include <algorithm>
 
 bool King::ifCastling(int *f, char p, Board *b)
 {
@@ -113,6 +68,44 @@ bool King::ifCastling(int *f, char p, Board *b)
 	return false;
 }
 
+King::King()
+{
+	castling = false;
+	rook = new int[3];
+	white = new int[2];
+	black = new int[2];
+
+	rook[0] = rook[1] = rook[2] = -1;
+	white[0] = 7;
+	black[0] = 0;
+	white[1] = black[1] = 4;
+}
+
+King::~King()
+{
+	delete[] rook;
+	delete[] white;
+	delete[] black;
+}
+
+void King::setKing(char c, int *p)
+{
+	assert(p);
+
+	if (c == 'W')
+		std::copy(p, p + 2, white);
+	else
+		std::copy(p, p + 2, black);
+}
+
+int *King::getKing(char c) const
+{
+	if (c == 'W')
+		return white;
+	else
+		return black;
+}
+
 bool King::ifKing(Move *m, Board *b)
 {
 	assert(m);
@@ -120,16 +113,16 @@ bool King::ifKing(Move *m, Board *b)
 
 	int *init = m->getInit();
 	int *fin = m->getFin();
-	Piece *player = b->getPiece(init);
-	char color = player->getColor();
-	bool valid;
+	Piece *piece = b->getPiece(init);
+	char color = piece->getColor();
+	bool valid = false;
 
 	int xDiff = abs(fin[0] - init[0]);
 	int yDiff = abs(fin[1] - init[1]);
 
 	if (xDiff <= 1 && yDiff <= 1)
 		valid = !inDanger(fin, color, b);
-	else if (xDiff == 0 && !player->getMoved())
+	else if (xDiff == 0 && !piece->getMoved())
 		valid = !inDanger(init, color, b) && ifCastling(fin, color, b);
 
 	if (valid)

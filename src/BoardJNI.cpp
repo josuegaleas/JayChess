@@ -28,7 +28,7 @@ Java_Board_updateBoard(JNIEnv *env, jobject obj)
 	{
 		for (int y = 0; y < 8; y++)
 		{
-			symbol = g->getBoard()->getPiece(x, y)->getSymbol();
+			symbol = g->board.getPiece(x, y)->getSymbol();
 			label = env->NewStringUTF(symbol.c_str());
 			env->CallVoidMethod(obj, mid, x, y, label);
 		}
@@ -44,7 +44,7 @@ Java_Board_deleteBoard(JNIEnv *, jobject)
 JNIEXPORT jchar JNICALL
 Java_Board_getColor(JNIEnv *, jobject, jint x, jint y)
 {
-	return (jchar)g->getBoard()->getPiece(x, y)->getColor();
+	return (jchar)g->board.getPiece(x, y)->getColor();
 }
 
 JNIEXPORT jboolean JNICALL

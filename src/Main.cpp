@@ -3,7 +3,7 @@
 int main()
 {
 	Game g;
-	g.getBoard()->drawBoard();
+	g.board.drawBoard();
 
 	return 0;
 }

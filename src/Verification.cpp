@@ -12,12 +12,9 @@ void updatePieces(Move *m, Game *g)
 	assert(m);
 	assert(g);
 
-	Board *b = g->getBoard();
-	King *k = g->getKing();
-	Pawn *p = g->getPawn();
-	assert(b);
-	assert(k);
-	assert(p);
+	Board *b = &g->board;
+	King *k = &g->king;
+	Pawn *p = &g->pawn;
 
 	Piece *initPiece = b->getPiece(m->getInit());
 	Piece *finPiece = b->getPiece(m->getFin());
@@ -48,7 +45,7 @@ void updatePieces(Move *m, Game *g)
 		// TODO: Need to ask user what piece they want!
 		// However, in almost all cases, they pick queen.
 		finPiece->setType('Q');
-		b->setupSymbolOf(finPiece);
+		b->setSymbol(finPiece);
 		p->setPromo();
 	}
 }
@@ -58,9 +55,7 @@ bool verifyCapture(Move *m, Game *g)
 	assert(m);
 	assert(g);
 
-	Board *b = g->getBoard();
-	assert(b);
-
+	Board *b = &g->board;
 	char initColor = b->getPiece(m->getInit())->getColor();
 	char finColor = b->getPiece(m->getFin())->getColor();
 
@@ -72,12 +67,9 @@ bool verifyMove(Move *m, Game *g)
 	assert(m);
 	assert(g);
 
-	Board *b = g->getBoard();
-	King *k = g->getKing();
-	Pawn *p = g->getPawn();
-	assert(b);
-	assert(k);
-	assert(p);
+	Board *b = &g->board;
+	King *k = &g->king;
+	Pawn *p = &g->pawn;
 
 	char initType = b->getPiece(m->getInit())->getType();
 

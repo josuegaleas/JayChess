@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 22, 2017
+ * Last Edit: September 29, 2017
  */
 
 #include "Piece.hpp"
@@ -14,35 +14,20 @@ Piece::Piece()
 	symbol = " ";
 }
 
-void Piece::setType(char newType)
+void Piece::setPiece(char t, char c, bool m, std::string s)
 {
-	type = newType;
+	type = t;
+	color = c;
+	moved = m;
+	symbol = s;
 }
 
-void Piece::setColor(char newColor)
+void Piece::setPiece(Piece *p)
 {
-	color = newColor;
-}
+	assert(p);
 
-void Piece::setSymbol(std::string newSymbol)
-{
-	symbol = newSymbol;
-}
-
-void Piece::setPiece(char newType, char newColor, bool newMoved, std::string newSymbol)
-{
-	type = newType;
-	color = newColor;
-	moved = newMoved;
-	symbol = newSymbol;
-}
-
-void Piece::setPiece(Piece *newPiece)
-{
-	assert(newPiece);
-
-	type = newPiece->getType();
-	color = newPiece->getColor();
-	moved = newPiece->getMoved();
-	symbol = newPiece->getSymbol();
+	type = p->getType();
+	color = p->getColor();
+	moved = p->getMoved();
+	symbol = p->getSymbol();
 }
