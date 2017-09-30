@@ -15,7 +15,7 @@ public class GUI extends JFrame
 
 	public GUI()
 	{
-		setTitle("JNIChess");
+		setTitle("JayChess (Alpha 2017.09.29)");
 		setLayout(new FlowLayout());
 
 		chessBoard = new ChessBoard();
