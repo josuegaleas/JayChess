@@ -6,8 +6,8 @@
 #ifndef KING_H
 #define KING_H
 
-#include "Board.hpp"
 #include "Move.hpp"
+#include "Board.hpp"
 
 class King
 {

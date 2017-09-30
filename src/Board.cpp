@@ -5,7 +5,6 @@
 
 #include "Board.hpp"
 #include <cassert>
-#include <cstdio>
 
 void Board::setMapping()
 {
@@ -80,27 +79,4 @@ Piece *Board::getPiece(int *p) const
 	assert(p);
 
 	return board + (p[0] * 8) + p[1];
-}
-
-void Board::drawBoard() const
-{
-	char files[] = "|     a   b   c   d   e   f   g   h     |\n";
-	char ranks[] = "|   +---+---+---+---+---+---+---+---+   |\n";
-	char border[] = "+---------------------------------------+\n";
-
-	printf("%s%s", border, files);
-
-	for (int x = 0; x < 8; x++)
-	{
-		printf("%s| %d ", ranks, 8 - x);
-
-		for (int y = 0; y < 8; y++)
-		{
-			printf("| %s ", getPiece(x, y)->getSymbol().c_str());
-		}
-
-		printf("| %d |\n", 8 - x);
-	}
-
-	printf("%s%s%s", ranks, files, border);
 }

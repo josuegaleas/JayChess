@@ -6,6 +6,7 @@
 #include "Checking.hpp"
 #include "Verification.hpp"
 #include <cassert>
+#include <algorithm>
 
 bool inDanger(int *c, char p, Board *b)
 {
@@ -21,8 +22,7 @@ bool setEnemy(int *e, int *t)
 	assert(e);
 	assert(t);
 
-	e[0] = t[0];
-	e[1] = t[1];
+	std::copy(t, t + 2, e);
 	return true;
 }
 
@@ -36,7 +36,6 @@ bool inDangerEnemy(int *c, char p, Board *b, int *pos)
 	char color, type;
 	char e = p == 'W' ? 'B':'W';
 
-	/* This for-loop looks for kings */
 	for (int i = -1; i <= 1; i++)
 	{
 		for (int j = -1; j <= 1; j++)
@@ -60,7 +59,6 @@ bool inDangerEnemy(int *c, char p, Board *b, int *pos)
 		}
 	}
 
-	/* This for-loop looks for knights */
 	for (int i = -2; i <= 2; i++)
 	{
 		if (i == 0)
@@ -89,7 +87,6 @@ bool inDangerEnemy(int *c, char p, Board *b, int *pos)
 		}
 	}
 
-	/* This for-loop looks for everything else */
 	for (int i = -1; i <= 1; i++)
 	{
 		for (int j = -1; j <= 1; j++)
@@ -97,8 +94,7 @@ bool inDangerEnemy(int *c, char p, Board *b, int *pos)
 			if (i == 0 && j == 0)
 				continue;
 
-			temp[0] = c[0];
-			temp[1] = c[1];
+			std::copy(c, c + 2, temp);
 
 			while (true)
 			{

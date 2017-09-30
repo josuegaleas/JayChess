@@ -68,15 +68,12 @@ bool verifyMove(Move *m, Game *g)
 	assert(g);
 
 	Board *b = &g->board;
-	King *k = &g->king;
-	Pawn *p = &g->pawn;
-
 	char initType = b->getPiece(m->getInit())->getType();
 
 	switch (initType)
 	{
 		case 'K':
-			return k->ifKing(m, b);
+			return g->king.ifKing(m, b);
 		case 'Q':
 			return ifQueen(m, b);
 		case 'B':
@@ -86,7 +83,7 @@ bool verifyMove(Move *m, Game *g)
 		case 'R':
 			return ifRook(m, b);
 		case 'P':
-			return p->ifPawn(m, b);
+			return g->pawn.ifPawn(m, b);
 		default:
 			return false;
 	}

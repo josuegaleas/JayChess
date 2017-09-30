@@ -1,10 +1,11 @@
 /*
  * Author: Josue Galeas
- * Last Edit: August 27, 2017
+ * Last Edit: September 30, 2017
  */
 
 #include "Others.hpp"
 #include <cassert>
+#include <algorithm>
 
 bool ifQueen(Move *m, Board *b)
 {
@@ -21,33 +22,28 @@ bool ifBishop(Move *m, Board *b)
 
 	int *init = m->getInit();
 	int *fin = m->getFin();
-
-	int tempX, tempY;
+	int temp[2];
 
 	for (int i = -1; i <= 1; i += 2)
 	{
 		for (int j = -1; j <= 1; j += 2)
 		{
-			tempX = init[0];
-			tempY = init[1];
+			std::copy(init, init + 2, temp);
 
 			while (true)
 			{
-				tempX += i;
-				tempY += j;
+				temp[0] += i;
+				temp[1] += j;
 
-				/* Checks if adjacent location is the target */
-				if (tempX == fin[0] && tempY == fin[1])
+				if (temp[0] == fin[0] && temp[1] == fin[1])
 					return true;
 
-				/* Checks if adjacent location is out of bounds */
-				if (tempX < 0 || tempX > 7)
+				if (temp[0] < 0 || temp[0] > 7)
 					break;
-				if (tempY < 0 || tempY > 7)
+				if (temp[1] < 0 || temp[1] > 7)
 					break;
 
-				/* Checks if there is a piece blocking the path */
-				if (b->getPiece(tempX, tempY)->getType() != 'E')
+				if (b->getPiece(temp)->getType() != 'E')
 					break;
 			}
 		}
@@ -63,29 +59,24 @@ bool ifKnight(Move *m, Board *b)
 
 	int *init = m->getInit();
 	int *fin = m->getFin();
+	int temp[2];
 
-	int tempX, tempY;
-
-	for (int i = -2; i <= 2; i += 4)
+	for (int i = -2; i <= 2; i++)
 	{
-		for (int j = -1; j <= 1; j += 2)
+		if (i == 0)
+			continue;
+
+		for (int j = -2; j <= 2; j++)
 		{
-			tempX = init[0] + i;
-			tempY = init[1] + j;
+			if (j == 0)
+				continue;
+			if (abs(i) == abs(j))
+				continue;
 
-			if (tempX == fin[0] && tempY == fin[1])
-				return true;
-		}
-	}
+			temp[0] = init[0] + i;
+			temp[1] = init[1] + j;
 
-	for (int i = -1; i <= 1; i += 2)
-	{
-		for (int j = -2; j <= 2; j += 4)
-		{
-			tempX = init[0] + i;
-			tempY = init[1] + j;
-
-			if (tempX == fin[0] && tempY == fin[1])
+			if (temp[0] == fin[0] && temp[1] == fin[1])
 				return true;
 		}
 	}
@@ -100,56 +91,37 @@ bool ifRook(Move *m, Board *b)
 
 	int *init = m->getInit();
 	int *fin = m->getFin();
-
-	int tempX, tempY;
+	int temp[2], o;
 
 	if (init[1] == fin[1])
 	{
-		for (int i = -1; i <= 1; i += 2)
-		{
-			tempX = init[0];
-
-			while (true)
-			{
-				tempX += i;
-
-				/* Checks if adjacent location is the target */
-				if (tempX == fin[0])
-					return true;
-
-				/* Checks if adjacent location is out of bounds */
-				if (tempX < 0 || tempX > 7)
-					break;
-
-				/* Checks if there is a piece blocking the path */
-				if (b->getPiece(tempX, init[1])->getType() != 'E')
-					break;
-			}
-		}
+		temp[1] = init[1];
+		o = 0;
 	}
-
-	if (init[0] == fin[0])
+	else if (init[0] == fin[0])
 	{
-		for (int j = -1; j <= 1; j += 2)
+		temp[0] = init[0];
+		o = 1;
+	}
+	else
+		return false;
+
+	for (int i = -1; i <= 1; i += 2)
+	{
+		temp[o] = init[o];
+
+		while (true)
 		{
-			tempY = init[1];
+			temp[o] += i;
 
-			while (true)
-			{
-				tempY += j;
+			if (temp[o] == fin[o])
+				return true;
 
-				/* Checks if adjacent location is the target */
-				if (tempY == fin[1])
-					return true;
+			if (temp[o] < 0 || temp[o] > 7)
+				break;
 
-				/* Checks if adjacent location is out of bounds */
-				if (tempY < 0 || tempY > 7)
-					break;
-
-				/* Checks if there is a piece blocking the path */
-				if (b->getPiece(init[0], tempY)->getType() != 'E')
-					break;
-			}
+			if (b->getPiece(temp)->getType() != 'E')
+				break;
 		}
 	}
 
