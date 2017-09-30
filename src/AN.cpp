@@ -13,12 +13,9 @@ std::string getAN(Move *m, Game *g)
 	assert(m);
 	assert(g);
 
-	Board *b = g->getBoard();
-	King *k = g->getKing();
-	Pawn *p = g->getPawn();
-	assert(b);
-	assert(k);
-	assert(p);
+	Board *b = &g->board;
+	King *k = &g->king;
+	Pawn *p = &g->pawn;
 
 	if (k->getCastling())
 	{
@@ -65,10 +62,8 @@ std::string getANCheck(std::string an, Game *g)
 {
 	assert(g);
 
-	Board *b = g->getBoard();
-	King *k = g->getKing();
-	assert(b);
-	assert(k);
+	Board *b = &g->board;
+	King *k = &g->king;
 
 	bool whiteCheckmate = inCheckmate(k, 'W', b);
 	bool blackCheckmate = inCheckmate(k, 'B', b);
