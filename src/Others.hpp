@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 30, 2017
+ * Last Edit: October 2, 2017
  */
 
 #ifndef OTHERS_H
