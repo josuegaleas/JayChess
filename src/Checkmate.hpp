@@ -8,6 +8,6 @@
 
 #include "Game.hpp"
 
-bool inCheckmate(King *, char, Board *b);
+bool inCheckmate(char, Game *g);
 
 #endif

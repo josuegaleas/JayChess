@@ -13,86 +13,83 @@
 struct Vectors
 {
 	std::vector<int *> enemies;
-	std::vector<int *> allies;
 	std::vector<int *> spots;
 };
 
-void addPos(std::vector<int *> *v, int *p)
+void addPos(std::vector<int *> &v, int *p)
 {
-	assert(v);
 	assert(p);
 
 	int *pos = new int[2];
 	std::copy(p, p + 2, pos);
-	v->push_back(pos);
+	v.push_back(pos);
 }
 
-void deleteVectors(Vectors *v)
+void deleteVectors(Vectors &v)
 {
-	while (!v->enemies.empty())
+	while (!v.enemies.empty())
 	{
-		delete[] v->enemies.at(v->enemies.size() - 1);
-		delete[] v->allies.at(v->allies.size() - 1);
-		v->enemies.pop_back();
-		v->allies.pop_back();
+		delete[] v.enemies.at(v.enemies.size() - 1);
+		v.enemies.pop_back();
 	}
 
-	while (!v->spots.empty())
+	while (!v.spots.empty())
 	{
-		delete[] v->spots.at(v->spots.size() - 1);
-		v->spots.pop_back();
+		delete[] v.spots.at(v.spots.size() - 1);
+		v.spots.pop_back();
 	}
 }
 
-bool captureEnemy(Vectors *v, int *k, char p, Board *b)
+bool captureEnemy(Vectors &v, int *k, char p, Board *b)
 {
-	bool capture = false, escape = false;
-	int ally[2], size = (int)v->enemies.size();
+	bool capture = false;
+	int ally[2], *temp;
+	int size = (int)(v.enemies.size());
 	char c = p == 'W' ? 'B':'W';
 
 	for (int i = 0; i < size; i++)
 	{
-		capture |= inDangerEnemy(v->enemies.at(i), c, b, ally);
-		addPos(&v->allies, ally);
-	}
+		temp = v.enemies.at(i);
+		capture |= inDangerEnemy(temp, c, b, ally);
 
-	if (capture)
-	{
-		for (int i = 0; i < size; i++)
+		if (ally[0] != -1)
 		{
-			if (v->allies.at(i)[0] != -1)
-			{
-				Piece backup;
-				Piece *E = b->getPiece(v->enemies.at(i));
-				Piece *P = b->getPiece(v->allies.at(i));
-				backup.setPiece(E);
-				E->setPiece(P);
-				P->setPiece('E', 'E', false, "");
+			Piece backup;
+			Piece *E = b->getPiece(temp);
+			Piece *P = b->getPiece(ally);
+			backup.setPiece(E);
+			E->setPiece(P);
+			P->setPiece('E', 'E', false, "");
 
-				escape |= inDanger(k, p, b);
-				P->setPiece(E);
-				E->setPiece(&backup);
-			}
+			if (inDanger(k, p, b))
+				capture = false;
+			P->setPiece(E);
+			E->setPiece(&backup);
 		}
-
-		// FIXME: Still a bit iffy on the logic here.
-		capture = !escape;
 	}
 
 	return capture;
 }
 
-bool inCheckmate(King *k, char p, Board *b)
+bool blockEnemy(Vectors &v, int *k, char p, Board *b)
 {
+	return false;
+}
+
+bool inCheckmate(char p, Game *g)
+{
+	assert(g);
+
+	Board *b = &g->board;
 	int temp[2], enemy[2];
-	int *king = k->getKing(p);
+	int *king = g->king.getKing(p);
 	bool output = inDangerEnemy(king, p, b, enemy);
-	bool capture = false;
+
 	if (!output)
 		return false;
 
 	Vectors v;
-	addPos(&v.enemies, enemy);
+	addPos(v.enemies, enemy);
 
 	for (int i = -1; i <= 1; i++)
 	{
@@ -113,7 +110,7 @@ bool inCheckmate(King *k, char p, Board *b)
 				continue;
 
 			Move m(king, temp);
-			addPos(&v.spots, temp);
+			addPos(v.spots, temp);
 
 			if (verifyMove(&m, b))
 			{
@@ -125,22 +122,17 @@ bool inCheckmate(King *k, char p, Board *b)
 				K->setPiece('E', 'E', false, "");
 
 				output &= inDangerEnemy(temp, p, b, enemy);
-				addPos(&v.enemies, enemy);
+				addPos(v.enemies, enemy);
 				K->setPiece(T);
 				T->setPiece(&backup);
 			}
 		}
 	}
 
-	if (output)
-		capture = captureEnemy(&v, king, p, b);
-	if (capture)
-		output = false;
-	printf("Safe escape: %s\n", capture ? "true":"false");
+	output &= !captureEnemy(v, king, p, b);
+	output &= !blockEnemy(v, king, p, b);
 
 	// FIXME: Might still prematurely end the game!
-	printf("Attempting to delete vectors!\n");
-	deleteVectors(&v);
-	printf("Successfully deleted vectors!\n");
+	deleteVectors(v);
 	return output;
 }

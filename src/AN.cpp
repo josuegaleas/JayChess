@@ -65,8 +65,8 @@ std::string getANCheck(std::string an, Game *g)
 	Board *b = &g->board;
 	King *k = &g->king;
 
-	bool whiteCheckmate = inCheckmate(k, 'W', b);
-	bool blackCheckmate = inCheckmate(k, 'B', b);
+	bool whiteCheckmate = inCheckmate('W', g);
+	bool blackCheckmate = inCheckmate('B', g);
 	bool whiteCheck = inDanger(k->getKing('W'), 'W', b);
 	bool blackCheck = inDanger(k->getKing('B'), 'B', b);
 
