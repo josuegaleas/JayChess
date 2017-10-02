@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 16, 2017
+ * Last Edit: October 2, 2017
  */
 
 import java.awt.FlowLayout;
@@ -15,7 +15,7 @@ public class GUI extends JFrame
 
 	public GUI()
 	{
-		setTitle("JNIChess");
+		setTitle("JayChess (Alpha 2017.10.02)");
 		setLayout(new FlowLayout());
 
 		chessBoard = new ChessBoard();

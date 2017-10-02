@@ -1,22 +1,41 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 22, 2017
+ * Last Edit: October 2, 2017
  */
 
 #include "Checking.hpp"
 #include "Verification.hpp"
 #include <cassert>
+#include <algorithm>
 
 bool inDanger(int *c, char p, Board *b)
 {
 	assert(c);
 	assert(b);
 
+	int enemy[2] = {-1, -1};
+	return inDangerEnemy(c, p, b, enemy);
+}
+
+bool setEnemy(int *e, int *t)
+{
+	assert(e);
+	assert(t);
+
+	std::copy(t, t + 2, e);
+	return true;
+}
+
+bool inDangerEnemy(int *c, char p, Board *b, int *pos)
+{
+	assert(c);
+	assert(b);
+	assert(pos);
+
 	int temp[2];
 	char color, type;
 	char e = p == 'W' ? 'B':'W';
 
-	/* This for-loop looks for kings */
 	for (int i = -1; i <= 1; i++)
 	{
 		for (int j = -1; j <= 1; j++)
@@ -36,11 +55,10 @@ bool inDanger(int *c, char p, Board *b)
 			type = b->getPiece(temp)->getType();
 
 			if (color == e && type == 'K')
-				return true;
+				return setEnemy(pos, temp);
 		}
 	}
 
-	/* This for-loop looks for knights */
 	for (int i = -2; i <= 2; i++)
 	{
 		if (i == 0)
@@ -65,11 +83,10 @@ bool inDanger(int *c, char p, Board *b)
 			type = b->getPiece(temp)->getType();
 
 			if (color == e && type == 'N')
-				return true;
+				return setEnemy(pos, temp);
 		}
 	}
 
-	/* This for-loop looks for everything else */
 	for (int i = -1; i <= 1; i++)
 	{
 		for (int j = -1; j <= 1; j++)
@@ -77,8 +94,7 @@ bool inDanger(int *c, char p, Board *b)
 			if (i == 0 && j == 0)
 				continue;
 
-			temp[0] = c[0];
-			temp[1] = c[1];
+			std::copy(c, c + 2, temp);
 
 			while (true)
 			{
@@ -109,7 +125,7 @@ bool inDanger(int *c, char p, Board *b)
 						if (verifyMove(&enemy, b))
 						{
 							b->getPiece(c)->setPiece(&backup);
-							return true;
+							return setEnemy(pos, temp);
 						}
 
 						b->getPiece(c)->setPiece(&backup);
@@ -117,50 +133,13 @@ bool inDanger(int *c, char p, Board *b)
 					}
 
 					if (verifyMove(&enemy, b))
-						return true;
+						return setEnemy(pos, temp);
 					break;
 				}
 			}
 		}
 	}
 
+	pos[0] = pos[1] = -1;
 	return false;
-}
-
-bool inCheckmate(King *k, char p, Board *b)
-{
-	int temp[2], *king = k->getKing(p);
-	bool output = inDanger(king, p, b);
-
-	for (int i = -1; i <= 1; i++)
-	{
-		for (int j = -1; j <= 1; j++)
-		{
-			if (i == 0 && j == 0)
-				continue;
-
-			temp[0] = king[0] + i;
-			temp[1] = king[1] + j;
-
-			if (temp[0] < 0 || temp[0] > 7)
-				continue;
-			if (temp[1] < 0 || temp[1] > 7)
-				continue;
-
-			if (b->getPiece(temp)->getColor() == p)
-				continue;
-
-			Move m(king, temp);
-
-			if (verifyMove(&m, b))
-				output &= inDanger(temp, p, b);
-		}
-	}
-
-	// FIXME: Might prematurely end the game!
-	// Should also consider being able to take out
-	// the enemy or being able to block the path.
-	// Might be able to use inDanger to find a fellow
-	// piece that can block a checkmate?
-	return output;
 }

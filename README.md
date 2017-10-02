@@ -1,16 +1,20 @@
-# JNIChess
-Chess from scratch using the JNI framework.
+# JayChess
+Chess from scratch using the JNI framework and the TensorFlow library.
+
+![Alpha](./images/alpha.png?raw=true)
 
 ## Features
 - C++ back-end
-- Java front-end
+- Java front-end, using JNI
+- Python AI, using TensorFlow
 
 ## TODO
 - [x] Add support for pawn promotion (currently only promotes to Queen)
 - [ ] Add support for en passant
-- [ ] Implement self-learning AI, probably with R or C++
-- [ ] Add more features to the GUI, such as saving games and a timer
+- [ ] Implement self-learning AI
+- [ ] Implement more features on the GUI (such as saving games and a timer)
 - [ ] Add support for PGN format
+- [ ] Update algebraic notation to differentiate between pieces when necessary
 
 ## References
 - [Essential JNI](http://www.prenhall.com/ptrbooks/ptr_0139470298.html)

@@ -4,6 +4,7 @@ SRC = src/
 
 CXX = g++-7
 CXXFLAGS = -g -Wall -Wextra -Wpedantic
+A = ar
 ARFLAGS = -rc
 
 JC = javac
@@ -26,11 +27,11 @@ run:
 $(BIN)%.o: $(SRC)%.cpp $(SRC)%.hpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-$(BIN)libObjects.a: $(BIN)Piece.o $(BIN)Board.o $(BIN)Move.o $(BIN)King.o $(BIN)Pawn.o
-	ar $(ARFLAGS) $@ $^
+$(BIN)libObjects.a: $(BIN)Piece.o $(BIN)Move.o $(BIN)Board.o $(BIN)King.o $(BIN)Pawn.o
+	$(A) $(ARFLAGS) $@ $^
 
-$(BIN)libMovement.a: $(BIN)Checking.o $(BIN)Others.o $(BIN)Verification.o $(BIN)AN.o
-	ar $(ARFLAGS) $@ $^
+$(BIN)libMovement.a: $(BIN)Checking.o $(BIN)Others.o $(BIN)Verification.o $(BIN)Checkmate.o $(BIN)AN.o
+	$(A) $(ARFLAGS) $@ $^
 
 CPP: $(BIN)libObjects.a $(BIN)libMovement.a
 

@@ -1,57 +1,72 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 19, 2017
+ * Last Edit: October 2, 2017
  */
 
 #include "Board.hpp"
 #include <cassert>
-#include <cstdio>
 
-void Board::setupPieces(int row)
+void Board::setMapping()
 {
-	getPiece(row, 0)->setType('R');
-	getPiece(row, 1)->setType('N');
-	getPiece(row, 2)->setType('B');
-	getPiece(row, 3)->setType('Q');
-	getPiece(row, 4)->setType('K');
-	getPiece(row, 5)->setType('B');
-	getPiece(row, 6)->setType('N');
-	getPiece(row, 7)->setType('R');
+	mapping['P'] = 0;
+	mapping['N'] = 1;
+	mapping['B'] = 2;
+	mapping['R'] = 3;
+	mapping['Q'] = 4;
+	mapping['K'] = 5;
+}
+
+void Board::setPieces(int r)
+{
+	getPiece(r, 0)->setType('R');
+	getPiece(r, 1)->setType('N');
+	getPiece(r, 2)->setType('B');
+	getPiece(r, 3)->setType('Q');
+	getPiece(r, 4)->setType('K');
+	getPiece(r, 5)->setType('B');
+	getPiece(r, 6)->setType('N');
+	getPiece(r, 7)->setType('R');
 }
 
 Board::Board()
 {
 	board = new Piece[64];
-	m['P'] = 0;
-	m['N'] = 1;
-	m['B'] = 2;
-	m['R'] = 3;
-	m['Q'] = 4;
-	m['K'] = 5;
+
+	setMapping();
+	symbols =
+	{
+		{"♙", "♘", "♗", "♖", "♕", "♔",
+		"♟", "♞", "♝", "♜", "♛", "♚"}
+	};
 
 	for (int col = 0; col < 8; col++)
 	{
-		// Setting top two rows to all black
 		getPiece(0, col)->setColor('B');
 		getPiece(1, col)->setColor('B');
 
-		// Setting bottom two rows to all white
 		getPiece(6, col)->setColor('W');
 		getPiece(7, col)->setColor('W');
 
-		// Setting up pawns
 		getPiece(1, col)->setType('P');
 		getPiece(6, col)->setType('P');
 	}
 
-	// Setting up non-pawns
-	setupPieces(0);
-	setupPieces(7);
+	setPieces(0);
+	setPieces(7);
 
-	// Setting up symbols
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
-			setupSymbolOf(getPiece(i, j));
+			setSymbol(getPiece(i, j));
+}
+
+void Board::setSymbol(Piece *p)
+{
+	if (p->getColor() == 'E')
+		return;
+
+	int o = p->getColor() == 'W' ? 0:6;
+	int s = mapping[p->getType()] + o;
+	p->setSymbol(symbols[s]);
 }
 
 Piece *Board::getPiece(int x, int y) const
@@ -64,19 +79,4 @@ Piece *Board::getPiece(int *p) const
 	assert(p);
 
 	return board + (p[0] * 8) + p[1];
-}
-
-void Board::setupSymbolOf(Piece *p)
-{
-	if (p->getColor() == 'E')
-		return;
-
-	std::string symbols[12] =
-	{
-		"♙", "♘", "♗", "♖", "♕", "♔",
-		"♟", "♞", "♝", "♜", "♛", "♚"
-	};
-
-	int o = p->getColor() == 'W' ? 0:6;
-	p->setSymbol(symbols[m[p->getType()] + o]);
 }

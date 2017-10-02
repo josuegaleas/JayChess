@@ -1,12 +1,11 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 12, 2017
+ * Last Edit: October 2, 2017
  */
 
 #ifndef VERIFICATION_H
 #define VERIFICATION_H
 
-#include "Move.hpp"
 #include "Game.hpp"
 
 void updatePieces(Move *, Game *);
