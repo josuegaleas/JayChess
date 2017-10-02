@@ -6,7 +6,6 @@
 #ifndef AN_H
 #define AN_H
 
-#include "Move.hpp"
 #include "Game.hpp"
 
 std::string getAN(Move *, Game *);

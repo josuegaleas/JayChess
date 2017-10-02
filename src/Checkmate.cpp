@@ -44,10 +44,9 @@ bool captureEnemy(Vectors &v, int *k, char p, Board *b)
 {
 	bool capture = false;
 	int ally[2], *temp;
-	int size = (int)(v.enemies.size());
 	char c = p == 'W' ? 'B':'W';
 
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < (int)v.enemies.size(); i++)
 	{
 		temp = v.enemies.at(i);
 		capture |= inDangerEnemy(temp, c, b, ally);
@@ -73,7 +72,31 @@ bool captureEnemy(Vectors &v, int *k, char p, Board *b)
 
 bool blockEnemy(Vectors &v, int *k, char p, Board *b)
 {
-	return false;
+	bool block = false;
+	int ally[2], *temp;
+
+	for (int i = 0; i < (int)v.spots.size(); i++)
+	{
+		temp = v.spots.at(i);
+		block |= inDangerEnemy(temp, p, b, ally);
+
+		if (ally[0] != -1)
+		{
+			Piece backup;
+			Piece *E = b->getPiece(temp);
+			Piece *P = b->getPiece(ally);
+			backup.setPiece(E);
+			E->setPiece(P);
+			P->setPiece('E', 'E', false, "");
+
+			if (inDanger(k, p, b))
+				block = false;
+			P->setPiece(E);
+			E->setPiece(&backup);
+		}
+	}
+
+	return block;
 }
 
 bool inCheckmate(char p, Game *g)
