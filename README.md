@@ -4,9 +4,8 @@ Chess from scratch using the JNI framework and the TensorFlow library.
 ![Alpha](./images/alpha.png?raw=true)
 
 ## Features
-- C++ back-end
+- C++ back-end, using TensorFlow's C++ API
 - Java front-end, using JNI
-- Python AI, using TensorFlow
 
 ## TODO
 - [x] Add support for pawn promotion (currently only promotes to Queen)

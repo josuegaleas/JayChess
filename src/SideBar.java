@@ -39,16 +39,17 @@ public class SideBar extends JPanel
 
 	public void updateTextBox(String m, boolean t)
 	{
+		String b;
+
 		if (t)
-		{
-			String s = progress.toString() + ". ";
-			textBox.setText(textBox.getText() + s + m + " ");
-		}
+			b = textBox.getText() + progress + ". " + m + " ";
 		else
 		{
-			textBox.setText(textBox.getText() + m + "\n");
+			b = textBox.getText() + m + "\n";
 			progress++;
 		}
+
+		textBox.setText(b);
 	}
 
 	private class ButtonPanel extends JPanel implements ActionListener
@@ -61,9 +62,9 @@ public class SideBar extends JPanel
 
 			buttons[0] = new JButton("New Game");
 			buttons[1] = new JButton("Save Game");
-			buttons[2] = new JButton("Undo");
-			buttons[3] = new JButton("Settings");
-			buttons[4] = new JButton("Quit");
+			buttons[2] = new JButton("Load Game");
+			buttons[3] = new JButton("Undo");
+			buttons[4] = new JButton("Settings");
 
 			for (int c = 0; c < 5; c++)
 			{
