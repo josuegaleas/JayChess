@@ -16,7 +16,7 @@ import javax.swing.JTextArea;
 @SuppressWarnings("serial")
 public class SideBar extends JPanel
 {
-	private ChessBoard chessBoard;
+	private Board board;
 	private JTextArea textBox;
 	private Integer progress = 1;
 
@@ -32,22 +32,20 @@ public class SideBar extends JPanel
 		add(new JScrollPane(textBox));
 	}
 
-	public void setChessBoard(ChessBoard cb)
+	public void setBoard(Board b)
 	{
-		chessBoard = cb;
+		board = b;
 	}
 
 	public void updateTextBox(String m, boolean t)
 	{
-		String b;
+		String b = m;
+		progress += t ? 0:1;
 
 		if (t)
 			b = textBox.getText() + progress + ". " + m + " ";
 		else
-		{
 			b = textBox.getText() + m + "\n";
-			progress++;
-		}
 
 		textBox.setText(b);
 	}
@@ -66,10 +64,10 @@ public class SideBar extends JPanel
 			buttons[3] = new JButton("Undo");
 			buttons[4] = new JButton("Settings");
 
-			for (int c = 0; c < 5; c++)
+			for (JButton b : buttons)
 			{
-				buttons[c].addActionListener(this);
-				add(buttons[c]);
+				b.addActionListener(this);
+				add(b);
 			}
 
 			// TODO: Temporarily Disabled
@@ -86,7 +84,7 @@ public class SideBar extends JPanel
 
 			if (source == buttons[0])
 			{
-				chessBoard.newGame();
+				board.newGame();
 				textBox.setText("");
 				progress = 1;
 			}
