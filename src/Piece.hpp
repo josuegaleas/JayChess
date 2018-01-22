@@ -11,16 +11,16 @@
 class Piece
 {
 	private:
-		char type;
-		char color;
-		bool moved;
-		std::string symbol;
+		char type = 'E';
+		char color = 'E';
+		bool moved = false;
+		std::string symbol = "";
 
 	public:
-		Piece();
 		void setType(char t) {type = t;};
 		void setColor(char c) {color = c;};
 		void setSymbol(std::string s) {symbol = s;};
+		void setMoved(bool m) {moved = m;};
 		void setPiece(char, char, bool, std::string);
 		void setPiece(Piece *);
 		char getType() const {return type;}

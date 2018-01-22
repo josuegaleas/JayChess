@@ -12,12 +12,11 @@
 class Pawn
 {
 	private:
-		bool promo;
-		bool passant;
+		bool promo = false;
+		bool passant = false;
 		bool ifPawnHelper(Move *, Board *);
 
 	public:
-		Pawn() {promo = false; passant = false;};
 		void setPromo() {promo = false;};
 		void setPassant() {passant = false;};
 		bool getPromo() const {return promo;};

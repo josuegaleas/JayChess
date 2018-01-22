@@ -14,13 +14,16 @@ public class Board extends JPanel
 {
 	private SideBar sideBar;
 	private ChessPanel[][] board = new ChessPanel[8][8];
-
 	private boolean click = false;
 	private char turn = 'W';
 	private int init[] = {-1, -1};
 	private int fin[] = {-1, -1};
 	private String an = "EMPTY";
 
+	static
+	{
+		System.loadLibrary("BoardJNI");
+	}
 	public Board()
 	{
 		setLayout(new GridLayout(8, 8));
@@ -42,25 +45,12 @@ public class Board extends JPanel
 		ChessPanel.setBoard(this);
 	}
 
-	static
-	{
-		System.loadLibrary("BoardJNI");
-	}
-
 	public native void createBoard();
-
 	public native void updateBoard();
-
 	public native void deleteBoard();
-
 	public native char getColor(int x, int y);
-
 	public native boolean verifyMove(int i[], int f[]);
-
-	public void setSideBar(SideBar sb)
-	{
-		sideBar = sb;
-	}
+	public void setSideBar(SideBar sb) {sideBar = sb;}
 
 	public void setLabel(int x, int y, String l)
 	{

@@ -6,14 +6,6 @@
 #include "Piece.hpp"
 #include <cassert>
 
-Piece::Piece()
-{
-	type = 'E';
-	color = 'E';
-	moved = false;
-	symbol = " ";
-}
-
 void Piece::setPiece(char t, char c, bool m, std::string s)
 {
 	type = t;

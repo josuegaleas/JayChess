@@ -15,8 +15,7 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class ChessPanel extends JPanel implements MouseListener
 {
-	private int x;
-	private int y;
+	private int x, y;
 	private JLabel label;
 	private static Board board;
 
@@ -32,15 +31,8 @@ public class ChessPanel extends JPanel implements MouseListener
 		addMouseListener(this);
 	}
 
-	public void setLabel(String l)
-	{
-		label.setText(l);
-	}
-
-	public static void setBoard(Board b)
-	{
-		board = b;
-	}
+	public void setLabel(String l) {label.setText(l);}
+	public static void setBoard(Board b) {board = b;}
 
 	@Override
 	public void mouseClicked(MouseEvent e)
@@ -50,13 +42,10 @@ public class ChessPanel extends JPanel implements MouseListener
 
 	@Override
 	public void mousePressed(MouseEvent e) {}
-
 	@Override
 	public void mouseReleased(MouseEvent e) {}
-
 	@Override
 	public void mouseEntered(MouseEvent e) {}
-
 	@Override
 	public void mouseExited(MouseEvent e) {}
 }

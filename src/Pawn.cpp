@@ -14,7 +14,7 @@ bool Pawn::ifPawnHelper(Move *m, Board *b)
 	int *init = m->getInit();
 	int *fin = m->getFin();
 	bool cond = b->getPiece(init)->getColor() == 'W';
-	char e = cond ? 'B':'W';
+	char enemy = cond ? 'B':'W';
 
 	if (cond)
 	{
@@ -44,7 +44,7 @@ bool Pawn::ifPawnHelper(Move *m, Board *b)
 			if (yDiff == 0)
 				return finColor == 'E';
 			else
-				return finColor == e;
+				return finColor == enemy;
 		}
 	}
 	else
@@ -55,16 +55,14 @@ bool Pawn::ifPawnHelper(Move *m, Board *b)
 		{
 			if (yDiff == 0)
 			{
-				if (cond)
-					adjColor = b->getPiece(init[0] - 1, init[1])->getColor();
-				else
-					adjColor = b->getPiece(init[0] + 1, init[1])->getColor();
+				int o = cond ? -1:1;
+				adjColor = b->getPiece(init[0] + o, init[1])->getColor();
 				return adjColor == 'E' && finColor == 'E';
 			}
 			else
 			{
 				if (xDiff == 1)
-					return finColor == e;
+					return finColor == enemy;
 				else
 					return false;
 			}

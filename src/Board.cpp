@@ -6,16 +6,6 @@
 #include "Board.hpp"
 #include <cassert>
 
-void Board::setMapping()
-{
-	mapping['P'] = 0;
-	mapping['N'] = 1;
-	mapping['B'] = 2;
-	mapping['R'] = 3;
-	mapping['Q'] = 4;
-	mapping['K'] = 5;
-}
-
 void Board::setPieces(int r)
 {
 	getPiece(r, 0)->setType('R');
@@ -30,14 +20,16 @@ void Board::setPieces(int r)
 
 Board::Board()
 {
-	board = new Piece[64];
+	board = new Piece*[8];
+	for (int i = 0; i < 8; i++)
+		board[i] = new Piece[8];
 
-	setMapping();
-	symbols =
-	{
-		{"♙", "♘", "♗", "♖", "♕", "♔",
-		"♟", "♞", "♝", "♜", "♛", "♚"}
-	};
+	mapping['P'] = 0;
+	mapping['N'] = 1;
+	mapping['B'] = 2;
+	mapping['R'] = 3;
+	mapping['Q'] = 4;
+	mapping['K'] = 5;
 
 	for (int col = 0; col < 8; col++)
 	{
@@ -59,6 +51,13 @@ Board::Board()
 			setSymbol(getPiece(i, j));
 }
 
+Board::~Board()
+{
+	for (int i = 0; i < 8; i++)
+		delete[] board[i];
+	delete[] board;
+}
+
 void Board::setSymbol(Piece *p)
 {
 	if (p->getColor() == 'E')
@@ -69,14 +68,9 @@ void Board::setSymbol(Piece *p)
 	p->setSymbol(symbols[s]);
 }
 
-Piece *Board::getPiece(int x, int y) const
-{
-	return board + (x * 8) + y;
-}
-
 Piece *Board::getPiece(int *p) const
 {
 	assert(p);
 
-	return board + (p[0] * 8) + p[1];
+	return getPiece(p[0], p[1]);
 }

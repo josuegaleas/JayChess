@@ -19,6 +19,7 @@ void updatePieces(Move *m, Game *g)
 	Piece *initPiece = b->getPiece(m->getInit());
 	Piece *finPiece = b->getPiece(m->getFin());
 
+	initPiece->setMoved(true);
 	finPiece->setPiece(initPiece);
 	initPiece->setPiece('E', 'E', false, " ");
 
@@ -33,6 +34,7 @@ void updatePieces(Move *m, Game *g)
 		else
 			rookFin = b->getPiece(rook[0], rook[1] - 2);
 
+		rookInit->setMoved(true);
 		rookFin->setPiece(rookInit);
 		rookInit->setPiece('E', 'E', false, " ");
 

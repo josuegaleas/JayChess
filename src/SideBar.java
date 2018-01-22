@@ -32,10 +32,7 @@ public class SideBar extends JPanel
 		add(new JScrollPane(textBox));
 	}
 
-	public void setBoard(Board b)
-	{
-		board = b;
-	}
+	public void setBoard(Board b) {board = b;}
 
 	public void updateTextBox(String m, boolean t)
 	{

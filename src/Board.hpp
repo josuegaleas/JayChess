@@ -7,23 +7,21 @@
 #define BOARD_H
 
 #include "Piece.hpp"
-#include <array>
-#include <unordered_map>
+#include <map>
 
 class Board
 {
 	private:
-		Piece *board;
-		std::array<std::string, 12> symbols;
-		std::unordered_map<char, int> mapping;
-		void setMapping();
+		Piece **board;
+		std::string symbols[12] = {"♙", "♘", "♗", "♖", "♕", "♔", "♟", "♞", "♝", "♜", "♛", "♚"};
+		std::map<char, int> mapping;
 		void setPieces(int);
 
 	public:
 		Board();
-		~Board() {delete[] board;};
+		~Board();
 		void setSymbol(Piece *);
-		Piece *getPiece(int, int) const;
+		Piece *getPiece(int x, int y) const {return &board[x][y];};
 		Piece *getPiece(int *) const;
 };
 
