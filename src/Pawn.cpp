@@ -1,19 +1,18 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 19, 2017
+ * Last Edit: 2018.02.19
  */
 
-#include "Pawn.hpp"
+#include "Board.hpp"
 #include <cassert>
 
-bool Pawn::ifPawnHelper(Move *m, Board *b)
+bool Board::ifPawnHelper(Move *m)
 {
 	assert(m);
-	assert(b);
 
 	int *init = m->getInit();
 	int *fin = m->getFin();
-	bool cond = b->getPiece(init)->getColor() == 'W';
+	bool cond = getPiece(init)->getColor() == 'W';
 	char enemy = cond ? 'B':'W';
 
 	if (cond)
@@ -21,21 +20,21 @@ bool Pawn::ifPawnHelper(Move *m, Board *b)
 		if (fin[0] >= init[0])
 			return false;
 		if (fin[0] == 0)
-			promo = true;
+			pawnPromotion = true;
 	}
 	else
 	{
 		if (fin[0] <= init[0])
 			return false;
 		if (fin[0] == 7)
-			promo = true;
+			pawnPromotion = true;
 	}
 
 	int xDiff = abs(fin[0] - init[0]);
 	int yDiff = abs(fin[1] - init[1]);
-	char adjColor, finColor = b->getPiece(fin)->getColor();
+	char adjColor, finColor = getPiece(fin)->getColor();
 
-	if (b->getPiece(init)->getMoved())
+	if (getPiece(init)->getMoved())
 	{
 		if (xDiff > 1 || yDiff > 1)
 			return false;
@@ -56,7 +55,7 @@ bool Pawn::ifPawnHelper(Move *m, Board *b)
 			if (yDiff == 0)
 			{
 				int o = cond ? -1:1;
-				adjColor = b->getPiece(init[0] + o, init[1])->getColor();
+				adjColor = getPiece(init[0] + o, init[1])->getColor();
 				return adjColor == 'E' && finColor == 'E';
 			}
 			else
@@ -70,13 +69,12 @@ bool Pawn::ifPawnHelper(Move *m, Board *b)
 	}
 }
 
-bool Pawn::ifPawn(Move *m, Board *b)
+bool Board::ifPawn(Move *m)
 {
 	assert(m);
-	assert(b);
 
-	if (ifPawnHelper(m, b))
+	if (ifPawnHelper(m))
 		return true;
 	else
-		return promo = false;
+		return pawnPromotion = false;
 }

@@ -1,17 +1,18 @@
 /*
  * Author: Josue Galeas
- * Last Edit: October 2, 2017
+ * Last Edit: 2018.02.20
  */
 
 #include "Move.hpp"
 #include <cassert>
-#include <algorithm>
 
 Move::Move(int *i, int *f)
 {
 	assert(i);
 	assert(f);
 
-	std::copy(i, i + 2, init = new int[2]);
-	std::copy(f, f + 2, fin = new int[2]);
+	init[0] = i[0];
+	init[1] = i[1];
+	fin[0] = f[0];
+	fin[1] = f[1];
 }

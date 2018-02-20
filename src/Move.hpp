@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 22, 2017
+ * Last Edit: 2018.02.20
  */
 
 #ifndef MOVE_H
@@ -9,8 +9,8 @@
 class Move
 {
 	private:
-		int *init;
-		int *fin;
+		int *init = new int[2];
+		int *fin = new int[2];
 
 	public:
 		Move(int *, int *);

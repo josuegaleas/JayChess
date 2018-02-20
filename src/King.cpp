@@ -1,38 +1,35 @@
 /*
  * Author: Josue Galeas
- * Last Edit: October 2, 2017
+ * Last Edit: 2018.02.19
  */
 
-#include "King.hpp"
+#include "Board.hpp"
 #include "Checking.hpp"
 #include <cassert>
-#include <algorithm>
 
-bool King::ifCastling(int *f, char p, Board *b)
+bool Board::ifCastling(int *f, char p)
 {
 	assert(f);
-	assert(b);
 
 	if (f[1] == 2)
 	{
-		if (!b->getPiece(f[0], 0)->getMoved())
+		if (!getPiece(f[0], 0)->getMoved())
 		{
-			char knight = b->getPiece(f[0], 1)->getType();
-			char bishop = b->getPiece(f[0], 2)->getType();
-			char queen = b->getPiece(f[0], 3)->getType();
+			char knight = getPiece(f[0], 1)->getType();
+			char bishop = getPiece(f[0], 2)->getType();
+			char queen = getPiece(f[0], 3)->getType();
 
 			if (knight == 'E' && bishop == 'E' && queen == 'E')
 			{
 				int bishopPos[2] = {f[0], 2};
 				int queenPos[2] = {f[0], 3};
 
-				if (!inDanger(bishopPos, p, b))
+				if (!inDanger(bishopPos, p, this))
 				{
-					if (!inDanger(queenPos, p, b))
+					if (!inDanger(queenPos, p, this))
 					{
 						rook[0] = f[0];
-						rook[1] = 0;
-						rook[2] = 0;
+						rook[1] = rook[2] = 0;
 						return castling = true;
 					}
 				}
@@ -41,19 +38,19 @@ bool King::ifCastling(int *f, char p, Board *b)
 	}
 	else if (f[1] == 6)
 	{
-		if (!b->getPiece(f[0], 0)->getMoved())
+		if (!getPiece(f[0], 0)->getMoved())
 		{
-			char knight = b->getPiece(f[0], 6)->getType();
-			char bishop = b->getPiece(f[0], 5)->getType();
+			char knight = getPiece(f[0], 6)->getType();
+			char bishop = getPiece(f[0], 5)->getType();
 
 			if (knight == 'E' && bishop == 'E')
 			{
 				int knightPos[2] = {f[0], 6};
 				int bishopPos[2] = {f[0], 5};
 
-				if (!inDanger(knightPos, p, b))
+				if (!inDanger(knightPos, p, this))
 				{
-					if (!inDanger(bishopPos, p, b))
+					if (!inDanger(bishopPos, p, this))
 					{
 						rook[0] = f[0];
 						rook[1] = 7;
@@ -68,52 +65,37 @@ bool King::ifCastling(int *f, char p, Board *b)
 	return false;
 }
 
-King::King()
-{
-	castling = false;
-	rook = new int[3];
-	white = new int[2];
-	black = new int[2];
-
-	rook[0] = rook[1] = rook[2] = -1;
-	white[0] = 7;
-	black[0] = 0;
-	white[1] = black[1] = 4;
-}
-
-King::~King()
-{
-	delete[] rook;
-	delete[] white;
-	delete[] black;
-}
-
-void King::setKing(char c, int *p)
+void Board::setKing(char c, int *p)
 {
 	assert(p);
 
 	if (c == 'W')
-		std::copy(p, p + 2, white);
+	{
+		whiteKing[0] = p[0];
+		whiteKing[1] = p[1];
+	}
 	else
-		std::copy(p, p + 2, black);
+	{
+		blackKing[0] = p[0];
+		blackKing[1] = p[1];
+	}
 }
 
-int *King::getKing(char c) const
+int *Board::getKing(char c) const
 {
 	if (c == 'W')
-		return white;
+		return whiteKing;
 	else
-		return black;
+		return blackKing;
 }
 
-bool King::ifKing(Move *m, Board *b)
+bool Board::ifKing(Move *m)
 {
 	assert(m);
-	assert(b);
 
 	int *init = m->getInit();
 	int *fin = m->getFin();
-	Piece *piece = b->getPiece(init);
+	Piece *piece = getPiece(init);
 	char color = piece->getColor();
 	bool valid = false;
 
@@ -121,9 +103,9 @@ bool King::ifKing(Move *m, Board *b)
 	int yDiff = abs(fin[1] - init[1]);
 
 	if (xDiff <= 1 && yDiff <= 1)
-		valid = !inDanger(fin, color, b);
+		valid = !inDanger(fin, color, this);
 	else if (xDiff == 0 && !piece->getMoved())
-		valid = !inDanger(init, color, b) && ifCastling(fin, color, b);
+		valid = !inDanger(init, color, this) && ifCastling(fin, color);
 
 	if (valid)
 		setKing(color, fin);

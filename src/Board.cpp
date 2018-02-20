@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: October 2, 2017
+ * Last Edit: 2018.02.19
  */
 
 #include "Board.hpp"
@@ -20,7 +20,6 @@ void Board::setPieces(int r)
 
 Board::Board()
 {
-	board = new Piece*[8];
 	for (int i = 0; i < 8; i++)
 		board[i] = new Piece[8];
 
@@ -56,6 +55,11 @@ Board::~Board()
 	for (int i = 0; i < 8; i++)
 		delete[] board[i];
 	delete[] board;
+
+	// King
+	delete[] rook;
+	delete[] whiteKing;
+	delete[] blackKing;
 }
 
 void Board::setSymbol(Piece *p)

@@ -1,12 +1,13 @@
 /*
  * Author: Josue Galeas
- * Last Edit: October 2, 2017
+ * Last Edit: 2018.02.19
  */
 
 #ifndef OTHERS_H
 #define OTHERS_H
 
-#include "Game.hpp"
+#include "Move.hpp"
+#include "Board.hpp"
 
 bool ifQueen(Move *, Board *);
 bool ifBishop(Move *, Board *);

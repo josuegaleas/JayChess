@@ -1,11 +1,10 @@
 /*
  * Author: Josue Galeas
- * Last Edit: October 2, 2017
+ * Last Edit: 2018.02.19
  */
 
 #include "Others.hpp"
 #include <cassert>
-#include <algorithm>
 
 bool ifQueen(Move *m, Board *b)
 {
@@ -28,7 +27,8 @@ bool ifBishop(Move *m, Board *b)
 	{
 		for (int j = -1; j <= 1; j += 2)
 		{
-			std::copy(init, init + 2, temp);
+			temp[0] = init[0];
+			temp[1] = init[1];
 
 			while (true)
 			{
