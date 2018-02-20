@@ -1,40 +1,31 @@
 /*
  * Author: Josue Galeas
- * Last Edit: October 2, 2017
+ * Last Edit: 2018.02.20
  */
 
-#include "Checking.hpp"
+#include "Danger.hpp"
 #include "Verification.hpp"
 #include <cassert>
-#include <algorithm>
 
-bool inDanger(int *c, char p, Board *b)
+bool inDanger(int *cen, char col, Board *b)
 {
-	assert(c);
+	assert(cen);
 	assert(b);
 
-	int enemy[2] = {-1, -1};
-	return inDangerEnemy(c, p, b, enemy);
+	std::vector<std::tuple<int, int>> enemy;
+	return inDangerEnemy(cen, col, b, enemy);
 }
 
-bool setEnemy(int *e, int *t)
+bool inDangerEnemy(int *cen, char col, Board *b, std::vector<std::tuple<int, int>> &pos)
 {
-	assert(e);
-	assert(t);
-
-	std::copy(t, t + 2, e);
-	return true;
-}
-
-bool inDangerEnemy(int *c, char p, Board *b, int *pos)
-{
-	assert(c);
+	assert(cen);
 	assert(b);
-	assert(pos);
+	pos.clear();
 
 	int temp[2];
 	char color, type;
-	char e = p == 'W' ? 'B':'W';
+	bool cond = col == 'W';
+	char e = cond ? 'B':'W';
 
 	for (int i = -1; i <= 1; i++)
 	{
@@ -43,8 +34,8 @@ bool inDangerEnemy(int *c, char p, Board *b, int *pos)
 			if (i == 0 && j == 0)
 				continue;
 
-			temp[0] = c[0] + i;
-			temp[1] = c[1] + j;
+			temp[0] = cen[0] + i;
+			temp[1] = cen[1] + j;
 
 			if (temp[0] < 0 || temp[0] > 7)
 				continue;
@@ -55,7 +46,7 @@ bool inDangerEnemy(int *c, char p, Board *b, int *pos)
 			type = b->getPiece(temp)->getType();
 
 			if (color == e && type == 'K')
-				return setEnemy(pos, temp);
+				pos.push_back(std::make_tuple(temp[0], temp[1]));
 		}
 	}
 
@@ -71,8 +62,8 @@ bool inDangerEnemy(int *c, char p, Board *b, int *pos)
 			if (abs(i) == abs(j))
 				continue;
 
-			temp[0] = c[0] + i;
-			temp[1] = c[1] + j;
+			temp[0] = cen[0] + i;
+			temp[1] = cen[1] + j;
 
 			if (temp[0] < 0 || temp[0] > 7)
 				continue;
@@ -83,7 +74,7 @@ bool inDangerEnemy(int *c, char p, Board *b, int *pos)
 			type = b->getPiece(temp)->getType();
 
 			if (color == e && type == 'N')
-				return setEnemy(pos, temp);
+				pos.push_back(std::make_tuple(temp[0], temp[1]));
 		}
 	}
 
@@ -94,7 +85,8 @@ bool inDangerEnemy(int *c, char p, Board *b, int *pos)
 			if (i == 0 && j == 0)
 				continue;
 
-			std::copy(c, c + 2, temp);
+			temp[0] = cen[0];
+			temp[1] = cen[1];
 
 			while (true)
 			{
@@ -110,36 +102,33 @@ bool inDangerEnemy(int *c, char p, Board *b, int *pos)
 
 				if (color == 'E')
 					continue;
-				if (color == p)
+				if (color == col)
 					break;
 				if (color == e)
 				{
-					Move enemy(temp, c);
+					Move enemy(temp, cen);
 
+					// TODO: Does this only have to be done with pawns? Can't remember
 					if (b->getPiece(temp)->getType() == 'P')
 					{
 						Piece backup;
-						backup.setPiece(b->getPiece(c));
-						b->getPiece(c)->setPiece('Q', p, true, "😂");
+						backup.setPiece(b->getPiece(cen));
+						b->getPiece(cen)->setPiece('Q', col, true, "😂");
 
 						if (verifyMove(&enemy, b))
-						{
-							b->getPiece(c)->setPiece(&backup);
-							return setEnemy(pos, temp);
-						}
+							pos.push_back(std::make_tuple(temp[0], temp[1]));
 
-						b->getPiece(c)->setPiece(&backup);
+						b->getPiece(cen)->setPiece(&backup);
 						break;
 					}
 
 					if (verifyMove(&enemy, b))
-						return setEnemy(pos, temp);
+						pos.push_back(std::make_tuple(temp[0], temp[1]));
 					break;
 				}
 			}
 		}
 	}
 
-	pos[0] = pos[1] = -1;
-	return false;
+	return !pos.empty();
 }

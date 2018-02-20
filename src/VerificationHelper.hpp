@@ -1,12 +1,11 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.02.19
+ * Last Edit: 2018.02.20
  */
 
-#ifndef OTHERS_H
-#define OTHERS_H
+#ifndef VERIFICATIONHELPER_H
+#define VERIFICATIONHELPER_H
 
-#include "Move.hpp"
 #include "Board.hpp"
 
 bool ifQueen(Move *, Board *);

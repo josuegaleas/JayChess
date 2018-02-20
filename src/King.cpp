@@ -1,10 +1,10 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.02.19
+ * Last Edit: 2018.02.20
  */
 
 #include "Board.hpp"
-#include "Checking.hpp"
+#include "Danger.hpp"
 #include <cassert>
 
 bool Board::ifCastling(int *f, char p)

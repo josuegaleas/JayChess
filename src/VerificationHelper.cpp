@@ -1,9 +1,9 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.02.19
+ * Last Edit: 2018.02.20
  */
 
-#include "Others.hpp"
+#include "VerificationHelper.hpp"
 #include <cassert>
 
 bool ifQueen(Move *m, Board *b)
