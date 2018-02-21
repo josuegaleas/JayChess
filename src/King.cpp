@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.02.20
+ * Last Edit: 2018.02.21
  */
 
 #include "Board.hpp"
@@ -10,6 +10,8 @@
 bool Board::ifCastling(int *f, char p)
 {
 	assert(f);
+
+	// TODO: Should we verify that the Rook is indeed a Rook?
 
 	if (f[1] == 2)
 	{
@@ -38,7 +40,7 @@ bool Board::ifCastling(int *f, char p)
 	}
 	else if (f[1] == 6)
 	{
-		if (!getPiece(f[0], 0)->getMoved())
+		if (!getPiece(f[0], 7)->getMoved())
 		{
 			char knight = getPiece(f[0], 6)->getType();
 			char bishop = getPiece(f[0], 5)->getType();
@@ -107,6 +109,7 @@ bool Board::ifKing(Move *m)
 	else if (xDiff == 0 && !piece->getMoved())
 		valid = !inDanger(init, color, this) && ifCastling(fin, color);
 
+	// FIXME: If we are only temporary moving the King, this might get updated incorrectly?
 	if (valid)
 		setKing(color, fin);
 

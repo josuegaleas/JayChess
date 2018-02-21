@@ -1,13 +1,13 @@
 /*
  * Author: Josue Galeas
- * Last Edit: October 2, 2017
+ * Last Edit: 2018.02.21
  */
 
 #ifndef CHECKMATE_H
 #define CHECKMATE_H
 
-#include "Game.hpp"
+#include "Board.hpp"
 
-bool inCheckmate(char, Game *g);
+bool inCheckmate(char, Board *b);
 
 #endif

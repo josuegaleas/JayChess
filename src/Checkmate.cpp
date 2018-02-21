@@ -1,57 +1,37 @@
 /*
  * Author: Josue Galeas
- * Last Edit: October 2, 2017
+ * Last Edit: 2018.02.21
  */
 
 #include "Checkmate.hpp"
-#include "Checking.hpp"
+#include "Danger.hpp"
 #include "Verification.hpp"
 #include <cassert>
-#include <vector>
-#include <algorithm>
 
 struct Vectors
 {
-	std::vector<int *> enemies;
-	std::vector<int *> spots;
+	std::vector<std::tuple<int, int>> initEnemies;
+	std::vector<std::tuple<int, int, int, int>> addEnemies;
+	std::vector<std::tuple<int, int>> spots;
 };
-
-void addPos(std::vector<int *> &v, int *p)
-{
-	assert(p);
-
-	int *pos = new int[2];
-	std::copy(p, p + 2, pos);
-	v.push_back(pos);
-}
-
-void deleteVectors(Vectors &v)
-{
-	while (!v.enemies.empty())
-	{
-		delete[] v.enemies.at(v.enemies.size() - 1);
-		v.enemies.pop_back();
-	}
-
-	while (!v.spots.empty())
-	{
-		delete[] v.spots.at(v.spots.size() - 1);
-		v.spots.pop_back();
-	}
-}
 
 bool captureEnemy(Vectors &v, int *k, char p, Board *b)
 {
-	bool capture = false;
-	int ally[2], *temp;
-	char c = p == 'W' ? 'B':'W';
+	int temp[2];
+	std::vector<std::tuple<int, int>> allies;
+	bool capture = false, cond = p == 'W';
+	char c = cond ? 'B':'W';
 
-	for (int i = 0; i < (int)v.enemies.size(); i++)
+	for (auto i = v.enemies.begin(); i < v.enemies.end(); i++)
 	{
-		temp = v.enemies.at(i);
-		capture |= inDangerEnemy(temp, c, b, ally);
+		// Look for allies that can take out enemy?
+		temp[0] = std::get<0>(*i);
+		temp[1] = std::get<1>(*i);
+		capture |= inDangerEnemy(temp, c, b, allies);
 
-		if (ally[0] != -1)
+		// Check if there is at least on ally?
+		// If so, check if King is safe after kill
+		if (!allies.empty())
 		{
 			Piece backup;
 			Piece *E = b->getPiece(temp);
@@ -65,6 +45,7 @@ bool captureEnemy(Vectors &v, int *k, char p, Board *b)
 			P->setPiece(E);
 			E->setPiece(&backup);
 		}
+		allies.clear();
 	}
 
 	return capture;
@@ -99,20 +80,19 @@ bool blockEnemy(Vectors &v, int *k, char p, Board *b)
 	return block;
 }
 
-bool inCheckmate(char p, Game *g)
+bool inCheckmate(char p, Board *b)
 {
-	assert(g);
+	assert(b);
 
-	Board *b = &g->board;
-	int temp[2], enemy[2];
-	int *king = g->king.getKing(p);
-	bool output = inDangerEnemy(king, p, b, enemy);
+	Vectors v;
+	int temp1[2], temp2[2], *king = b->getKing(p);
+	bool output = inDangerEnemy(king, p, b, v.initEnemies);
 
 	if (!output)
 		return false;
 
-	Vectors v;
-	addPos(v.enemies, enemy);
+	std::vector<std::tuple<int, int>> enemy;
+	Piece backup, *K, *T;
 
 	for (int i = -1; i <= 1; i++)
 	{
@@ -121,31 +101,40 @@ bool inCheckmate(char p, Game *g)
 			if (i == 0 && j == 0)
 				continue;
 
-			temp[0] = king[0] + i;
-			temp[1] = king[1] + j;
+			temp1[0] = king[0] + i;
+			temp1[1] = king[1] + j;
 
-			if (temp[0] < 0 || temp[0] > 7)
+			if (temp1[0] < 0 || temp1[0] > 7)
 				continue;
-			if (temp[1] < 0 || temp[1] > 7)
-				continue;
-
-			if (b->getPiece(temp)->getColor() == p)
+			if (temp1[1] < 0 || temp1[1] > 7)
 				continue;
 
-			Move m(king, temp);
-			addPos(v.spots, temp);
+			if (b->getPiece(temp1)->getColor() == p)
+				continue;
 
+			Move m(king, temp1);
+			v.spots.push_back(std::make_tuple(temp1[0], temp1[1]));
+
+			// FIXME: Doesn't verifyMove already check if the new spot is not in danger?
 			if (verifyMove(&m, b))
 			{
-				Piece backup;
-				Piece *K = b->getPiece(king);
-				Piece *T = b->getPiece(temp);
+				K = b->getPiece(king);
+				T = b->getPiece(temp1);
 				backup.setPiece(T);
 				T->setPiece(K);
 				K->setPiece('E', 'E', false, "");
 
-				output &= inDangerEnemy(temp, p, b, enemy);
-				addPos(v.enemies, enemy);
+				output &= inDangerEnemy(temp1, p, b, enemy);
+				if (!output)
+					return false;
+
+				for (auto i = enemy.begin(); i < enemy.end(); i++)
+				{
+					temp2[0] = std::get<0>(*i);
+					temp2[1] = std::get<1>(*i);
+					v.addEnemies.push_back(std::make_tuple(temp2[0], temp2[1], temp1[0], temp1[1]));
+				}
+
 				K->setPiece(T);
 				T->setPiece(&backup);
 			}
@@ -156,6 +145,5 @@ bool inCheckmate(char p, Game *g)
 	output &= !blockEnemy(v, king, p, b);
 
 	// FIXME: Might still prematurely end the game!
-	deleteVectors(v);
 	return output;
 }
