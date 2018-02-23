@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.02.21
+ * Last Edit: 2018.02.23
  */
 
 #include "Danger.hpp"
@@ -25,7 +25,7 @@ bool inDangerEnemy(int *cen, char col, Board *b, std::vector<std::tuple<int, int
 	int temp0, temp1, temp2[0];
 	char color, type;
 	bool cond = col == 'W';
-	char e = cond ? 'B':'W';
+	char enemy = cond ? 'B':'W';
 	Piece backup, *T;
 
 	for (int i = -1; i <= 1; i++)
@@ -46,7 +46,7 @@ bool inDangerEnemy(int *cen, char col, Board *b, std::vector<std::tuple<int, int
 			color = b->getPiece(temp0, temp1)->getColor();
 			type = b->getPiece(temp0, temp1)->getType();
 
-			if (color == e && type == 'K')
+			if (color == enemy && type == 'K')
 				pos.push_back(std::make_tuple(temp0, temp1));
 		}
 	}
@@ -74,7 +74,7 @@ bool inDangerEnemy(int *cen, char col, Board *b, std::vector<std::tuple<int, int
 			color = b->getPiece(temp0, temp1)->getColor();
 			type = b->getPiece(temp0, temp1)->getType();
 
-			if (color == e && type == 'N')
+			if (color == enemy && type == 'N')
 				pos.push_back(std::make_tuple(temp0, temp1));
 		}
 	}
@@ -105,7 +105,7 @@ bool inDangerEnemy(int *cen, char col, Board *b, std::vector<std::tuple<int, int
 					continue;
 				if (color == col)
 					break;
-				if (color == e)
+				if (color == enemy)
 				{
 					if (b->getPiece(temp0, temp1)->getType() == 'K')
 						break;
