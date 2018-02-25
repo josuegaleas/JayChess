@@ -12,7 +12,7 @@ bool Board::ifPawnHelper(Move *m)
 
 	int *init = m->getInit();
 	int *fin = m->getFin();
-	bool cond = getPiece(init)->getColor() == 'W';
+	bool cond = (getPiece(init)->getColor() == 'W');
 	char enemy = cond ? 'B':'W';
 
 	if (cond)

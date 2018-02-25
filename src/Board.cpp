@@ -67,7 +67,7 @@ void Board::setSymbol(Piece *p)
 	if (p->getColor() == 'E')
 		return;
 
-	int o = p->getColor() == 'W' ? 0:6;
+	int o = (p->getColor() == 'W') ? 0:6;
 	int s = mapping[p->getType()] + o;
 	p->setSymbol(symbols[s]);
 }

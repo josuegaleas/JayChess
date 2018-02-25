@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.02.24
+ * Last Edit: 2018.02.25
  */
 
 #include "Checkmate.hpp"
@@ -10,83 +10,101 @@
 
 struct Vectors
 {
-	std::vector<std::tuple<int, int>> initEnemies;
-	std::vector<std::tuple<int, int, int, int>> addEnemies;
+	std::vector<std::tuple<int, int>> enemies;
 	std::vector<std::tuple<int, int>> spots;
 };
 
-/*
 bool captureEnemy(Vectors &v, int *k, char col, Board *b)
 {
-	int temp[2];
+	if (v.enemies.size() > 1)
+		return false;
+
+	int temp0[2], temp1, temp2;
+	bool capture = false, cond = (col == 'W');
+	char enemy = cond ? 'B':'W';
+
+	std::tuple<int, int> temp3 = v.enemies.front();
 	std::vector<std::tuple<int, int>> allies;
-	bool capture = false, cond = col == 'W';
-	char c = cond ? 'B':'W';
+	Piece backup, *E, *P;
 
-	// TODO: If there is more than one initEnemy, why bother taking that
-	// enemy out when the other initEnemy can take out the King?
-	// So should it just skip to blocking?
+	temp0[0] = std::get<0>(temp3);
+	temp0[1] = std::get<1>(temp3);
+	capture = inDangerEnemy(temp0, enemy, b, allies);
 
-	for (auto i = v.initEnemies.begin(); i < v.initEnemies.end(); i++)
+	if (capture)
 	{
-		// Look for allies that can take out enemy?
-		temp[0] = std::get<0>(*i);
-		temp[1] = std::get<1>(*i);
-		capture |= inDangerEnemy(temp, c, b, allies);
-
-		// Check if there is at least on ally?
-		// If so, check if King is safe after kill
-		if (!allies.empty())
+		for (auto i = allies.begin(); i < allies.end(); i++)
 		{
-			Piece backup;
-			Piece *E = b->getPiece(temp);
-			Piece *P = b->getPiece(ally);
+			temp1 = std::get<0>(*i);
+			temp2 = std::get<1>(*i);
+
+			E = b->getPiece(temp0);
+			P = b->getPiece(temp1, temp2);
+
+			if (P->getType() == 'K')
+				printf("ERROR: The ally is a King.\n");
+
 			backup.setPiece(E);
 			E->setPiece(P);
 			P->setPiece('E', 'E', false, "");
 
-			if (inDanger(k, col, b))
-				capture = false;
+			capture &= inDanger(k, col, b);
 			P->setPiece(E);
 			E->setPiece(&backup);
+			if (!capture)
+				return true;
 		}
-		allies.clear();
 	}
 
-	return capture;
+	return false;
 }
-*/
 
-/*
 bool blockEnemy(Vectors &v, int *k, char col, Board *b)
 {
+	if (v.spots.empty())
+		return false;
+
+	printf("Attempting to block!\n");
+	int temp0[2], temp1, temp2;
 	bool block = false;
-	int ally[2], *temp;
 
-	for (int i = 0; i < (int)v.spots.size(); i++)
+	std::vector<std::tuple<int, int>> allies;
+	Piece backup, *E, *P;
+
+	for (auto i = v.spots.begin(); i < v.spots.end(); i++)
 	{
-		temp = v.spots.at(i);
-		block |= inDangerEnemy(temp, col, b, ally);
+		temp0[0] = std::get<0>(*i);
+		temp0[1] = std::get<1>(*i);
+		block = inDangerEnemy(temp0, col, b, allies);
 
-		if (ally[0] != -1)
+		if (block)
 		{
-			Piece backup;
-			Piece *E = b->getPiece(temp);
-			Piece *P = b->getPiece(ally);
-			backup.setPiece(E);
-			E->setPiece(P);
-			P->setPiece('E', 'E', false, "");
+			for (auto j = allies.begin(); j < allies.end(); j++)
+			{
+				temp1 = std::get<0>(*j);
+				temp2 = std::get<1>(*j);
 
-			if (inDanger(k, col, b))
-				block = false;
-			P->setPiece(E);
-			E->setPiece(&backup);
+				E = b->getPiece(temp0);
+				P = b->getPiece(temp1, temp2);
+
+				if (P->getType() == 'K')
+					printf("ERROR: The ally is a King.\n");
+
+				backup.setPiece(E);
+				E->setPiece(P);
+				P->setPiece('E', 'E', false, "");
+
+				block &= inDanger(k, col, b);
+				P->setPiece(E);
+				E->setPiece(&backup);
+				if (!block)
+					return true;
+			}
 		}
 	}
 
-	return block;
+	return false;
 }
-*/
 
 bool inCheckmate(char col, Board *b)
 {
@@ -94,15 +112,13 @@ bool inCheckmate(char col, Board *b)
 
 	Vectors v;
 	int *king = b->getKing(col);
-	bool output = inDangerEnemy(king, col, b, v.initEnemies);
+	bool output = inDangerEnemy(king, col, b, v.enemies);
 
 	if (!output)
 		return false;
 
 	Piece backup, *K, *T;
 	int temp0, temp1, temp2[2];
-	std::tuple<int, int, int, int> temp3;
-	std::vector<std::tuple<int, int>> enemy;
 
 	for (int i = -1; i <= 1; i++)
 	{
@@ -132,24 +148,16 @@ bool inCheckmate(char col, Board *b)
 			T->setPiece(K);
 			K->setPiece('E', 'E', false, "");
 
-			output &= inDangerEnemy(temp2, col, b, enemy);
+			output &= inDanger(temp2, col, b);
 			K->setPiece(T);
 			T->setPiece(&backup);
 			if (!output)
 				return false;
-
-			for (auto i = enemy.begin(); i < enemy.end(); i++)
-			{
-				temp2[0] = std::get<0>(*i);
-				temp2[1] = std::get<1>(*i);
-				temp3 = std::make_tuple(temp2[0], temp2[1], temp0, temp1);
-				v.addEnemies.push_back(temp3);
-			}
 		}
 	}
 
-	/* output &= !captureEnemy(v, king, col, b); */
-	/* output &= !blockEnemy(v, king, col, b); */
+	output &= !captureEnemy(v, king, col, b);
+	output &= !blockEnemy(v, king, col, b);
 
 	// FIXME: Might still prematurely end the game!
 	return output;

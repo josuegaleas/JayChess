@@ -24,7 +24,7 @@ bool inDangerEnemy(int *cen, char col, Board *b, std::vector<std::tuple<int, int
 
 	int temp0, temp1, temp2[2];
 	char color, type;
-	bool cond = col == 'W';
+	bool cond = (col == 'W');
 	char enemy = cond ? 'B':'W';
 	Piece backup, *T;
 

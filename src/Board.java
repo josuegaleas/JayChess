@@ -124,7 +124,7 @@ public class Board extends JPanel
 			{
 				updateBoard();
 				updateSideBar();
-				turn = turn == 'W' ? 'B':'W';
+				turn = (turn == 'W') ? 'B':'W';
 			}
 			else
 			{
