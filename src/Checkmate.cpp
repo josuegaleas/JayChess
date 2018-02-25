@@ -64,7 +64,6 @@ bool blockEnemy(Vectors &v, int *k, char col, Board *b)
 	if (v.spots.empty())
 		return false;
 
-	printf("Attempting to block!\n");
 	int temp0[2], temp1, temp2;
 	bool block = false;
 
