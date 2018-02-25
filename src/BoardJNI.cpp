@@ -1,18 +1,18 @@
 /*
  * Author: Josue Galeas
- * Last Edit: October 2, 2017
+ * Last Edit: 2018.02.24
  */
 
 #include "Board.h"
 #include "Verification.hpp"
 #include "AN.hpp"
 
-static Game *g;
+static Board *b;
 
 JNIEXPORT void JNICALL
 Java_Board_createBoard(JNIEnv *, jobject)
 {
-	g = new Game();
+	b = new Board();
 }
 
 JNIEXPORT void JNICALL
@@ -28,7 +28,7 @@ Java_Board_updateBoard(JNIEnv *env, jobject obj)
 	{
 		for (int y = 0; y < 8; y++)
 		{
-			symbol = g->board.getPiece(x, y)->getSymbol();
+			symbol = b->getPiece(x, y)->getSymbol();
 			label = env->NewStringUTF(symbol.c_str());
 			env->CallVoidMethod(obj, mid, x, y, label);
 		}
@@ -38,13 +38,13 @@ Java_Board_updateBoard(JNIEnv *env, jobject obj)
 JNIEXPORT void JNICALL
 Java_Board_deleteBoard(JNIEnv *, jobject)
 {
-	delete g;
+	delete b;
 }
 
 JNIEXPORT jchar JNICALL
 Java_Board_getColor(JNIEnv *, jobject, jint x, jint y)
 {
-	return (jchar)g->board.getPiece(x, y)->getColor();
+	return (jchar)b->getPiece(x, y)->getColor();
 }
 
 JNIEXPORT jboolean JNICALL
@@ -56,15 +56,15 @@ Java_Board_verifyMove(JNIEnv *env, jobject obj, jintArray i, jintArray f)
 
 	Move m(init, fin);
 
-	if (verifyCapture(&m, g))
+	if (verifyCapture(&m, b))
 	{
-		if (verifyMove(&m, g))
+		if (verifyMove(&m, b))
 		{
 			jclass clazz = env->GetObjectClass(obj);
 			jfieldID fid = env->GetFieldID(clazz, "an", "Ljava/lang/String;");
-			std::string AN = getAN(&m, g);
-			updatePieces(&m, g);
-			jstring an = env->NewStringUTF(getANCheck(AN, g).c_str());
+			std::string AN = getAN(&m, b);
+			updatePieces(&m, b);
+			jstring an = env->NewStringUTF(getANCheck(AN, b).c_str());
 			env->SetObjectField(obj, fid, an);
 
 			return JNI_TRUE;

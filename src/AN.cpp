@@ -1,29 +1,25 @@
 /*
  * Author: Josue Galeas
- * Last Edit: October 2, 2017
+ * Last Edit: 2018.02.24
  */
 
 #include "AN.hpp"
-#include "Checking.hpp"
+#include "Danger.hpp"
 #include "Checkmate.hpp"
 #include <cassert>
 
-std::string getAN(Move *m, Game *g)
+std::string getAN(Move *m, Board *b)
 {
 	assert(m);
-	assert(g);
+	assert(b);
 
-	Board *b = &g->board;
-	King *k = &g->king;
-	Pawn *p = &g->pawn;
-
-	if (k->getCastling())
+	if (b->getCastling())
 	{
-		int *rook = k->getRook();
+		int *rook = b->getRook();
 
 		if (rook[1] == 0)
 			return "0-0-0";
-		if (rook[1] == 7)
+		else if (rook[1] == 7)
 			return "0-0";
 	}
 
@@ -46,11 +42,11 @@ std::string getAN(Move *m, Game *g)
 		if (c)
 			capture = std::string(1, initAN) + capture;
 
-		if (p->getPassant())
+		if (b->getEnPassant())
 			end += " e.p.";
 
-		if (p->getPromo())
-			end += "Q"; // FIXME: Assuming queening
+		if (b->getPawnPromotion())
+			end += "Q"; // TODO: Assuming queening
 
 		return capture + end;
 	}
@@ -58,17 +54,14 @@ std::string getAN(Move *m, Game *g)
 	return "UNDEF";
 }
 
-std::string getANCheck(std::string an, Game *g)
+std::string getANCheck(std::string an, Board *b)
 {
-	assert(g);
+	assert(b);
 
-	Board *b = &g->board;
-	King *k = &g->king;
-
-	bool whiteCheckmate = inCheckmate('W', g);
-	bool blackCheckmate = inCheckmate('B', g);
-	bool whiteCheck = inDanger(k->getKing('W'), 'W', b);
-	bool blackCheck = inDanger(k->getKing('B'), 'B', b);
+	bool whiteCheckmate = inCheckmate('W', b);
+	bool blackCheckmate = inCheckmate('B', b);
+	bool whiteCheck = inDanger(b->getKing('W'), 'W', b);
+	bool blackCheck = inDanger(b->getKing('B'), 'B', b);
 
 	if (whiteCheckmate || blackCheckmate)
 		return an + "#";

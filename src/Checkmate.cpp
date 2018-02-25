@@ -15,6 +15,7 @@ struct Vectors
 	std::vector<std::tuple<int, int>> spots;
 };
 
+/*
 bool captureEnemy(Vectors &v, int *k, char col, Board *b)
 {
 	int temp[2];
@@ -54,7 +55,9 @@ bool captureEnemy(Vectors &v, int *k, char col, Board *b)
 
 	return capture;
 }
+*/
 
+/*
 bool blockEnemy(Vectors &v, int *k, char col, Board *b)
 {
 	bool block = false;
@@ -83,6 +86,7 @@ bool blockEnemy(Vectors &v, int *k, char col, Board *b)
 
 	return block;
 }
+*/
 
 bool inCheckmate(char col, Board *b)
 {
@@ -145,8 +149,8 @@ bool inCheckmate(char col, Board *b)
 		}
 	}
 
-	output &= !captureEnemy(v, king, col, b);
-	output &= !blockEnemy(v, king, col, b);
+	/* output &= !captureEnemy(v, king, col, b); */
+	/* output &= !blockEnemy(v, king, col, b); */
 
 	// FIXME: Might still prematurely end the game!
 	return output;

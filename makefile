@@ -27,10 +27,16 @@ run:
 $(BIN)%.o: $(SRC)%.cpp $(SRC)%.hpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+$(BIN)King.o: $(SRC)King.cpp $(SRC)Board.hpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(BIN)Pawn.o: $(SRC)Pawn.cpp $(SRC)Board.hpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
 $(BIN)libObjects.a: $(BIN)Piece.o $(BIN)Move.o $(BIN)Board.o $(BIN)King.o $(BIN)Pawn.o
 	$(A) $(ARFLAGS) $@ $^
 
-$(BIN)libMovement.a: $(BIN)Checking.o $(BIN)Others.o $(BIN)Verification.o $(BIN)Checkmate.o $(BIN)AN.o
+$(BIN)libMovement.a: $(BIN)VerificationHelper.o $(BIN)Verification.o $(BIN)Danger.o $(BIN)Checkmate.o $(BIN)AN.o
 	$(A) $(ARFLAGS) $@ $^
 
 CPP: $(BIN)libObjects.a $(BIN)libMovement.a

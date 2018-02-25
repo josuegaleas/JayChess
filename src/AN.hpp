@@ -1,14 +1,14 @@
 /*
  * Author: Josue Galeas
- * Last Edit: October 2, 2017
+ * Last Edit: 2018.02.24
  */
 
-#ifndef AN_H
-#define AN_H
+#ifndef AN_HPP
+#define AN_HPP
 
-#include "Game.hpp"
+#include "Board.hpp"
 
-std::string getAN(Move *, Game *);
-std::string getANCheck(std::string, Game *);
+std::string getAN(Move *, Board *);
+std::string getANCheck(std::string, Board *);
 
-#endif
+#endif /* AN_HPP */

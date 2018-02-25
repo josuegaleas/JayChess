@@ -3,11 +3,11 @@
  * Last Edit: 2018.02.21
  */
 
-#ifndef CHECKMATE_H
-#define CHECKMATE_H
+#ifndef CHECKMATE_HPP
+#define CHECKMATE_HPP
 
 #include "Board.hpp"
 
 bool inCheckmate(char, Board *b);
 
-#endif
+#endif /* CHECKMATE_HPP */

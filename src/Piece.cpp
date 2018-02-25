@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: October 2, 2017
+ * Last Edit: 2017.10.02
  */
 
 #include "Piece.hpp"

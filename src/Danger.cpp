@@ -22,7 +22,7 @@ bool inDangerEnemy(int *cen, char col, Board *b, std::vector<std::tuple<int, int
 	assert(b);
 	pos.clear();
 
-	int temp0, temp1, temp2[0];
+	int temp0, temp1, temp2[2];
 	char color, type;
 	bool cond = col == 'W';
 	char enemy = cond ? 'B':'W';

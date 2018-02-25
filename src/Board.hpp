@@ -3,8 +3,8 @@
  * Last Edit: 2018.02.19
  */
 
-#ifndef BOARD_H
-#define BOARD_H
+#ifndef BOARD_HPP
+#define BOARD_HPP
 
 #include "Piece.hpp"
 #include "Move.hpp"
@@ -52,4 +52,4 @@ class Board
 		bool ifKing(Move *);
 };
 
-#endif
+#endif /* BOARD_HPP */

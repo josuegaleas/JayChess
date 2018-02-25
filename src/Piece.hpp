@@ -1,10 +1,10 @@
 /*
  * Author: Josue Galeas
- * Last Edit: October 2, 2017
+ * Last Edit: 2017.10.02
  */
 
-#ifndef PIECE_H
-#define PIECE_H
+#ifndef PIECE_HPP
+#define PIECE_HPP
 
 #include <string>
 
@@ -29,4 +29,4 @@ class Piece
 		std::string getSymbol() const {return symbol;}
 };
 
-#endif
+#endif /* PIECE_HPP */

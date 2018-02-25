@@ -3,8 +3,8 @@
  * Last Edit: 2018.02.20
  */
 
-#ifndef MOVE_H
-#define MOVE_H
+#ifndef MOVE_HPP
+#define MOVE_HPP
 
 class Move
 {
@@ -19,4 +19,4 @@ class Move
 		int *getFin() const {return fin;};
 };
 
-#endif
+#endif /* MOVE_HPP */
