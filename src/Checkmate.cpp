@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.02.23
+ * Last Edit: 2018.02.24
  */
 
 #include "Checkmate.hpp"
@@ -133,6 +133,8 @@ bool inCheckmate(char col, Board *b)
 			K->setPiece('E', 'E', false, "");
 
 			output &= inDangerEnemy(temp2, col, b, enemy);
+			K->setPiece(T);
+			T->setPiece(&backup);
 			if (!output)
 				return false;
 
@@ -143,9 +145,6 @@ bool inCheckmate(char col, Board *b)
 				temp3 = std::make_tuple(temp2[0], temp2[1], temp0, temp1);
 				v.addEnemies.push_back(temp3);
 			}
-
-			K->setPiece(T);
-			T->setPiece(&backup);
 		}
 	}
 
