@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 22, 2017
+ * Last Edit: 2017.09.22
  */
 
 import java.awt.Dimension;

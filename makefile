@@ -21,7 +21,7 @@ clean:
 	rm -rf $(BIN)*
 
 run:
-	$(J) -cp $(BIN) -Djava.library.path=$(BIN) GUI
+	$(J) -cp $(BIN) -Djava.library.path=$(BIN) JayChess
 
 ### Compilation Rules ###
 $(BIN)%.o: $(SRC)%.cpp $(SRC)%.hpp

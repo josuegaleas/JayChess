@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: September 16, 2017
+ * Last Edit: 2017.09.16
  */
 
 import java.awt.BorderLayout;

@@ -1,16 +1,16 @@
 /*
  * Author: Josue Galeas
- * Last Edit: October 2, 2017
+ * Last Edit: 2018.02.25
  */
 
 import javax.swing.JFrame;
 
 @SuppressWarnings("serial")
-public class GUI extends JFrame
+public class JayChess extends JFrame
 {
-	public GUI()
+	public JayChess()
 	{
-		setTitle("JayChess (Alpha 2017.10.02)");
+		setTitle("JayChess (Alpha 2018.02.25)");
 		add(new ChessBoard());
 
 		pack();
@@ -22,6 +22,6 @@ public class GUI extends JFrame
 
 	public static void main(String[] args)
 	{
-		new GUI();
+		new JayChess();
 	}
 }
