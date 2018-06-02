@@ -59,7 +59,7 @@ public class Board extends JPanel
 
 	public void setTile(int x, int y)
 	{
-		int t = x * 8 + y + x % 2;
+		int t = (x * 8) + y + (x % 2);
 
 		if (t % 2 == 0)
 			board[x][y].setBackground(Color.LIGHT_GRAY);
@@ -97,7 +97,7 @@ public class Board extends JPanel
 
 			if (color == 'E')
 				return;
-			if (color != turn)
+			else if (color != turn)
 			{
 				System.out.println("Not your piece!");
 				return;
