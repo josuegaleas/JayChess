@@ -109,14 +109,6 @@ JNIEXPORT void JNICALL Java_Board_createBoard
 
 /*
  * Class:     Board
- * Method:    updateBoard
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_Board_updateBoard
-  (JNIEnv *, jobject);
-
-/*
- * Class:     Board
  * Method:    deleteBoard
  * Signature: ()V
  */
@@ -129,6 +121,14 @@ JNIEXPORT void JNICALL Java_Board_deleteBoard
  * Signature: (II)C
  */
 JNIEXPORT jchar JNICALL Java_Board_getColor
+  (JNIEnv *, jobject, jint, jint);
+
+/*
+ * Class:     Board
+ * Method:    getType
+ * Signature: (II)C
+ */
+JNIEXPORT jchar JNICALL Java_Board_getType
   (JNIEnv *, jobject, jint, jint);
 
 /*

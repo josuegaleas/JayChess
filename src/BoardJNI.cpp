@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.02.24
+ * Last Edit: 2018.08.03
  */
 
 #include "Board.h"
@@ -53,46 +53,27 @@ void updatePieces(Move *m, Board *b)
 	}
 }
 
-JNIEXPORT void JNICALL
-Java_Board_createBoard(JNIEnv *, jobject)
+JNIEXPORT void JNICALL Java_Board_createBoard(JNIEnv *, jobject)
 {
 	board = new Board();
 }
 
-JNIEXPORT void JNICALL
-Java_Board_updateBoard(JNIEnv *env, jobject obj)
-{
-	jclass clazz = env->GetObjectClass(obj);
-	jmethodID mid = env->GetMethodID(clazz, "setLabel", "(IILjava/lang/String;)V");
-
-	std::string symbol;
-	jstring label;
-
-	for (int x = 0; x < 8; x++)
-	{
-		for (int y = 0; y < 8; y++)
-		{
-			symbol = "LOL";
-			label = env->NewStringUTF(symbol.c_str());
-			env->CallVoidMethod(obj, mid, x, y, label);
-		}
-	}
-}
-
-JNIEXPORT void JNICALL
-Java_Board_deleteBoard(JNIEnv *, jobject)
+JNIEXPORT void JNICALL Java_Board_deleteBoard(JNIEnv *, jobject)
 {
 	delete board;
 }
 
-JNIEXPORT jchar JNICALL
-Java_Board_getColor(JNIEnv *, jobject, jint x, jint y)
+JNIEXPORT jchar JNICALL Java_Board_getColor(JNIEnv *, jobject, jint x, jint y)
 {
 	return static_cast<jchar>(board->getPiece(x, y)->getColor());
 }
 
-JNIEXPORT jboolean JNICALL
-Java_Board_verifyMove(JNIEnv *env, jobject obj, jintArray i, jintArray f)
+JNIEXPORT jchar JNICALL Java_Board_getType(JNIEnv *, jobject, jint x, jint y)
+{
+	return static_cast<jchar>(board->getPiece(x, y)->getType());
+}
+
+JNIEXPORT jboolean JNICALL Java_Board_verifyMove(JNIEnv *env, jobject obj, jintArray i, jintArray f)
 {
 	jboolean isCopy;
 	jint *init = env->GetIntArrayElements(i, &isCopy);
@@ -106,7 +87,7 @@ Java_Board_verifyMove(JNIEnv *env, jobject obj, jintArray i, jintArray f)
 		{
 			jclass clazz = env->GetObjectClass(obj);
 			jfieldID fid = env->GetFieldID(clazz, "an", "Ljava/lang/String;");
-			std::string AN = getAN(&m, board);
+			std::string AN = getAN(&m, board); // FIXME: Such a mess..
 			updatePieces(&m, board);
 			jstring an = env->NewStringUTF(getANCheck(AN, board).c_str());
 			env->SetObjectField(obj, fid, an);

@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2017.09.22
+ * Last Edit: 2018.08.03
  */
 
 import java.awt.Color;
@@ -46,22 +46,83 @@ public class Board extends JPanel
 	}
 
 	public native void createBoard();
-	public native void updateBoard();
 	public native void deleteBoard();
 	public native char getColor(int x, int y);
+	public native char getType(int x, int y);
 	public native boolean verifyMove(int i[], int f[]);
+
 	public void setSideBar(SideBar sb) {sideBar = sb;}
 
-	public void setLabel(int x, int y, String l)
+	public void setLabel(int x, int y)
 	{
-		board[x][y].setLabel(l);
+		char color = getColor(x, y);
+		char type = getType(x, y);
+
+		if (color == 'E' && type == 'E')
+		{
+			board[x][y].setLabel("");
+		}
+		else if (color == 'W')
+		{
+			switch (type)
+			{
+				case 'P':
+					board[x][y].setLabel("♙");
+					break;
+				case 'N':
+					board[x][y].setLabel("♘");
+					break;
+				case 'B':
+					board[x][y].setLabel("♗");
+					break;
+				case 'R':
+					board[x][y].setLabel("♖");
+					break;
+				case 'Q':
+					board[x][y].setLabel("♕");
+					break;
+				case 'K':
+					board[x][y].setLabel("♔");
+					break;
+				default:
+					board[x][y].setLabel("ERROR");
+			}
+		}
+		else if (color == 'B')
+		{
+			switch (type)
+			{
+				case 'P':
+					board[x][y].setLabel("♟");
+					break;
+				case 'N':
+					board[x][y].setLabel("♞");
+					break;
+				case 'B':
+					board[x][y].setLabel("♝");
+					break;
+				case 'R':
+					board[x][y].setLabel("♜");
+					break;
+				case 'Q':
+					board[x][y].setLabel("♛");
+					break;
+				case 'K':
+					board[x][y].setLabel("♚");
+					break;
+				default:
+					board[x][y].setLabel("ERROR");
+			}
+		}
+		else
+			board[x][y].setLabel("ERROR");
 	}
 
 	public void setTile(int x, int y)
 	{
-		int t = (x * 8) + y + (x % 2);
+		int tile = (x * 8) + y + (x % 2);
 
-		if (t % 2 == 0)
+		if (tile % 2 == 0)
 			board[x][y].setBackground(Color.LIGHT_GRAY);
 		else
 			board[x][y].setBackground(Color.GRAY);
@@ -71,6 +132,13 @@ public class Board extends JPanel
 	{
 		sideBar.updateTextBox(an, turn == 'W');
 		an = "CLEAR";
+	}
+
+	public void updateBoard()
+	{
+		for (int i = 0; i < 8; i++)
+			for (int j = 0; j < 8; j++)
+				setLabel(i, j);
 	}
 
 	public void newGame()
