@@ -7,6 +7,7 @@
 #define AN_HPP
 
 #include "Board.hpp"
+#include <string>
 
 std::string getAN(Move *, Board *);
 std::string getANCheck(std::string, Board *);

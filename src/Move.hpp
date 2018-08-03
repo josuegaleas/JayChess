@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.02.20
+ * Last Edit: 2018.08.02
  */
 
 #ifndef MOVE_HPP
@@ -14,9 +14,9 @@ class Move
 
 	public:
 		Move(int *, int *);
-		~Move() {delete[] init; delete[] fin;};
-		int *getInit() const {return init;};
-		int *getFin() const {return fin;};
+		~Move();
+		int *getInit() const {return init;}
+		int *getFin() const {return fin;}
 };
 
 #endif /* MOVE_HPP */

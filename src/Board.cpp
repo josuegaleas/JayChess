@@ -1,12 +1,26 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.02.19
+ * Last Edit: 2018.08.02
  */
 
 #include "Board.hpp"
 #include <cassert>
 
-void Board::setPieces(int r)
+void Board::setColors(int c)
+{
+	getPiece(0, c)->setColor('B');
+	getPiece(1, c)->setColor('B');
+	getPiece(6, c)->setColor('W');
+	getPiece(7, c)->setColor('W');
+}
+
+void Board::setPawns(int c)
+{
+	getPiece(1, c)->setType('P');
+	getPiece(6, c)->setType('P');
+}
+
+void Board::setNonPawns(int r)
 {
 	getPiece(r, 0)->setType('R');
 	getPiece(r, 1)->setType('N');
@@ -23,31 +37,14 @@ Board::Board()
 	for (int i = 0; i < 8; i++)
 		board[i] = new Piece[8];
 
-	mapping['P'] = 0;
-	mapping['N'] = 1;
-	mapping['B'] = 2;
-	mapping['R'] = 3;
-	mapping['Q'] = 4;
-	mapping['K'] = 5;
-
 	for (int col = 0; col < 8; col++)
 	{
-		getPiece(0, col)->setColor('B');
-		getPiece(1, col)->setColor('B');
-
-		getPiece(6, col)->setColor('W');
-		getPiece(7, col)->setColor('W');
-
-		getPiece(1, col)->setType('P');
-		getPiece(6, col)->setType('P');
+		setColors(col);
+		setPawns(col);
 	}
 
-	setPieces(0);
-	setPieces(7);
-
-	for (int i = 0; i < 8; i++)
-		for (int j = 0; j < 8; j++)
-			setSymbol(getPiece(i, j));
+	setNonPawns(0);
+	setNonPawns(7);
 }
 
 Board::~Board()
@@ -57,19 +54,9 @@ Board::~Board()
 	delete[] board;
 
 	// King
-	delete[] rook;
-	delete[] whiteKing;
-	delete[] blackKing;
-}
-
-void Board::setSymbol(Piece *p)
-{
-	if (p->getColor() == 'E')
-		return;
-
-	int o = (p->getColor() == 'W') ? 0:6;
-	int s = mapping[p->getType()] + o;
-	p->setSymbol(symbols[s]);
+	delete[] whiteKingPos;
+	delete[] blackKingPos;
+	delete[] rookPos;
 }
 
 Piece *Board::getPiece(int *p) const

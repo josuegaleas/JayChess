@@ -14,6 +14,9 @@ struct Vectors
 	std::vector<std::tuple<int, int>> spots;
 };
 
+bool captureEnemy(Vectors &, int *, char, Board *);
+bool blockEnemy(Vectors &, int *, char, Board *);
+
 bool captureEnemy(Vectors &v, int *k, char col, Board *b)
 {
 	if (v.enemies.size() > 1)
@@ -46,7 +49,7 @@ bool captureEnemy(Vectors &v, int *k, char col, Board *b)
 
 			backup.setPiece(E);
 			E->setPiece(P);
-			P->setPiece('E', 'E', false, "");
+			P->setPiece('E', 'E', false);
 
 			capture &= inDanger(k, col, b);
 			P->setPiece(E);
@@ -91,7 +94,7 @@ bool blockEnemy(Vectors &v, int *k, char col, Board *b)
 
 				backup.setPiece(E);
 				E->setPiece(P);
-				P->setPiece('E', 'E', false, "");
+				P->setPiece('E', 'E', false);
 
 				block &= inDanger(k, col, b);
 				P->setPiece(E);
@@ -116,7 +119,7 @@ bool inCheckmate(char col, Board *b)
 	if (!output)
 		return false;
 
-	Piece backup, *K, *T;
+	Piece backup, *kingPiece, *tempPiece;
 	int temp0, temp1, temp2[2];
 
 	for (int i = -1; i <= 1; i++)
@@ -141,15 +144,15 @@ bool inCheckmate(char col, Board *b)
 			temp2[1] = temp1;
 			v.spots.push_back(std::make_tuple(temp0, temp1));
 
-			K = b->getPiece(king);
-			T = b->getPiece(temp0, temp1);
-			backup.setPiece(T);
-			T->setPiece(K);
-			K->setPiece('E', 'E', false, "");
+			kingPiece = b->getPiece(king);
+			tempPiece = b->getPiece(temp0, temp1);
+			backup.setPiece(tempPiece);
+			tempPiece->setPiece(kingPiece);
+			kingPiece->setPiece('E', 'E', false);
 
 			output &= inDanger(temp2, col, b);
-			K->setPiece(T);
-			T->setPiece(&backup);
+			kingPiece->setPiece(tempPiece);
+			tempPiece->setPiece(&backup);
 			if (!output)
 				return false;
 		}

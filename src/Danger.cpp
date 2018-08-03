@@ -7,27 +7,33 @@
 #include "Verification.hpp"
 #include <cassert>
 
-bool inDanger(int *cen, char col, Board *b)
+bool inDanger(int *center, char col, Board *b)
 {
-	assert(cen);
+	assert(center);
 	assert(b);
 
 	std::vector<std::tuple<int, int>> temp;
-	return inDangerEnemy(cen, col, b, temp);
+	return inDangerEnemy(center, col, b, temp);
 }
 
-bool inDangerEnemy(int *cen, char col, Board *b, std::vector<std::tuple<int, int>> &pos)
+bool inDangerEnemy(int *center, char col, Board *b, std::vector<std::tuple<int, int>> &pos)
 {
-	assert(cen);
+	assert(center);
 	assert(b);
 	pos.clear();
 
 	int temp0, temp1, temp2[2];
-	char color, type;
-	bool cond = (col == 'W');
-	char enemy = cond ? 'B':'W';
-	Piece backup, *T;
+	char tempColor, tempType, enemyColor;
+	Piece backup, *tempPiece;
 
+	if (col == 'W')
+		enemyColor = 'B';
+	else if (col == 'B')
+		enemyColor = 'W';
+	else
+		enemyColor = 'E';
+
+	// Looks for kings
 	for (int i = -1; i <= 1; i++)
 	{
 		for (int j = -1; j <= 1; j++)
@@ -35,22 +41,23 @@ bool inDangerEnemy(int *cen, char col, Board *b, std::vector<std::tuple<int, int
 			if (i == 0 && j == 0)
 				continue;
 
-			temp0 = cen[0] + i;
-			temp1 = cen[1] + j;
+			temp0 = center[0] + i;
+			temp1 = center[1] + j;
 
 			if (temp0 < 0 || temp0 > 7)
 				continue;
 			if (temp1 < 0 || temp1 > 7)
 				continue;
 
-			color = b->getPiece(temp0, temp1)->getColor();
-			type = b->getPiece(temp0, temp1)->getType();
+			tempColor = b->getPiece(temp0, temp1)->getColor();
+			tempType = b->getPiece(temp0, temp1)->getType();
 
-			if (color == enemy && type == 'K')
+			if (tempColor == enemyColor && tempType == 'K')
 				pos.push_back(std::make_tuple(temp0, temp1));
 		}
 	}
 
+	// Looks for knights
 	for (int i = -2; i <= 2; i++)
 	{
 		if (i == 0)
@@ -63,22 +70,23 @@ bool inDangerEnemy(int *cen, char col, Board *b, std::vector<std::tuple<int, int
 			if (abs(i) == abs(j))
 				continue;
 
-			temp0 = cen[0] + i;
-			temp1 = cen[1] + j;
+			temp0 = center[0] + i;
+			temp1 = center[1] + j;
 
 			if (temp0 < 0 || temp0 > 7)
 				continue;
 			if (temp1 < 0 || temp1 > 7)
 				continue;
 
-			color = b->getPiece(temp0, temp1)->getColor();
-			type = b->getPiece(temp0, temp1)->getType();
+			tempColor = b->getPiece(temp0, temp1)->getColor();
+			tempType = b->getPiece(temp0, temp1)->getType();
 
-			if (color == enemy && type == 'N')
+			if (tempColor == enemyColor && tempType == 'N')
 				pos.push_back(std::make_tuple(temp0, temp1));
 		}
 	}
 
+	// Looks for everyone else
 	for (int i = -1; i <= 1; i++)
 	{
 		for (int j = -1; j <= 1; j++)
@@ -86,8 +94,8 @@ bool inDangerEnemy(int *cen, char col, Board *b, std::vector<std::tuple<int, int
 			if (i == 0 && j == 0)
 				continue;
 
-			temp0 = cen[0];
-			temp1 = cen[1];
+			temp0 = center[0];
+			temp1 = center[1];
 
 			while (true)
 			{
@@ -99,29 +107,29 @@ bool inDangerEnemy(int *cen, char col, Board *b, std::vector<std::tuple<int, int
 				if (temp1 < 0 || temp1 > 7)
 					break;
 
-				color = b->getPiece(temp0, temp1)->getColor();
+				tempColor = b->getPiece(temp0, temp1)->getColor();
 
-				if (color == 'E')
+				if (tempColor == 'E')
 					continue;
-				if (color == col)
+				if (tempColor == col)
 					break;
-				if (color == enemy)
+				if (tempColor == enemyColor)
 				{
 					if (b->getPiece(temp0, temp1)->getType() == 'K')
 						break;
 
 					temp2[0] = temp0;
 					temp2[1] = temp1;
-					Move enemy(temp2, cen);
+					Move enemyMove(temp2, center);
 
-					T = b->getPiece(cen);
-					backup.setPiece(T);
-					T->setPiece('Q', col, true, "😂");
+					tempPiece = b->getPiece(center);
+					backup.setPiece(tempPiece);
+					tempPiece->setPiece('Q', col, true);
 
-					if (verifyMove(&enemy, b))
+					if (verifyMove(&enemyMove, b))
 						pos.push_back(std::make_tuple(temp0, temp1));
 
-					T->setPiece(&backup);
+					tempPiece->setPiece(&backup);
 					break;
 				}
 			}

@@ -25,8 +25,10 @@ std::string getAN(Move *m, Board *b)
 
 	int *init = m->getInit();
 	int *fin = m->getFin();
-	char initAN = 'a' + init[1];
+	char initAN = 'a';
 	char finAN[3] = {'a', '8', '\0'};
+
+	initAN += init[1];
 	finAN[0] += fin[1];
 	finAN[1] -= fin[0];
 	std::string end = std::string(finAN);
@@ -50,8 +52,6 @@ std::string getAN(Move *m, Board *b)
 
 		return capture + end;
 	}
-
-	return "UNDEF";
 }
 
 std::string getANCheck(std::string an, Board *b)
@@ -67,6 +67,6 @@ std::string getANCheck(std::string an, Board *b)
 		return an + "#";
 	else if (whiteCheck || blackCheck)
 		return an + "+";
-
-	return an;
+	else
+		return an;
 }

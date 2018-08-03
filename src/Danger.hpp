@@ -8,7 +8,6 @@
 
 #include "Board.hpp"
 #include <vector>
-#include <tuple>
 
 bool inDanger(int *, char, Board *);
 bool inDangerEnemy(int *, char, Board *, std::vector<std::tuple<int, int>> &);

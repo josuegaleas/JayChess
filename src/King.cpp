@@ -1,60 +1,61 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.02.24
+ * Last Edit: 2018.08.02
  */
 
 #include "Board.hpp"
 #include "Danger.hpp"
 #include <cassert>
 
-bool Board::ifCastling(int *f, char p)
+bool Board::ifCastling(int *fin, char col)
 {
-	assert(f);
+	assert(fin);
 
-	if (f[1] == 2)
+	if (fin[1] == 2)
 	{
-		if (!getPiece(f[0], 0)->getMoved())
+		// Queenside
+		if (!getPiece(fin[0], 0)->getMoved())
 		{
-			char knight = getPiece(f[0], 1)->getType();
-			char bishop = getPiece(f[0], 2)->getType();
-			char queen = getPiece(f[0], 3)->getType();
+			char knight = getPiece(fin[0], 1)->getType();
+			char bishop = getPiece(fin[0], 2)->getType();
+			char queen = getPiece(fin[0], 3)->getType();
 
 			if (knight == 'E' && bishop == 'E' && queen == 'E')
 			{
-				int bishopPos[2] = {f[0], 2};
-				int queenPos[2] = {f[0], 3};
+				int bishopPos[2] = {fin[0], 2};
+				int queenPos[2] = {fin[0], 3};
 
-				if (!inDanger(bishopPos, p, this))
+				if (!inDanger(bishopPos, col, this))
 				{
-					if (!inDanger(queenPos, p, this))
+					if (!inDanger(queenPos, col, this))
 					{
-						rook[0] = f[0];
-						rook[1] = rook[2] = 0;
+						rookPos[0] = fin[0];
+						rookPos[1] = 0;
 						return castling = true;
 					}
 				}
 			}
 		}
 	}
-	else if (f[1] == 6)
+	else if (fin[1] == 6)
 	{
-		if (!getPiece(f[0], 7)->getMoved())
+		// Kingside
+		if (!getPiece(fin[0], 7)->getMoved())
 		{
-			char knight = getPiece(f[0], 6)->getType();
-			char bishop = getPiece(f[0], 5)->getType();
+			char bishop = getPiece(fin[0], 5)->getType();
+			char knight = getPiece(fin[0], 6)->getType();
 
-			if (knight == 'E' && bishop == 'E')
+			if (bishop == 'E' && knight == 'E')
 			{
-				int knightPos[2] = {f[0], 6};
-				int bishopPos[2] = {f[0], 5};
+				int bishopPos[2] = {fin[0], 5};
+				int knightPos[2] = {fin[0], 6};
 
-				if (!inDanger(knightPos, p, this))
+				if (!inDanger(bishopPos, col, this))
 				{
-					if (!inDanger(bishopPos, p, this))
+					if (!inDanger(knightPos, col, this))
 					{
-						rook[0] = f[0];
-						rook[1] = 7;
-						rook[2] = 1;
+						rookPos[0] = fin[0];
+						rookPos[1] = 7;
 						return castling = true;
 					}
 				}
@@ -65,28 +66,30 @@ bool Board::ifCastling(int *f, char p)
 	return false;
 }
 
-void Board::setKing(char c, int *p)
+void Board::setKing(char col, int *pos)
 {
-	assert(p);
+	assert(pos);
 
-	if (c == 'W')
+	if (col == 'W')
 	{
-		whiteKing[0] = p[0];
-		whiteKing[1] = p[1];
+		whiteKingPos[0] = pos[0];
+		whiteKingPos[1] = pos[1];
 	}
-	else
+	else if (col == 'B')
 	{
-		blackKing[0] = p[0];
-		blackKing[1] = p[1];
+		blackKingPos[0] = pos[0];
+		blackKingPos[1] = pos[1];
 	}
 }
 
-int *Board::getKing(char c) const
+int *Board::getKing(char col) const
 {
-	if (c == 'W')
-		return whiteKing;
+	if (col == 'W')
+		return whiteKingPos;
+	else if (col == 'B')
+		return blackKingPos;
 	else
-		return blackKing;
+		return nullptr;
 }
 
 bool Board::ifKing(Move *m)
@@ -95,8 +98,8 @@ bool Board::ifKing(Move *m)
 
 	int *init = m->getInit();
 	int *fin = m->getFin();
-	Piece *piece = getPiece(init);
-	char color = piece->getColor();
+	Piece *king = getPiece(init);
+	char color = king->getColor();
 	bool valid = false;
 
 	int xDiff = abs(fin[0] - init[0]);
@@ -104,7 +107,7 @@ bool Board::ifKing(Move *m)
 
 	if (xDiff <= 1 && yDiff <= 1)
 		valid = !inDanger(fin, color, this);
-	else if (xDiff == 0 && !piece->getMoved())
+	else if (xDiff == 0 && !king->getMoved())
 		valid = !inDanger(init, color, this) && ifCastling(fin, color);
 
 	if (valid)

@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.02.19
+ * Last Edit: 2018.08.02
  */
 
 #ifndef BOARD_HPP
@@ -8,48 +8,47 @@
 
 #include "Piece.hpp"
 #include "Move.hpp"
-#include <map>
 
 class Board
 {
 	private:
 		// Board
 		Piece **board = new Piece*[8];
-		std::string symbols[12] = {"♙", "♘", "♗", "♖", "♕", "♔", "♟", "♞", "♝", "♜", "♛", "♚"};
-		std::map<char, int> mapping;
-		void setPieces(int);
+		void setColors(int);
+		void setPawns(int);
+		void setNonPawns(int);
+		// King
+		int *whiteKingPos = new int[2] {7, 4};
+		int *blackKingPos = new int[2] {0, 4};
+		int *rookPos = new int[2] {-1, -1};
+		bool castling = false;
+		bool ifCastling(int *, char);
 		// Pawn
 		bool pawnPromotion = false;
 		bool enPassant = false;
 		bool ifPawnHelper(Move *);
-		// King
-		int *whiteKing = new int[2] {7, 4};
-		int *blackKing = new int[2] {0, 4};
-		int *rook = new int[3] {-1, -1, -1};
-		bool castling = false;
-		bool ifCastling(int *, char);
+		char padding[5];
 
 	public:
 		// Board
 		Board();
 		~Board();
-		void setSymbol(Piece *);
-		Piece *getPiece(int x, int y) const {return &board[x][y];};
+		Piece *getPiece(int x, int y) const {return &board[x][y];}
 		Piece *getPiece(int *) const;
-		// Pawn
-		void setPawnPromotion() {pawnPromotion = false;};
-		void setEnPassant() {enPassant = false;};
-		bool getPawnPromotion() const {return pawnPromotion;};
-		bool getEnPassant() const {return enPassant;};
-		bool ifPawn(Move *);
 		// King
 		void setKing(char, int *);
-		void setRook() {rook[0] = rook[1] = rook[2] = -1;};
-		void setCastling() {castling = false;};
+		void setRook() {rookPos[0] = rookPos[1] = -1;}
+		void setCastling() {castling = false;}
 		int *getKing(char) const;
-		int *getRook() const {return rook;};
-		bool getCastling() const {return castling;};
+		int *getRook() const {return rookPos;}
+		bool getCastling() const {return castling;}
 		bool ifKing(Move *);
+		// Pawn
+		void setPawnPromotion() {pawnPromotion = false;}
+		void setEnPassant() {enPassant = false;}
+		bool getPawnPromotion() const {return pawnPromotion;}
+		bool getEnPassant() const {return enPassant;}
+		bool ifPawn(Move *);
 };
 
 #endif /* BOARD_HPP */
