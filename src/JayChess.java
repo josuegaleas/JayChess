@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.02.25
+ * Last Edit: 2018.08.04
  */
 
 import javax.swing.JFrame;
@@ -10,7 +10,7 @@ public class JayChess extends JFrame
 {
 	public JayChess()
 	{
-		setTitle("JayChess (Alpha 2018.02.25)");
+		setTitle("JayChess");
 		add(new ChessBoard());
 
 		pack();

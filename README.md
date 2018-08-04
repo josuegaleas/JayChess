@@ -1,24 +1,25 @@
 # JayChess
 Chess from scratch, using JNI and TensorFlow.
 
-![Alpha](./images/alpha.png?raw=true)
+![Alpha](https://raw.githubusercontent.com/josuegaleas/jay-images/master/chess.png)
 
 ## Features
 - C++ back-end, using the TensorFlow C++ API
 - Java front-end, using the Java Native Interface
 
 ## Building
-To build, use `make all` from the main directory. However, the paths for the JNI headers are hard-coded with Java 10 and macOS in mind, and might not work on a different machine. There is also variations in how the JNI library is compiled based on the OS, and the makefile is building for macOS. Built with clang++ following the C++11 standard, and with Java 10.
+To build, use `make all` from the main directory. The paths for the JNI headers are hard-coded with Java 10 and macOS in mind, and **might not work** on your machine without editing `JAVA_HOME` and `JNICFLAGS` in the makefile. There are also variations in how the JNI library is compiled based on the OS, and the makefile is building for macOS in mind. Refer to the `JNI` rule in the makefile and adjust the rule to your OS.
+
+Built with clang++ following the C++11 standard, and with Java 10. After building, use `make run` to start the program.
 
 ## TODO
-- [ ] Improve support for pawn promotion (currently only promotes to Queen)
-- [ ] Improve checkmate code (might still prematurely end the game)
-- [ ] Clean up AN code, possibly merge into the updatePieces function
+- [ ] Improve support for pawn promotion (currently only promotes to a queen)
 - [ ] Add support for en passant
-- [ ] Implement self-learning AI
+- [ ] Look for edge cases in the checkmate verification code
+- [ ] Implement AI using TensorFlow
 - [ ] Implement more features on the GUI (such as saving games and a timer)
-- [ ] Add support for PGN format
-- [ ] Update algebraic notation to differentiate between pieces when necessary
+- [ ] Add support for the PGN format
+- [ ] Update algebraic notation code to differentiate between pieces when necessary
 
 ## Programming References
 - [Essential JNI](http://www.prenhall.com/ptrbooks/ptr_0139470298.html)

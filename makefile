@@ -29,7 +29,7 @@ $(BIN)%.o: $(SRC)%.cpp
 $(BIN)libObjects.a: $(BIN)Piece.o $(BIN)Move.o $(BIN)Board.o $(BIN)King.o $(BIN)Pawn.o
 	$(A) $(AFLAGS) $@ $^
 
-$(BIN)libMovement.a: $(BIN)VerificationHelper.o $(BIN)Verification.o $(BIN)Danger.o $(BIN)Checkmate.o $(BIN)AN.o
+$(BIN)libMovement.a: $(BIN)VerificationHelper.o $(BIN)Verification.o $(BIN)Danger.o $(BIN)Checkmate.o $(BIN)JNIHelper.o
 	$(A) $(AFLAGS) $@ $^
 
 CPP: $(BIN)libObjects.a $(BIN)libMovement.a
@@ -38,5 +38,5 @@ JAVA:
 	$(JC) -cp $(BIN) -d $(BIN) -h $(SRC) $(SRC)*.java
 
 JNI:
-	$(C) $(CFLAGS) $(JNICFLAGS) -c $(SRC)BoardJNI.cpp -o $(BIN)BoardJNI.o
-	$(C) $(CFLAGS) -dynamiclib -o $(BIN)libBoardJNI.jnilib $(BIN)BoardJNI.o -L. $(BIN)libObjects.a $(BIN)libMovement.a
+	$(C) $(CFLAGS) $(JNICFLAGS) -c $(SRC)JNI.cpp -o $(BIN)JNI.o
+	$(C) $(CFLAGS) -dynamiclib -o $(BIN)libJNI.jnilib $(BIN)JNI.o -L. $(BIN)libObjects.a $(BIN)libMovement.a

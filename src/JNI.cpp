@@ -5,53 +5,10 @@
 
 #include "Board.h"
 #include "Verification.hpp"
-#include "AN.hpp"
+#include "JNIHelper.hpp"
 #include <cassert>
 
 static Board *board;
-void updatePieces(Move *, Board *);
-
-void updatePieces(Move *m, Board *b)
-{
-	assert(m);
-	assert(b);
-
-	Piece *initPiece = b->getPiece(m->getInit());
-	Piece *finPiece = b->getPiece(m->getFin());
-
-	initPiece->setMoved(true);
-	finPiece->setPiece(initPiece);
-	initPiece->setPiece('E', 'E', false);
-
-	if (b->getCastling())
-	{
-		int *rookPos = b->getRook();
-		Piece *rookInit = b->getPiece(rookPos);
-		Piece *rookFin;
-
-		if (rookPos[1] == 0)
-			rookFin = b->getPiece(rookPos[0], 3);
-		else if (rookPos[1] == 7)
-			rookFin = b->getPiece(rookPos[0], 5);
-		else
-			return;
-
-		rookInit->setMoved(true);
-		rookFin->setPiece(rookInit);
-		rookInit->setPiece('E', 'E', false);
-
-		b->setCastling();
-		b->setRook();
-	}
-
-	if (b->getPawnPromotion())
-	{
-		// TODO: Need to ask user what piece they want!
-		// However, in almost all cases, they pick queen.
-		finPiece->setType('Q');
-		b->setPawnPromotion();
-	}
-}
 
 JNIEXPORT void JNICALL Java_Board_createBoard(JNIEnv *, jobject)
 {
@@ -85,9 +42,12 @@ JNIEXPORT jboolean JNICALL Java_Board_verifyMove(JNIEnv *env, jobject obj, jintA
 	{
 		jclass clazz = env->GetObjectClass(obj);
 		jfieldID fid = env->GetFieldID(clazz, "an", "Ljava/lang/String;");
-		std::string AN = getAN(&m, board); // FIXME: Such a mess..
+
+		std::string AN = getAN(&m, board);
 		updatePieces(&m, board);
-		jstring an = env->NewStringUTF(getANCheck(AN, board).c_str());
+		getANCheck(AN, board);
+
+		jstring an = env->NewStringUTF(AN.c_str());
 		env->SetObjectField(obj, fid, an);
 
 		return JNI_TRUE;

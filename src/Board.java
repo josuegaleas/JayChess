@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.08.03
+ * Last Edit: 2018.08.04
  */
 
 import java.awt.Color;
@@ -19,16 +19,16 @@ public class Board extends JPanel
 	private int init[] = {-1, -1};
 	private int fin[] = {-1, -1};
 	private String an = "EMPTY";
+	private Color borderColor = Color.DARK_GRAY;
+	private Color lightTile = Color.LIGHT_GRAY;
+	private Color darkTile = Color.GRAY;
+	private Color highlightTile = Color.GREEN;
 
-	static
-	{
-		System.loadLibrary("BoardJNI");
-	}
 	public Board()
 	{
 		setLayout(new GridLayout(8, 8));
 		setPreferredSize(new Dimension(500, 500));
-		setBackground(Color.DARK_GRAY);
+		setBackground(borderColor);
 
 		for (int x = 0; x < 8; x++)
 		{
@@ -44,11 +44,15 @@ public class Board extends JPanel
 		updateBoard();
 		ChessPanel.setBoard(this);
 	}
+	static
+	{
+		System.loadLibrary("JNI");
+	}
 
-	public native void createBoard();
-	public native void deleteBoard();
 	public native char getColor(int x, int y);
 	public native char getType(int x, int y);
+	public native void createBoard();
+	public native void deleteBoard();
 	public native boolean verifyMove(int i[], int f[]);
 
 	public void setSideBar(SideBar sb) {sideBar = sb;}
@@ -123,15 +127,15 @@ public class Board extends JPanel
 		int tile = (x * 8) + y + (x % 2);
 
 		if (tile % 2 == 0)
-			board[x][y].setBackground(Color.LIGHT_GRAY);
+			board[x][y].setBackground(lightTile);
 		else
-			board[x][y].setBackground(Color.GRAY);
+			board[x][y].setBackground(darkTile);
 	}
 
 	public void updateSideBar()
 	{
-		sideBar.updateTextBox(an, turn == 'W');
-		an = "CLEAR";
+		sideBar.updateTextBox(an, turn);
+		an = "CLEARED";
 	}
 
 	public void updateBoard()
@@ -139,6 +143,22 @@ public class Board extends JPanel
 		for (int i = 0; i < 8; i++)
 			for (int j = 0; j < 8; j++)
 				setLabel(i, j);
+	}
+
+	public void resetInitFin()
+	{
+		init[0] = init[1] = -1;
+		fin[0] = fin[1] = -1;
+	}
+
+	public char flipColor(char col)
+	{
+		if (col == 'W')
+			return 'B';
+		else if (col == 'B')
+			return 'W';
+		else
+			return 'E';
 	}
 
 	public void newGame()
@@ -149,10 +169,10 @@ public class Board extends JPanel
 
 		if (click)
 			setTile(init[0], init[1]);
+
 		click = false;
 		turn = 'W';
-		init[0] = init[1] = -1;
-		fin[0] = fin[1] = -1;
+		resetInitFin();
 		an = "EMPTY";
 		repaint();
 	}
@@ -170,11 +190,13 @@ public class Board extends JPanel
 				System.out.println("Not your piece!");
 				return;
 			}
-
-			init[0] = x;
-			init[1] = y;
-			click = true;
-			board[x][y].setBackground(Color.GREEN);
+			else
+			{
+				init[0] = x;
+				init[1] = y;
+				click = true;
+				board[x][y].setBackground(highlightTile);
+			}
 		}
 		else
 		{
@@ -184,15 +206,13 @@ public class Board extends JPanel
 
 			boolean move = verifyMove(init, fin);
 			setTile(init[0], init[1]);
-
-			init[0] = init[1] = -1;
-			fin[0] = fin[1] = -1;
+			resetInitFin();
 
 			if (move)
 			{
 				updateBoard();
 				updateSideBar();
-				turn = (turn == 'W') ? 'B':'W';
+				turn = flipColor(turn);
 			}
 			else
 			{

@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2017.09.22
+ * Last Edit: 2018.08.04
  */
 
 import java.awt.Dimension;
@@ -18,7 +18,7 @@ public class SideBar extends JPanel
 {
 	private Board board;
 	private JTextArea textBox;
-	private Integer progress = 1;
+	private int progress = 1;
 
 	public SideBar()
 	{
@@ -34,17 +34,18 @@ public class SideBar extends JPanel
 
 	public void setBoard(Board b) {board = b;}
 
-	public void updateTextBox(String m, boolean t)
+	public void updateTextBox(String an, char col)
 	{
-		String b = m;
-		progress += t ? 0:1;
+		String box = an;
+		if (col == 'B')
+			progress++;
 
-		if (t)
-			b = textBox.getText() + progress + ". " + m + " ";
-		else
-			b = textBox.getText() + m + "\n";
+		if (col == 'W')
+			box = textBox.getText() + progress + ". " + an + " ";
+		else if (col == 'B')
+			box = textBox.getText() + an + "\n";
 
-		textBox.setText(b);
+		textBox.setText(box);
 	}
 
 	private class ButtonPanel extends JPanel implements ActionListener
@@ -84,6 +85,22 @@ public class SideBar extends JPanel
 				board.newGame();
 				textBox.setText("");
 				progress = 1;
+			}
+			else if (source == buttons[1])
+			{
+
+			}
+			else if (source == buttons[2])
+			{
+
+			}
+			else if (source == buttons[3])
+			{
+
+			}
+			else if (source == buttons[4])
+			{
+
 			}
 		}
 	}
