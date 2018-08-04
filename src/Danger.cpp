@@ -1,11 +1,21 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.02.23
+ * Last Edit: 2018.08.04
  */
 
 #include "Danger.hpp"
 #include "Verification.hpp"
 #include <cassert>
+
+char flipColor(char col)
+{
+	if (col == 'W')
+		return 'B';
+	else if (col == 'B')
+		return 'W';
+	else
+		return 'E';
+}
 
 bool inDanger(int *center, char col, Board *b)
 {
@@ -23,15 +33,9 @@ bool inDangerEnemy(int *center, char col, Board *b, std::vector<std::tuple<int, 
 	pos.clear();
 
 	int temp0, temp1, temp2[2];
-	char tempColor, tempType, enemyColor;
+	char tempColor, tempType;
+	char enemyColor = flipColor(col);
 	Piece backup, *tempPiece;
-
-	if (col == 'W')
-		enemyColor = 'B';
-	else if (col == 'B')
-		enemyColor = 'W';
-	else
-		enemyColor = 'E';
 
 	// Looks for kings
 	for (int i = -1; i <= 1; i++)

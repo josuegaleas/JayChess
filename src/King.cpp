@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.08.02
+ * Last Edit: 2018.08.04
  */
 
 #include "Board.hpp"
@@ -25,14 +25,11 @@ bool Board::ifCastling(int *fin, char col)
 				int bishopPos[2] = {fin[0], 2};
 				int queenPos[2] = {fin[0], 3};
 
-				if (!inDanger(bishopPos, col, this))
+				if (!inDanger(bishopPos, col, this) && !inDanger(queenPos, col, this))
 				{
-					if (!inDanger(queenPos, col, this))
-					{
-						rookPos[0] = fin[0];
-						rookPos[1] = 0;
-						return castling = true;
-					}
+					rookPos[0] = fin[0];
+					rookPos[1] = 0;
+					return castling = true;
 				}
 			}
 		}
@@ -50,14 +47,11 @@ bool Board::ifCastling(int *fin, char col)
 				int bishopPos[2] = {fin[0], 5};
 				int knightPos[2] = {fin[0], 6};
 
-				if (!inDanger(bishopPos, col, this))
+				if (!inDanger(bishopPos, col, this) && !inDanger(knightPos, col, this))
 				{
-					if (!inDanger(knightPos, col, this))
-					{
-						rookPos[0] = fin[0];
-						rookPos[1] = 7;
-						return castling = true;
-					}
+					rookPos[0] = fin[0];
+					rookPos[1] = 7;
+					return castling = true;
 				}
 			}
 		}
@@ -109,6 +103,10 @@ bool Board::ifKing(Move *m)
 		valid = !inDanger(fin, color, this);
 	else if (xDiff == 0 && !king->getMoved())
 		valid = !inDanger(init, color, this) && ifCastling(fin, color);
+	// Important to note that in the above statement, if !inDanger is false, then ifCastling
+	// is not called because its result won't matter, the result will remain false.
+	// Because of this behavior, 'castling' will remain false, even if ifCastling would
+	// happen to evalaute to true. This is very convenient haha.
 
 	if (valid)
 		setKing(color, fin);

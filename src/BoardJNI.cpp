@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.08.03
+ * Last Edit: 2018.08.04
  */
 
 #include "Board.h"
@@ -81,19 +81,16 @@ JNIEXPORT jboolean JNICALL Java_Board_verifyMove(JNIEnv *env, jobject obj, jintA
 
 	Move m(init, fin);
 
-	if (verifyCapture(&m, board))
+	if (verifyCapture(&m, board) && verifyMove(&m, board))
 	{
-		if (verifyMove(&m, board))
-		{
-			jclass clazz = env->GetObjectClass(obj);
-			jfieldID fid = env->GetFieldID(clazz, "an", "Ljava/lang/String;");
-			std::string AN = getAN(&m, board); // FIXME: Such a mess..
-			updatePieces(&m, board);
-			jstring an = env->NewStringUTF(getANCheck(AN, board).c_str());
-			env->SetObjectField(obj, fid, an);
+		jclass clazz = env->GetObjectClass(obj);
+		jfieldID fid = env->GetFieldID(clazz, "an", "Ljava/lang/String;");
+		std::string AN = getAN(&m, board); // FIXME: Such a mess..
+		updatePieces(&m, board);
+		jstring an = env->NewStringUTF(getANCheck(AN, board).c_str());
+		env->SetObjectField(obj, fid, an);
 
-			return JNI_TRUE;
-		}
+		return JNI_TRUE;
 	}
 
 	return JNI_FALSE;

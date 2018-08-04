@@ -8,7 +8,7 @@ Chess from scratch, using JNI and TensorFlow.
 - Java front-end, using the Java Native Interface
 
 ## Building
-To build, use `make all` from the main directory. However, the paths for the JNI headers are hard-coded with Java 10 in mind, and might not work on a different machine. There is also variations in how the JNI library is compiled based on the OS, and the makefile is building for macOS. Built with clang++ following the C++11 standard, and with Java 10.
+To build, use `make all` from the main directory. However, the paths for the JNI headers are hard-coded with Java 10 and macOS in mind, and might not work on a different machine. There is also variations in how the JNI library is compiled based on the OS, and the makefile is building for macOS. Built with clang++ following the C++11 standard, and with Java 10.
 
 ## TODO
 - [ ] Improve support for pawn promotion (currently only promotes to Queen)
