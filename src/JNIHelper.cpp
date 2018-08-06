@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.08.04
+ * Last Edit: 2018.08.06
  */
 
 #include "JNIHelper.hpp"
@@ -48,6 +48,12 @@ void updatePieces(Move *m, Board *b)
 		finPiece->setType('Q');
 		b->setPawnPromotion();
 	}
+
+	if (b->getEnPassant())
+	{
+		b->setPawnMovedTwo();
+		b->setEnPassant();
+	}
 }
 
 std::string getAN(Move *m, Board *b)
@@ -87,7 +93,7 @@ std::string getAN(Move *m, Board *b)
 			capture = std::string(1, initAN) + capture;
 
 		if (b->getEnPassant())
-			end += " e.p.";
+			end += "e.p.";
 
 		if (b->getPawnPromotion())
 			end += "Q"; // TODO: Assuming queening

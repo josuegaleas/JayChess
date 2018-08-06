@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.08.02
+ * Last Edit: 2018.08.06
  */
 
 #ifndef BOARD_HPP
@@ -25,9 +25,11 @@ class Board
 		bool ifCastling(int *, char);
 		// Pawn
 		bool pawnPromotion = false;
+		bool pawnMovedTwo = false;
 		bool enPassant = false;
+		bool ifEnPassant(Move *, bool);
 		bool ifPawnHelper(Move *);
-		char padding[5];
+		int padding;
 
 	public:
 		// Board
@@ -45,8 +47,10 @@ class Board
 		bool ifKing(Move *);
 		// Pawn
 		void setPawnPromotion() {pawnPromotion = false;}
+		void setPawnMovedTwo() {pawnMovedTwo = false;}
 		void setEnPassant() {enPassant = false;}
 		bool getPawnPromotion() const {return pawnPromotion;}
+		bool getPawnMovedTwo() const {return pawnMovedTwo;}
 		bool getEnPassant() const {return enPassant;}
 		bool ifPawn(Move *);
 };

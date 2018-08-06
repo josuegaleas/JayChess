@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.08.02
+ * Last Edit: 2018.08.06
  */
 
 #include "Verification.hpp"
@@ -24,22 +24,34 @@ bool verifyMove(Move *m, Board *b)
 	assert(b);
 
 	char initType = b->getPiece(m->getInit())->getType();
+	bool output = false;
 
 	switch (initType)
 	{
 		case 'K':
-			return b->ifKing(m);
+			output = b->ifKing(m);
+			break;
 		case 'Q':
-			return ifQueen(m, b);
+			output = ifQueen(m, b);
+			break;
 		case 'B':
-			return ifBishop(m, b);
+			output = ifBishop(m, b);
+			break;
 		case 'N':
-			return ifKnight(m, b);
+			output = ifKnight(m, b);
+			break;
 		case 'R':
-			return ifRook(m, b);
+			output = ifRook(m, b);
+			break;
 		case 'P':
-			return b->ifPawn(m);
+			output = b->ifPawn(m);
+			break;
 		default:
-			return false;
+			output = false;
 	}
+
+	if (initType != 'P' && output)
+		b->setPawnMovedTwo();
+
+	return output;
 }

@@ -11,7 +11,7 @@ JC = javac
 J = java
 
 JAVA_HOME = /Library/Java/JavaVirtualMachines/jdk-10.0.2.jdk/Contents/Home
-JNICFLAGS = -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/darwin
+JNICFLAGS = -Wno-reserved-id-macro -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/darwin
 
 # Convenience Targets
 all: clean CPP JAVA JNI
