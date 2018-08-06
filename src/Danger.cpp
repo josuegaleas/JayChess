@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.08.04
+ * Last Edit: 2018.08.06
  */
 
 #include "Danger.hpp"
@@ -126,9 +126,10 @@ bool inDangerEnemy(int *center, char col, Board *b, std::vector<std::tuple<int, 
 					temp2[1] = temp1;
 					Move enemyMove(temp2, center);
 
+					// Set dummy piece in the center
 					tempPiece = b->getPiece(center);
 					backup.setPiece(tempPiece);
-					tempPiece->setPiece('Q', col, true);
+					tempPiece->setPiece(col, 'Q', true);
 
 					if (verifyMove(&enemyMove, b))
 						pos.push_back(std::make_tuple(temp0, temp1));
