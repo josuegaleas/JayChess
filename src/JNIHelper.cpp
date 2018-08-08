@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.08.06
+ * Last Edit: 2018.08.08
  */
 
 #include "JNIHelper.hpp"
@@ -52,6 +52,7 @@ void updatePieces(Move *m, Board *b)
 	if (b->getEnPassant())
 	{
 		b->setPawnMovedTwo();
+		b->setPawn();
 		b->setEnPassant();
 	}
 }
@@ -106,13 +107,14 @@ void getANCheck(std::string &an, Board *b)
 {
 	assert(b);
 
-	bool whiteCheckmate = inCheckmate('W', b);
-	bool blackCheckmate = inCheckmate('B', b);
-	bool whiteCheck = inDanger(b->getKing('W'), 'W', b);
-	bool blackCheck = inDanger(b->getKing('B'), 'B', b);
+	int *wk = b->getKing('W');
+	int *bk = b->getKing('B');
 
-	if (whiteCheckmate || blackCheckmate)
-		an += "#";
-	else if (whiteCheck || blackCheck)
-		an += "+";
+	if (inDanger(wk, 'W', b) || inDanger(bk, 'B', b))
+	{
+		if (inCheckmate('W', b) || inCheckmate('B', b))
+			an += "#";
+		else
+			an += "+";
+	}
 }

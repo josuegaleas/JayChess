@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.08.06
+ * Last Edit: 2018.08.08
  */
 
 #include "Board.h"
@@ -46,8 +46,10 @@ JNIEXPORT jboolean JNICALL Java_Board_verifyMove(JNIEnv *env, jobject obj, jintA
 		std::string AN = getAN(&m, board);
 		updatePieces(&m, board);
 		getANCheck(AN, board);
-		// FIXME:
+		// FIXME: Testing
+		int *pawn = board->getPawn();
 		printf("pawnMovedTwo: %d\n", board->getPawnMovedTwo());
+		printf("pawnPos: (%d, %d)\n\n", pawn[0], pawn[1]);
 
 		jstring an = env->NewStringUTF(AN.c_str());
 		env->SetObjectField(obj, fid, an);

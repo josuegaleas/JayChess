@@ -14,7 +14,8 @@ Built with clang++ following the C++11 standard, and with Java 10. After buildin
 
 ## TODO
 - [ ] Improve support for pawn promotion (currently only promotes to a queen)
-- [ ] Add support for en passant
+- [x] Add support for en passant
+- [ ] Look for edge cases involving en passant
 - [ ] Look for edge cases in the checkmate verification code
 - [ ] Implement AI using TensorFlow
 - [ ] Implement more features on the GUI (such as saving games and a timer)

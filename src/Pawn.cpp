@@ -1,10 +1,18 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.08.06
+ * Last Edit: 2018.08.08
  */
 
 #include "Board.hpp"
 #include <cassert>
+
+bool Board::resetPawnFlags()
+{
+	pawnMovedTwo = false;
+	pawnPos[0] = pawnPos[1] = -1;
+
+	return true;
+}
 
 bool Board::ifEnPassant(Move *m, bool isWhite)
 {
@@ -13,6 +21,11 @@ bool Board::ifEnPassant(Move *m, bool isWhite)
 	int *fin = m->getFin();
 	int enemyPos = isWhite ? 3:4;
 	char enemyColor = isWhite ? 'B':'W';
+
+	if (pawnPos[0] != enemyPos)
+		return false;
+	if (pawnPos[1] != fin[1])
+		return false;
 
 	Piece *adjPiece, *finPiece;
 	adjPiece = getPiece(enemyPos, fin[1]);
@@ -79,13 +92,23 @@ bool Board::ifPawnHelper(Move *m)
 		else
 		{
 			if (yDiff == 0)
-				return finColor == 'E';
+			{
+				if (finColor == 'E')
+					return resetPawnFlags();
+				else
+					return false;
+			}
 			else
 			{
 				if (possibleEP && finColor == 'E')
 					return ifEnPassant(m, isWhite);
 				else
-					return finColor == enemyColor;
+				{
+					if (finColor == enemyColor)
+						return resetPawnFlags();
+					else
+						return false;
+				}
 			}
 		}
 	}
@@ -98,7 +121,12 @@ bool Board::ifPawnHelper(Move *m)
 			if (yDiff == 0)
 			{
 				if (xDiff == 1)
-					return finColor == 'E';
+				{
+					if (finColor == 'E')
+						return resetPawnFlags();
+					else
+						return false;
+				}
 				else if (xDiff == 2)
 				{
 					if (isWhite)
@@ -107,7 +135,12 @@ bool Board::ifPawnHelper(Move *m)
 						adjColor = getPiece(init[0] + 1, init[1])->getColor();
 
 					if (adjColor == 'E' && finColor == 'E')
+					{
+						pawnPos[0] = fin[0];
+						pawnPos[1] = fin[1];
+
 						return pawnMovedTwo = true;
+					}
 					else
 						return false;
 				}
@@ -117,7 +150,12 @@ bool Board::ifPawnHelper(Move *m)
 			else
 			{
 				if (xDiff == 1)
-					return finColor == enemyColor;
+				{
+					if (finColor == enemyColor)
+						return resetPawnFlags();
+					else
+						return false;
+				}
 				else
 					return false;
 			}

@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.08.06
+ * Last Edit: 2018.08.08
  */
 
 #include "Verification.hpp"
@@ -51,7 +51,10 @@ bool verifyMove(Move *m, Board *b)
 	}
 
 	if (initType != 'P' && output)
+	{
 		b->setPawnMovedTwo();
+		b->setPawn();
+	}
 
 	return output;
 }
