@@ -3,12 +3,10 @@
  * Last Edit: 2018.08.12
  */
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.GridBagLayout;
-
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,15 +18,12 @@ public class MessageBox extends JPanel
 	private JLabel message;
 	private boolean waiting = false;
 
-	private Color borderColor = Color.DARK_GRAY;
-	private Color boxColor = Color.WHITE;
-
 	public MessageBox()
 	{
 		setLayout(new GridBagLayout());
 		setPreferredSize(new Dimension(540, 30));
-		setBackground(boxColor);
-		setBorder(BorderFactory.createLineBorder(borderColor, 1));
+		setBackground(Settings.boxColor);
+		setBorder(BorderFactory.createLineBorder(Settings.borderColor, 1));
 
 		message = new JLabel("White's Turn");
 		add(message);
@@ -36,15 +31,11 @@ public class MessageBox extends JPanel
 
 	public void setMessage(String l) {message.setText(l);}
 
-	public String getMessage() {return message.getText();}
-
-	public boolean getWaiting() {return waiting;}
-
-	public void customMessage(String custom, int sec)
+	public void setTempMessage(String temp, int sec)
 	{
 		waiting = true;
 		String backup = message.getText();
-		message.setText(custom);
+		message.setText(temp);
 
 		var restoreBackup = new ActionListener()
 		{
@@ -59,4 +50,6 @@ public class MessageBox extends JPanel
 		timer.setRepeats(false);
 		timer.start();
 	}
+
+	public boolean getWaiting() {return waiting;}
 }

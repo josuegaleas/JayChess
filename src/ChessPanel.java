@@ -3,12 +3,10 @@
  * Last Edit: 2018.08.12
  */
 
-import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.Font;
 import java.awt.GridBagLayout;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -36,10 +34,7 @@ public class ChessPanel extends JPanel implements MouseListener
 	public void setLabel(String l) {label.setText(l);}
 
 	@Override
-	public void mouseClicked(MouseEvent e)
-	{
-		board.processClick(x, y);
-	}
+	public void mouseClicked(MouseEvent e) {board.processClick(x, y);}
 
 	@Override
 	public void mousePressed(MouseEvent e) {}

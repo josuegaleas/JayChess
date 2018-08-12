@@ -3,11 +3,9 @@
  * Last Edit: 2018.08.12
  */
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.HashMap;
-
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
@@ -15,8 +13,7 @@ public class Board extends JPanel
 {
 	private static SideBar sideBar;
 	private static MessageBox messageBox;
-
-	private ChessPanel[][] board;
+	private ChessPanel[][] chessBoard;
 	private HashMap<String, String> symbolMap;
 	private String an = "EMPTY";
 	private boolean click = false;
@@ -24,26 +21,20 @@ public class Board extends JPanel
 	private int init[] = {-1, -1};
 	private int fin[] = {-1, -1};
 
-	private Color borderColor = Color.DARK_GRAY;
-	private Color lightTile = Color.LIGHT_GRAY;
-	private Color darkTile = Color.GRAY;
-	private Color highlightTile = Color.GREEN;
-	private int delay = 1;
-
 	public Board()
 	{
 		setLayout(new GridLayout(8, 8));
 		setPreferredSize(new Dimension(500, 500));
-		setBackground(borderColor);
+		setBackground(Settings.borderColor);
 
-		board = new ChessPanel[8][8];
+		chessBoard = new ChessPanel[8][8];
 		for (int x = 0; x < 8; x++)
 		{
 			for (int y = 0; y < 8; y++)
 			{
-				board[x][y] = new ChessPanel(x, y);
+				chessBoard[x][y] = new ChessPanel(x, y);
 				setTile(x, y);
-				add(board[x][y]);
+				add(chessBoard[x][y]);
 			}
 		}
 
@@ -87,13 +78,13 @@ public class Board extends JPanel
 		var piece = color.toString() + type.toString();
 
 		if (piece.equals("EE"))
-			board[x][y].setLabel("");
+			chessBoard[x][y].setLabel("");
 		else
 		{
 			if (symbolMap.get(piece) != null)
-				board[x][y].setLabel(symbolMap.get(piece));
+				chessBoard[x][y].setLabel(symbolMap.get(piece));
 			else
-				board[x][y].setLabel("ERROR");
+				chessBoard[x][y].setLabel("ERROR");
 		}
 	}
 
@@ -102,9 +93,9 @@ public class Board extends JPanel
 		int tile = (x * 8) + y + (x % 2);
 
 		if (tile % 2 == 0)
-			board[x][y].setBackground(lightTile);
+			chessBoard[x][y].setBackground(Settings.lightTile);
 		else
-			board[x][y].setBackground(darkTile);
+			chessBoard[x][y].setBackground(Settings.darkTile);
 	}
 
 	public void updateSideBar()
@@ -128,28 +119,22 @@ public class Board extends JPanel
 
 	public char nextColor(char col)
 	{
-		if (col == 'W')
+		switch (col)
 		{
-			messageBox.setMessage("Black's Turn");
-			return 'B';
-		}
-		else if (col == 'B')
-		{
-			messageBox.setMessage("White's Turn");
-			return 'W';
-		}
-		else
-		{
-			messageBox.setMessage("ERROR");
-			return 'E';
+			case 'W':
+				messageBox.setMessage("Black's Turn");
+				return 'B';
+			case 'B':
+				messageBox.setMessage("White's Turn");
+				return 'W';
+			default:
+				messageBox.setMessage("ERROR");
+				return 'E';
 		}
 	}
 
 	public void newGame()
 	{
-		if (messageBox.getWaiting())
-			return;
-
 		deleteBoard();
 		createBoard();
 		updateBoard();
@@ -182,10 +167,10 @@ public class Board extends JPanel
 				init[0] = x;
 				init[1] = y;
 				click = true;
-				board[x][y].setBackground(highlightTile);
+				chessBoard[x][y].setBackground(Settings.highlightTile);
 			}
 			else
-				messageBox.customMessage("Not your piece!", delay);
+				messageBox.setTempMessage("Not your piece!", Settings.delay);
 		}
 		else
 		{
@@ -204,7 +189,7 @@ public class Board extends JPanel
 				turn = nextColor(turn);
 			}
 			else
-				messageBox.customMessage("Not a valid move!", delay);
+				messageBox.setTempMessage("Not a valid move!", Settings.delay);
 		}
 	}
 }

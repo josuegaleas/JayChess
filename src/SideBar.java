@@ -7,7 +7,6 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -17,6 +16,7 @@ import javax.swing.JTextArea;
 public class SideBar extends JPanel
 {
 	private static Board board;
+	private static MessageBox messageBox;
 	private JTextArea textBox;
 	private int progress = 1;
 
@@ -34,6 +34,8 @@ public class SideBar extends JPanel
 
 	public static void setBoard(Board b) {board = b;}
 
+	public static void setMessageBox(MessageBox mb) {messageBox = mb;}
+
 	public void updateTextBox(String an, char col)
 	{
 		String box = an;
@@ -44,6 +46,8 @@ public class SideBar extends JPanel
 			box = textBox.getText() + progress + ". " + an + " ";
 		else if (col == 'B')
 			box = textBox.getText() + an + "\n";
+		else
+			box = "ERROR";
 
 		textBox.setText(box);
 	}
@@ -78,6 +82,9 @@ public class SideBar extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
+			if (messageBox.getWaiting())
+				return;
+
 			var source = e.getSource();
 
 			if (source == buttons[0])
