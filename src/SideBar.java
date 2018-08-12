@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.08.04
+ * Last Edit: 2018.08.12
  */
 
 import java.awt.Dimension;
@@ -16,14 +16,14 @@ import javax.swing.JTextArea;
 @SuppressWarnings("serial")
 public class SideBar extends JPanel
 {
-	private Board board;
+	private static Board board;
 	private JTextArea textBox;
 	private int progress = 1;
 
 	public SideBar()
 	{
 		setLayout(new GridLayout(2, 1));
-		setPreferredSize(new Dimension(125, 540));
+		setPreferredSize(new Dimension(120, 570));
 
 		textBox = new JTextArea();
 		textBox.setEditable(false);
@@ -32,7 +32,7 @@ public class SideBar extends JPanel
 		add(new JScrollPane(textBox));
 	}
 
-	public void setBoard(Board b) {board = b;}
+	public static void setBoard(Board b) {board = b;}
 
 	public void updateTextBox(String an, char col)
 	{
@@ -78,7 +78,7 @@ public class SideBar extends JPanel
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
-			Object source = e.getSource();
+			var source = e.getSource();
 
 			if (source == buttons[0])
 			{

@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.08.04
+ * Last Edit: 2018.08.12
  */
 
 import java.awt.BorderLayout;
@@ -23,31 +23,38 @@ public class ChessBoard extends JPanel
 	{
 		Board board;
 		SideBar sideBar;
+		MessageBox messageBox;
 
-		JPanel game = new JPanel(new BorderLayout());
-		game.setBorder(BorderFactory.createLineBorder(borderColor, 2));
-		game.add(board = new Board());
-		game.add(new FilesBar(), BorderLayout.NORTH);
-		game.add(new RanksBar(), BorderLayout.EAST);
-		game.add(new FilesBar(), BorderLayout.SOUTH);
-		game.add(new RanksBar(), BorderLayout.WEST);
+		var foo = new JPanel(new BorderLayout());
+		foo.setBorder(BorderFactory.createLineBorder(borderColor, 1));
+		foo.add(board = new Board());
+		foo.add(new FilesBar(), BorderLayout.NORTH);
+		foo.add(new RanksBar(), BorderLayout.EAST);
+		foo.add(new FilesBar(), BorderLayout.SOUTH);
+		foo.add(new RanksBar(), BorderLayout.WEST);
 
-		add(game);
+		var bar = new JPanel(new BorderLayout());
+		bar.add(foo);
+		bar.add(messageBox = new MessageBox(), BorderLayout.SOUTH);
+
+		add(bar);
 		add(sideBar = new SideBar());
-		board.setSideBar(sideBar);
-		sideBar.setBoard(board);
+
+		Board.setSideBar(sideBar);
+		Board.setMessageBox(messageBox);
+		SideBar.setBoard(board);
 	}
 
 	private class FilesBar extends JPanel
 	{
 		public FilesBar()
 		{
-			JPanel center = new JPanel(new GridLayout(1, 8));
+			var center = new JPanel(new GridLayout(1, 8));
 			center.setPreferredSize(new Dimension(500, 20));
 			center.setBackground(barColor);
 
-			for (Character c = 'a'; c <= 'h'; c++)
-				center.add(new JLabel(c.toString(), 0));
+			for (Character file = 'a'; file <= 'h'; file++)
+				center.add(new JLabel(file.toString(), 0));
 
 			setLayout(new GridBagLayout());
 			setBackground(barColor);
@@ -59,12 +66,12 @@ public class ChessBoard extends JPanel
 	{
 		public RanksBar()
 		{
-			JPanel center = new JPanel(new GridLayout(8, 1));
+			var center = new JPanel(new GridLayout(8, 1));
 			center.setPreferredSize(new Dimension(20, 500));
 			center.setBackground(barColor);
 
-			for (Integer c = 8; c >= 1; c--)
-				center.add(new JLabel(c.toString(), 0));
+			for (Integer rank = 8; rank >= 1; rank--)
+				center.add(new JLabel(rank.toString(), 0));
 
 			setLayout(new GridBagLayout());
 			setBackground(barColor);

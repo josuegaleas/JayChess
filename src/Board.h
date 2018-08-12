@@ -101,22 +101,6 @@ extern "C" {
 #define Board_FOCUS_TRAVERSAL_KEYS_BACKWARD_SET 27L
 /*
  * Class:     Board
- * Method:    getColor
- * Signature: (II)C
- */
-JNIEXPORT jchar JNICALL Java_Board_getColor
-  (JNIEnv *, jobject, jint, jint);
-
-/*
- * Class:     Board
- * Method:    getType
- * Signature: (II)C
- */
-JNIEXPORT jchar JNICALL Java_Board_getType
-  (JNIEnv *, jobject, jint, jint);
-
-/*
- * Class:     Board
  * Method:    createBoard
  * Signature: ()V
  */
@@ -130,6 +114,22 @@ JNIEXPORT void JNICALL Java_Board_createBoard
  */
 JNIEXPORT void JNICALL Java_Board_deleteBoard
   (JNIEnv *, jobject);
+
+/*
+ * Class:     Board
+ * Method:    getColor
+ * Signature: (II)C
+ */
+JNIEXPORT jchar JNICALL Java_Board_getColor
+  (JNIEnv *, jobject, jint, jint);
+
+/*
+ * Class:     Board
+ * Method:    getType
+ * Signature: (II)C
+ */
+JNIEXPORT jchar JNICALL Java_Board_getType
+  (JNIEnv *, jobject, jint, jint);
 
 /*
  * Class:     Board
