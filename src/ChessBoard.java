@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.08.12
+ * Last Edit: 2018.08.14
  */
 
 import java.awt.BorderLayout;
@@ -21,7 +21,7 @@ public class ChessBoard extends JPanel
 		MessageBox messageBox;
 
 		var foo = new JPanel(new BorderLayout());
-		foo.setBorder(BorderFactory.createLineBorder(Settings.borderColor, 1));
+		foo.setBorder(BorderFactory.createLineBorder(Settings.borderColor, 2));
 		foo.add(board = new Board());
 		foo.add(new FilesBar(), BorderLayout.NORTH);
 		foo.add(new RanksBar(), BorderLayout.EAST);

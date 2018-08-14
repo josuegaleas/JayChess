@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.08.04
+ * Last Edit: 2018.08.14
  */
 
 #include "Board.hpp"
@@ -60,7 +60,7 @@ bool Board::ifCastling(int *fin, char col)
 	return false;
 }
 
-void Board::setKing(char col, int *pos)
+void Board::setKingPos(char col, int *pos)
 {
 	assert(pos);
 
@@ -76,7 +76,7 @@ void Board::setKing(char col, int *pos)
 	}
 }
 
-int *Board::getKing(char col) const
+int *Board::getKingPos(char col) const
 {
 	if (col == 'W')
 		return whiteKingPos;
@@ -109,7 +109,7 @@ bool Board::ifKing(Move *m)
 	// happen to evalaute to true. This is very convenient haha.
 
 	if (valid)
-		setKing(color, fin);
+		setKingPos(color, fin);
 
 	return valid;
 }

@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.08.08
+ * Last Edit: 2018.08.14
  */
 
 #include "JNIHelper.hpp"
@@ -22,7 +22,7 @@ void updatePieces(Move *m, Board *b)
 
 	if (b->getCastling())
 	{
-		int *rookPos = b->getRook();
+		int *rookPos = b->getRookPos();
 		Piece *rookInit = b->getPiece(rookPos);
 		Piece *rookFin;
 
@@ -38,7 +38,7 @@ void updatePieces(Move *m, Board *b)
 		rookInit->setPiece('E', 'E', false);
 
 		b->setCastling();
-		b->setRook();
+		b->setRookPos();
 	}
 
 	if (b->getPawnPromotion())
@@ -52,7 +52,7 @@ void updatePieces(Move *m, Board *b)
 	if (b->getEnPassant())
 	{
 		b->setPawnMovedTwo();
-		b->setPawn();
+		b->setPawnPos();
 		b->setEnPassant();
 	}
 }
@@ -64,11 +64,11 @@ std::string getAN(Move *m, Board *b)
 
 	if (b->getCastling())
 	{
-		int *rook = b->getRook();
+		int *rookPos = b->getRookPos();
 
-		if (rook[1] == 0)
+		if (rookPos[1] == 0)
 			return "0-0-0";
-		else if (rook[1] == 7)
+		else if (rookPos[1] == 7)
 			return "0-0";
 	}
 
@@ -82,16 +82,16 @@ std::string getAN(Move *m, Board *b)
 	finAN[1] -= fin[0];
 	std::string end = std::string(finAN);
 
-	char t = b->getPiece(init)->getType();
-	bool c = b->getPiece(fin)->getColor() != 'E';
-	std::string capture = c ? "x":"";
+	char type = b->getPiece(init)->getType();
+	bool capture = b->getPiece(fin)->getColor() != 'E';
+	std::string caught = capture ? "x":"";
 
-	if (t != 'P')
-		return std::string(1, t) + capture + end;
-	else
+	if (type != 'P')
+		return std::string(1, type) + caught + end;
+	else if (type == 'P')
 	{
-		if (c)
-			capture = std::string(1, initAN) + capture;
+		if (capture)
+			caught = std::string(1, initAN) + caught;
 
 		if (b->getEnPassant())
 			end += "e.p.";
@@ -99,21 +99,26 @@ std::string getAN(Move *m, Board *b)
 		if (b->getPawnPromotion())
 			end += "Q"; // TODO: Assuming queening
 
-		return capture + end;
+		return caught + end;
 	}
+	else
+		return "ERROR";
 }
 
 void getANCheck(std::string &an, Board *b)
 {
 	assert(b);
 
-	int *wk = b->getKing('W');
-	int *bk = b->getKing('B');
+	int *wk = b->getKingPos('W');
+	int *bk = b->getKingPos('B');
 
 	if (inDanger(wk, 'W', b) || inDanger(bk, 'B', b))
 	{
 		if (inCheckmate('W', b) || inCheckmate('B', b))
+		{
 			an += "#";
+			b->setCheckmate();
+		}
 		else
 			an += "+";
 	}

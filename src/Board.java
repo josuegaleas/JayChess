@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.08.12
+ * Last Edit: 2018.08.14
  */
 
 import java.awt.Dimension;
@@ -65,6 +65,7 @@ public class Board extends JPanel
 	public native void deleteBoard();
 	public native char getColor(int x, int y);
 	public native char getType(int x, int y);
+	public native boolean getCheckmate();
 	public native boolean verifyMove(int i[], int f[]);
 
 	public static void setSideBar(SideBar sb) {sideBar = sb;}
@@ -98,6 +99,12 @@ public class Board extends JPanel
 			chessBoard[x][y].setBackground(Settings.darkTile);
 	}
 
+	public void setInitFin()
+	{
+		init[0] = init[1] = -1;
+		fin[0] = fin[1] = -1;
+	}
+
 	public void updateSideBar()
 	{
 		sideBar.updateTextBox(an, turn);
@@ -109,12 +116,6 @@ public class Board extends JPanel
 		for (int i = 0; i < 8; i++)
 			for (int j = 0; j < 8; j++)
 				setLabel(i, j);
-	}
-
-	public void resetInitFin()
-	{
-		init[0] = init[1] = -1;
-		fin[0] = fin[1] = -1;
 	}
 
 	public char nextColor(char col)
@@ -145,7 +146,7 @@ public class Board extends JPanel
 		an = "EMPTY";
 		click = false;
 		turn = 'W';
-		resetInitFin();
+		setInitFin();
 
 		messageBox.setMessage("White's Turn");
 		repaint();
@@ -154,6 +155,9 @@ public class Board extends JPanel
 	public void processClick(int x, int y)
 	{
 		if (messageBox.getWaiting())
+			return;
+
+		if (getCheckmate())
 			return;
 
 		if (!click)
@@ -180,13 +184,24 @@ public class Board extends JPanel
 
 			boolean move = verifyMove(init, fin);
 			setTile(init[0], init[1]);
-			resetInitFin();
+			setInitFin();
 
 			if (move)
 			{
 				updateBoard();
 				updateSideBar();
-				turn = nextColor(turn);
+
+				if (getCheckmate())
+				{
+					if (turn == 'W')
+						messageBox.setMessage("White wins!");
+					else if (turn == 'B')
+						messageBox.setMessage("Black wins!");
+					else
+						messageBox.setMessage("ERROR");
+				}
+				else
+					turn = nextColor(turn);
 			}
 			else
 				messageBox.setTempMessage("Not a valid move!", Settings.delay);

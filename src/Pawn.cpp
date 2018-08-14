@@ -1,12 +1,12 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.08.08
+ * Last Edit: 2018.08.14
  */
 
 #include "Board.hpp"
 #include <cassert>
 
-bool Board::resetPawnFlags()
+bool Board::setPawnFlags()
 {
 	pawnMovedTwo = false;
 	pawnPos[0] = pawnPos[1] = -1;
@@ -94,7 +94,7 @@ bool Board::ifPawnHelper(Move *m)
 			if (yDiff == 0)
 			{
 				if (finColor == 'E')
-					return resetPawnFlags();
+					return setPawnFlags();
 				else
 					return false;
 			}
@@ -105,7 +105,7 @@ bool Board::ifPawnHelper(Move *m)
 				else
 				{
 					if (finColor == enemyColor)
-						return resetPawnFlags();
+						return setPawnFlags();
 					else
 						return false;
 				}
@@ -123,7 +123,7 @@ bool Board::ifPawnHelper(Move *m)
 				if (xDiff == 1)
 				{
 					if (finColor == 'E')
-						return resetPawnFlags();
+						return setPawnFlags();
 					else
 						return false;
 				}
@@ -152,7 +152,7 @@ bool Board::ifPawnHelper(Move *m)
 				if (xDiff == 1)
 				{
 					if (finColor == enemyColor)
-						return resetPawnFlags();
+						return setPawnFlags();
 					else
 						return false;
 				}

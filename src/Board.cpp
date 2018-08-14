@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.08.02
+ * Last Edit: 2018.08.14
  */
 
 #include "Board.hpp"
@@ -57,6 +57,7 @@ Board::~Board()
 	delete[] whiteKingPos;
 	delete[] blackKingPos;
 	delete[] rookPos;
+	delete[] pawnPos;
 }
 
 Piece *Board::getPiece(int *p) const

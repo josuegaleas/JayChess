@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.08.04
+ * Last Edit: 2018.08.14
  */
 
 #include "Checkmate.hpp"
@@ -16,7 +16,7 @@ struct Vectors
 
 bool captureEnemy(Vectors &, int *, char, Board *);
 bool blockEnemy(Vectors &, int *, char, Board *);
-void printVectors(Vectors &, Board *);
+/* void printVectors(Vectors &, Board *); */
 
 bool captureEnemy(Vectors &v, int *king, char col, Board *b)
 {
@@ -64,14 +64,14 @@ bool captureEnemy(Vectors &v, int *king, char col, Board *b)
 			enemyPiece->setPiece(&backup);
 			if (!capture)
 			{
-				printf("We can capture the enemy!\n");
-				printf("Using %c%c at %d, %d.\n", allyPiece->getColor(), allyPiece->getType(), temp1, temp2);
+				/* printf("We can capture the enemy!\n"); */
+				/* printf("Using %c%c at %d, %d.\n", allyPiece->getColor(), allyPiece->getType(), temp1, temp2); */
 				return true;
 			}
 		}
 	}
 
-	printf("We can't capture the enemy...\n");
+	/* printf("We can't capture the enemy...\n"); */
 	return false;
 }
 
@@ -125,18 +125,19 @@ bool blockEnemy(Vectors &v, int *king, char col, Board *b)
 				enemyPiece->setPiece(&backup);
 				if (!block)
 				{
-					printf("We can block the enemy!\n");
-					printf("Using %c%c at %d, %d.\n", allyPiece->getColor(), allyPiece->getType(), temp1, temp2);
+					/* printf("We can block the enemy!\n"); */
+					/* printf("Using %c%c at %d, %d.\n", allyPiece->getColor(), allyPiece->getType(), temp1, temp2); */
 					return true;
 				}
 			}
 		}
 	}
 
-	printf("We can't block the enemy...\n");
+	/* printf("We can't block the enemy...\n"); */
 	return false;
 }
 
+/*
 void printVectors(Vectors &v, Board *b)
 {
 	int temp[2];
@@ -162,13 +163,14 @@ void printVectors(Vectors &v, Board *b)
 		printf("%c%c at %d, %d\n", tempPiece->getColor(), tempPiece->getType(), temp[0], temp[1]);
 	}
 }
+*/
 
 bool inCheckmate(char col, Board *b)
 {
 	assert(b);
 
 	Vectors vec;
-	int *king = b->getKing(col);
+	int *king = b->getKingPos(col);
 	bool output = inDangerEnemy(king, col, b, vec.enemies);
 
 	// If king is safe already, then just return false.

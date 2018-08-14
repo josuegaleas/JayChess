@@ -1,13 +1,12 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.08.12
+ * Last Edit: 2018.08.14
  */
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.GridBagLayout;
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -23,7 +22,6 @@ public class MessageBox extends JPanel
 		setLayout(new GridBagLayout());
 		setPreferredSize(new Dimension(540, 30));
 		setBackground(Settings.boxColor);
-		setBorder(BorderFactory.createLineBorder(Settings.borderColor, 1));
 
 		message = new JLabel("White's Turn");
 		add(message);

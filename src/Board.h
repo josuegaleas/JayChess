@@ -133,6 +133,14 @@ JNIEXPORT jchar JNICALL Java_Board_getType
 
 /*
  * Class:     Board
+ * Method:    getCheckmate
+ * Signature: ()Z
+ */
+JNIEXPORT jboolean JNICALL Java_Board_getCheckmate
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     Board
  * Method:    verifyMove
  * Signature: ([I[I)Z
  */

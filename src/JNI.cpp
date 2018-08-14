@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.08.08
+ * Last Edit: 2018.08.14
  */
 
 #include "Board.h"
@@ -30,6 +30,11 @@ JNIEXPORT jchar JNICALL Java_Board_getType(JNIEnv *, jobject, jint x, jint y)
 	return static_cast<jchar>(board->getPiece(x, y)->getType());
 }
 
+JNIEXPORT jboolean JNICALL Java_Board_getCheckmate(JNIEnv *, jobject)
+{
+	return static_cast<jboolean>(board->getCheckmate());
+}
+
 JNIEXPORT jboolean JNICALL Java_Board_verifyMove(JNIEnv *env, jobject obj, jintArray i, jintArray f)
 {
 	jboolean isCopy;
@@ -47,9 +52,9 @@ JNIEXPORT jboolean JNICALL Java_Board_verifyMove(JNIEnv *env, jobject obj, jintA
 		updatePieces(&m, board);
 		getANCheck(AN, board);
 		// FIXME: Testing
-		int *pawn = board->getPawn();
-		printf("pawnMovedTwo: %d\n", board->getPawnMovedTwo());
-		printf("pawnPos: (%d, %d)\n\n", pawn[0], pawn[1]);
+		/* int *pawn = board->getPawnPos(); */
+		/* printf("pawnMovedTwo: %d\n", board->getPawnMovedTwo()); */
+		/* printf("pawnPos: (%d, %d)\n\n", pawn[0], pawn[1]); */
 
 		jstring an = env->NewStringUTF(AN.c_str());
 		env->SetObjectField(obj, fid, an);
