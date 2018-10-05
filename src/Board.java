@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.08.14
+ * Last Edit: 2018.10.05
  */
 
 import java.awt.Dimension;
@@ -11,9 +11,8 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class Board extends JPanel
 {
-	private static SideBar sideBar;
-	private static MessageBox messageBox;
-	private ChessPanel[][] chessBoard;
+	public ChessBoard chessBoard;
+	private ChessPanel[][] chessPanels;
 	private HashMap<String, String> symbolMap;
 	private String an = "EMPTY";
 	private boolean click = false;
@@ -27,14 +26,14 @@ public class Board extends JPanel
 		setPreferredSize(new Dimension(500, 500));
 		setBackground(Settings.borderColor);
 
-		chessBoard = new ChessPanel[8][8];
+		chessPanels = new ChessPanel[8][8];
 		for (int x = 0; x < 8; x++)
 		{
 			for (int y = 0; y < 8; y++)
 			{
-				chessBoard[x][y] = new ChessPanel(x, y);
+				chessPanels[x][y] = new ChessPanel(x, y);
 				setTile(x, y);
-				add(chessBoard[x][y]);
+				add(chessPanels[x][y]);
 			}
 		}
 
@@ -54,7 +53,7 @@ public class Board extends JPanel
 
 		createBoard();
 		updateBoard();
-		ChessPanel.setBoard(this);
+		ChessPanel.board = this;
 	}
 	static
 	{
@@ -68,10 +67,6 @@ public class Board extends JPanel
 	public native boolean getCheckmate();
 	public native boolean verifyMove(int i[], int f[]);
 
-	public static void setSideBar(SideBar sb) {sideBar = sb;}
-
-	public static void setMessageBox(MessageBox mb) {messageBox = mb;}
-
 	public void setLabel(int x, int y)
 	{
 		Character color = getColor(x, y);
@@ -79,13 +74,13 @@ public class Board extends JPanel
 		var piece = color.toString() + type.toString();
 
 		if (piece.equals("EE"))
-			chessBoard[x][y].setLabel("");
+			chessPanels[x][y].setLabel("");
 		else
 		{
 			if (symbolMap.get(piece) != null)
-				chessBoard[x][y].setLabel(symbolMap.get(piece));
+				chessPanels[x][y].setLabel(symbolMap.get(piece));
 			else
-				chessBoard[x][y].setLabel("ERROR");
+				chessPanels[x][y].setLabel("ERROR");
 		}
 	}
 
@@ -94,9 +89,9 @@ public class Board extends JPanel
 		int tile = (x * 8) + y + (x % 2);
 
 		if (tile % 2 == 0)
-			chessBoard[x][y].setBackground(Settings.lightTile);
+			chessPanels[x][y].setBackground(Settings.lightTile);
 		else
-			chessBoard[x][y].setBackground(Settings.darkTile);
+			chessPanels[x][y].setBackground(Settings.darkTile);
 	}
 
 	public void setInitFin()
@@ -107,7 +102,7 @@ public class Board extends JPanel
 
 	public void updateSideBar()
 	{
-		sideBar.updateTextBox(an, turn);
+		chessBoard.sideBar.updateTextBox(an, turn);
 		an = "CLEARED";
 	}
 
@@ -123,13 +118,13 @@ public class Board extends JPanel
 		switch (col)
 		{
 			case 'W':
-				messageBox.setMessage("Black's Turn");
+				chessBoard.messageBox.setMessage("Black's Turn");
 				return 'B';
 			case 'B':
-				messageBox.setMessage("White's Turn");
+				chessBoard.messageBox.setMessage("White's Turn");
 				return 'W';
 			default:
-				messageBox.setMessage("ERROR");
+				chessBoard.messageBox.setMessage("ERROR");
 				return 'E';
 		}
 	}
@@ -148,13 +143,13 @@ public class Board extends JPanel
 		turn = 'W';
 		setInitFin();
 
-		messageBox.setMessage("White's Turn");
+		chessBoard.messageBox.setMessage("White's Turn");
 		repaint();
 	}
 
 	public void processClick(int x, int y)
 	{
-		if (messageBox.getWaiting())
+		if (chessBoard.messageBox.getWaiting())
 			return;
 
 		if (getCheckmate())
@@ -171,10 +166,10 @@ public class Board extends JPanel
 				init[0] = x;
 				init[1] = y;
 				click = true;
-				chessBoard[x][y].setBackground(Settings.highlightTile);
+				chessPanels[x][y].setBackground(Settings.highlightTile);
 			}
 			else
-				messageBox.setTempMessage("Not your piece!", Settings.delay);
+				chessBoard.messageBox.setTempMessage("Not your piece!", Settings.delay);
 		}
 		else
 		{
@@ -194,17 +189,17 @@ public class Board extends JPanel
 				if (getCheckmate())
 				{
 					if (turn == 'W')
-						messageBox.setMessage("White wins!");
+						chessBoard.messageBox.setMessage("White wins!");
 					else if (turn == 'B')
-						messageBox.setMessage("Black wins!");
+						chessBoard.messageBox.setMessage("Black wins!");
 					else
-						messageBox.setMessage("ERROR");
+						chessBoard.messageBox.setMessage("ERROR");
 				}
 				else
 					turn = nextColor(turn);
 			}
 			else
-				messageBox.setTempMessage("Not a valid move!", Settings.delay);
+				chessBoard.messageBox.setTempMessage("Not a valid move!", Settings.delay);
 		}
 	}
 }

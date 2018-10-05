@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.08.12
+ * Last Edit: 2018.10.05
  */
 
 import java.awt.event.MouseEvent;
@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class ChessPanel extends JPanel implements MouseListener
 {
-	private static Board board;
+	public static Board board;
 	private JLabel label;
 	private int x, y;
 
@@ -28,8 +28,6 @@ public class ChessPanel extends JPanel implements MouseListener
 		add(label);
 		addMouseListener(this);
 	}
-
-	public static void setBoard(Board b) {board = b;}
 
 	public void setLabel(String l) {label.setText(l);}
 
