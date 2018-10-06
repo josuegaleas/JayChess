@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.10.05
+ * Last Edit: 2018.10.06
  */
 
 import java.awt.Dimension;
@@ -32,7 +32,7 @@ public class MessageBox extends JPanel
 	public void setTempMessage(String temp, int sec)
 	{
 		waiting = true;
-		var backup = message.getText();
+		String backup = message.getText();
 		message.setText(temp);
 
 		var restoreBackup = new ActionListener()

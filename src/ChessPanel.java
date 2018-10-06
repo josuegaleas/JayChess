@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.10.05
+ * Last Edit: 2018.10.06
  */
 
 import java.awt.event.MouseEvent;
@@ -23,13 +23,25 @@ public class ChessPanel extends JPanel implements MouseListener
 		this.y = y;
 
 		setLayout(new GridBagLayout());
+		setBackground();
 		label = new JLabel("E");
 		label.setFont(new Font("Sans Serif", Font.PLAIN, 32));
+
 		add(label);
 		addMouseListener(this);
 	}
 
 	public void setLabel(String l) {label.setText(l);}
+
+	public void setBackground()
+	{
+		int tile = (x * 8) + y + (x % 2);
+
+		if (tile % 2 == 0)
+			setBackground(Settings.lightTile);
+		else
+			setBackground(Settings.darkTile);
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {board.processClick(x, y);}

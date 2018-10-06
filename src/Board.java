@@ -1,10 +1,11 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.10.05
+ * Last Edit: 2018.10.06
  */
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.io.File;
 import java.util.HashMap;
 import javax.swing.JPanel;
 
@@ -28,14 +29,8 @@ public class Board extends JPanel
 
 		chessPanels = new ChessPanel[8][8];
 		for (int x = 0; x < 8; x++)
-		{
 			for (int y = 0; y < 8; y++)
-			{
-				chessPanels[x][y] = new ChessPanel(x, y);
-				setTile(x, y);
-				add(chessPanels[x][y]);
-			}
-		}
+				add(chessPanels[x][y] = new ChessPanel(x, y));
 
 		symbolMap = new HashMap<String, String>();
 		symbolMap.put("WP", "♙");
@@ -71,7 +66,7 @@ public class Board extends JPanel
 	{
 		Character color = getColor(x, y);
 		Character type = getType(x, y);
-		var piece = color.toString() + type.toString();
+		String piece = color.toString() + type.toString();
 
 		if (piece.equals("EE"))
 			chessPanels[x][y].setLabel("");
@@ -82,16 +77,6 @@ public class Board extends JPanel
 			else
 				chessPanels[x][y].setLabel("ERROR");
 		}
-	}
-
-	public void setTile(int x, int y)
-	{
-		int tile = (x * 8) + y + (x % 2);
-
-		if (tile % 2 == 0)
-			chessPanels[x][y].setBackground(Settings.lightTile);
-		else
-			chessPanels[x][y].setBackground(Settings.darkTile);
 	}
 
 	public void setInitFin()
@@ -136,7 +121,7 @@ public class Board extends JPanel
 		updateBoard();
 
 		if (click)
-			setTile(init[0], init[1]);
+			chessPanels[init[0]][init[1]].setBackground();
 
 		an = "EMPTY";
 		click = false;
@@ -145,6 +130,13 @@ public class Board extends JPanel
 
 		chessBoard.messageBox.setMessage("White's Turn");
 		repaint();
+	}
+
+	public boolean loadGame(File file)
+	{
+		// TODO
+
+		return false;
 	}
 
 	public void processClick(int x, int y)
@@ -178,7 +170,7 @@ public class Board extends JPanel
 			click = false;
 
 			boolean move = verifyMove(init, fin);
-			setTile(init[0], init[1]);
+			chessPanels[init[0]][init[1]].setBackground();
 			setInitFin();
 
 			if (move)
