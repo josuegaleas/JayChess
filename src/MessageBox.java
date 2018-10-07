@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.10.06
+ * Last Edit: 2018.10.07
  */
 
 import java.awt.Dimension;
@@ -27,13 +27,13 @@ public class MessageBox extends JPanel
 		add(message);
 	}
 
-	public void setMessage(String l) {message.setText(l);}
+	public void setMessage(String m) {message.setText(m);}
 
-	public void setTempMessage(String temp, int sec)
+	public void setTempMessage(String m)
 	{
 		waiting = true;
 		String backup = message.getText();
-		message.setText(temp);
+		message.setText(m);
 
 		var restoreBackup = new ActionListener()
 		{
@@ -44,7 +44,7 @@ public class MessageBox extends JPanel
 			}
 		};
 
-		var timer = new Timer(sec * 1000, restoreBackup);
+		var timer = new Timer(Settings.delay * 1000, restoreBackup);
 		timer.setRepeats(false);
 		timer.start();
 	}

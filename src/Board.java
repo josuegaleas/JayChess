@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.10.06
+ * Last Edit: 2018.10.07
  */
 
 import java.awt.Dimension;
@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 public class Board extends JPanel
 {
 	public ChessBoard chessBoard;
+	private PGN pgn;
 	private ChessPanel[][] chessPanels;
 	private HashMap<String, String> symbolMap;
 	private String an = "EMPTY";
@@ -27,6 +28,7 @@ public class Board extends JPanel
 		setPreferredSize(new Dimension(500, 500));
 		setBackground(Settings.borderColor);
 
+		pgn = new PGN();
 		chessPanels = new ChessPanel[8][8];
 		for (int x = 0; x < 8; x++)
 			for (int y = 0; y < 8; y++)
@@ -48,6 +50,7 @@ public class Board extends JPanel
 
 		createBoard();
 		updateBoard();
+		pgn.chessBoard = chessBoard;
 		ChessPanel.board = this;
 	}
 	static
@@ -132,9 +135,10 @@ public class Board extends JPanel
 		repaint();
 	}
 
-	public boolean loadGame(File file)
+	public boolean loadGame(File f)
 	{
 		// TODO
+		pgn.ReadPGNFile(f);
 
 		return false;
 	}
@@ -161,7 +165,7 @@ public class Board extends JPanel
 				chessPanels[x][y].setBackground(Settings.highlightTile);
 			}
 			else
-				chessBoard.messageBox.setTempMessage("Not your piece!", Settings.delay);
+				chessBoard.messageBox.setTempMessage("Not your piece!");
 		}
 		else
 		{
@@ -191,7 +195,7 @@ public class Board extends JPanel
 					turn = nextColor(turn);
 			}
 			else
-				chessBoard.messageBox.setTempMessage("Not a valid move!", Settings.delay);
+				chessBoard.messageBox.setTempMessage("Not a valid move!");
 		}
 	}
 }

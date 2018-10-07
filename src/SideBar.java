@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.10.06
+ * Last Edit: 2018.10.07
  */
 
 import java.awt.Dimension;
@@ -100,8 +100,8 @@ public class SideBar extends JPanel implements ActionListener
 			// Load Game
 			if (buttons[1].isEnabled())
 			{
-				chessBoard.messageBox.setTempMessage("Game is not saved!", Settings.delay);
-				// Need to find out how to ignore unsaved games
+				chessBoard.messageBox.setTempMessage("Game is not saved!");
+				// TODO: Need to find out how to ignore unsaved games
 			}
 			else
 			{
@@ -120,11 +120,11 @@ public class SideBar extends JPanel implements ActionListener
 						buttons[1].setEnabled(false); // TODO: Kind of don't need this?
 					}
 					else if (choice == JFileChooser.ERROR_OPTION)
-						chessBoard.messageBox.setTempMessage("Error loading PGN file!", Settings.delay);
+						chessBoard.messageBox.setTempMessage("Error loading PGN file!");
 				}
 				catch (Exception error)
 				{
-					chessBoard.messageBox.setTempMessage("Error loading PGN file!", Settings.delay);
+					chessBoard.messageBox.setTempMessage("Error loading PGN file!");
 				}
 			}
 		}
@@ -137,6 +137,6 @@ public class SideBar extends JPanel implements ActionListener
 			// Settings
 		}
 		else
-			chessBoard.messageBox.setTempMessage("What button did you even press?", Settings.delay);
+			chessBoard.messageBox.setTempMessage("What button did you even press?");
 	}
 }
