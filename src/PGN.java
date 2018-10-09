@@ -1,23 +1,23 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.10.08
+ * Last Edit: 2018.10.09
  */
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.List;
 import java.util.Vector;
 
 public class PGN
 {
 	public ChessBoard chessBoard;
-	private List<String> moves;
-	private List<String> games; // TODO: Another dimension for multiple games?
+	private Vector<String> moves;
+	private Vector<String> games; // TODO: Another dimension for multiple games?
 	private String[] gameEndings = {"1-0", "0-1", "1/2-1/2", "*"};
 
-	public PGN()
+	public PGN(ChessBoard cb)
 	{
+		chessBoard = cb;
 		moves = new Vector<String>();
 		games = new Vector<String>();
 	}
@@ -30,7 +30,6 @@ public class PGN
 
 	public void addMove(String m) {moves.add(m);}
 
-	// TODO: change name maybe
 	private boolean endsWith(String l)
 	{
 		for (int i = 0; i < 4; i++)
@@ -59,21 +58,32 @@ public class PGN
 			}
 
 			reader.close();
-			String moveLine = games.get(games.size() - 1);
+			String moveLine = games.lastElement();
 			String[] moveList = moveLine.split(" ");
 
 			// TODO: Clean the following up
 			Integer num = 1;
 			String number;
-			List<String> parsedMoves = new Vector<String>();
+			boolean comment = false;
+			var parsedMoves = new Vector<String>();
 
 			for (int i = 0; i < moveList.length; i++)
 			{
 				if (moveList[i].startsWith("{"))
-					break;
+				{
+					comment = true;
+					continue;
+				}
+				else if (moveList[i].endsWith("}"))
+				{
+					comment = false;
+					continue;
+				}
+				else if (comment)
+					continue;
 				else if (i == moveList.length - 1)
 					break;
-				else if (i % 3 == 0)
+				else if (moveList[i].endsWith("."))
 				{
 					number = num.toString() + ".";
 
@@ -91,6 +101,7 @@ public class PGN
 		catch (Exception e)
 		{
 			chessBoard.messageBox.setTempMessage("Error loading PGN file!");
+			games.clear();
 			return null;
 		}
 	}

@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.10.08
+ * Last Edit: 2018.10.09
  */
 
 import java.awt.Dimension;
@@ -28,8 +28,9 @@ public class Board extends JPanel
 		setPreferredSize(new Dimension(500, 500));
 		setBackground(Settings.borderColor);
 
-		pgn = new PGN();
+		pgn = new PGN(chessBoard);
 		chessPanels = new ChessPanel[8][8];
+		ChessPanel.board = this;
 		for (int x = 0; x < 8; x++)
 			for (int y = 0; y < 8; y++)
 				add(chessPanels[x][y] = new ChessPanel(x, y));
@@ -50,8 +51,6 @@ public class Board extends JPanel
 
 		createBoard();
 		updateBoard();
-		pgn.chessBoard = chessBoard;
-		ChessPanel.board = this;
 	}
 	static
 	{
@@ -140,9 +139,23 @@ public class Board extends JPanel
 	public boolean loadGame(File f)
 	{
 		// TODO
-		Object[] moves = pgn.ReadPGNFile(f);
+		Object[] moves = pgn.ReadPGNFile(f); // Objects are type String
 		if (moves == null)
 			return false;
+
+		// TODO
+		String temp;
+		char turn = 'W';
+		boolean valid = false;
+
+		for (int i = 0; i < moves.length; i++)
+		{
+			System.out.print("Processing: " + moves[i] + ", ");
+			temp = (String)moves[i]; // I don't like this, but it's a String
+			valid = Parse.convertMove(temp, turn, init, fin);
+			System.out.println("Valid: " + valid);
+			setInitFin();
+		}
 
 		return false;
 	}
