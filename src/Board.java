@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.10.07
+ * Last Edit: 2018.10.08
  */
 
 import java.awt.Dimension;
@@ -112,13 +112,14 @@ public class Board extends JPanel
 				chessBoard.messageBox.setMessage("White's Turn");
 				return 'W';
 			default:
-				chessBoard.messageBox.setMessage("ERROR");
+				chessBoard.messageBox.setMessage("ERROR: Turn could not be determined.");
 				return 'E';
 		}
 	}
 
 	public void newGame()
 	{
+		// TODO: Check if game is not saved?
 		deleteBoard();
 		createBoard();
 		updateBoard();
@@ -126,6 +127,7 @@ public class Board extends JPanel
 		if (click)
 			chessPanels[init[0]][init[1]].setBackground();
 
+		pgn.clear();
 		an = "EMPTY";
 		click = false;
 		turn = 'W';
@@ -138,7 +140,9 @@ public class Board extends JPanel
 	public boolean loadGame(File f)
 	{
 		// TODO
-		pgn.ReadPGNFile(f);
+		Object[] moves = pgn.ReadPGNFile(f);
+		if (moves == null)
+			return false;
 
 		return false;
 	}
@@ -180,16 +184,17 @@ public class Board extends JPanel
 			if (move)
 			{
 				updateBoard();
+				pgn.addMove(an);
 				updateSideBar();
 
 				if (getCheckmate())
 				{
 					if (turn == 'W')
-						chessBoard.messageBox.setMessage("White wins!");
+						chessBoard.messageBox.setMessage("White Wins");
 					else if (turn == 'B')
-						chessBoard.messageBox.setMessage("Black wins!");
+						chessBoard.messageBox.setMessage("Black Wins");
 					else
-						chessBoard.messageBox.setMessage("ERROR");
+						chessBoard.messageBox.setMessage("ERROR: Checkmate could not be determined.");
 				}
 				else
 					turn = nextColor(turn);

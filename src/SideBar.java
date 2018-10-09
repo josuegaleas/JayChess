@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.10.07
+ * Last Edit: 2018.10.08
  */
 
 import java.awt.Dimension;
@@ -66,7 +66,7 @@ public class SideBar extends JPanel implements ActionListener
 		else if (col == 'B')
 			box = textBox.getText() + an + "\n";
 		else
-			box = "ERROR";
+			box = "ERROR: Side bar could not be updated.";
 
 		buttons[1].setEnabled(true);
 		textBox.setText(box);
