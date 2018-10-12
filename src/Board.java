@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.10.09
+ * Last Edit: 2018.10.11
  */
 
 import java.awt.Dimension;
@@ -64,7 +64,7 @@ public class Board extends JPanel
 	public native boolean getCheckmate();
 	public native boolean verifyMove(int i[], int f[]);
 
-	public void setLabel(int x, int y)
+	private void setLabel(int x, int y)
 	{
 		Character color = getColor(x, y);
 		Character type = getType(x, y);
@@ -81,26 +81,26 @@ public class Board extends JPanel
 		}
 	}
 
-	public void setInitFin()
+	private void setInitFin()
 	{
 		init[0] = init[1] = -1;
 		fin[0] = fin[1] = -1;
 	}
 
-	public void updateSideBar()
+	private void updateSideBar()
 	{
 		chessBoard.sideBar.updateTextBox(an, turn);
 		an = "CLEARED";
 	}
 
-	public void updateBoard()
+	private void updateBoard()
 	{
 		for (int i = 0; i < 8; i++)
 			for (int j = 0; j < 8; j++)
 				setLabel(i, j);
 	}
 
-	public char nextColor(char col)
+	private char nextColor(char col)
 	{
 		switch (col)
 		{
@@ -112,6 +112,19 @@ public class Board extends JPanel
 				return 'W';
 			default:
 				chessBoard.messageBox.setMessage("ERROR: Turn could not be determined.");
+				return 'E';
+		}
+	}
+
+	private char nextColorSilent(char col)
+	{
+		switch (col)
+		{
+			case 'W':
+				return 'B';
+			case 'B':
+				return 'W';
+			default:
 				return 'E';
 		}
 	}
@@ -146,15 +159,22 @@ public class Board extends JPanel
 		// TODO
 		String temp;
 		char turn = 'W';
-		boolean valid = false;
+		char valid = '?';
 
 		for (int i = 0; i < moves.length; i++)
 		{
-			System.out.print("Processing: " + moves[i] + ", ");
+			setInitFin();
 			temp = (String)moves[i]; // I don't like this, but it's a String
 			valid = Parse.convertMove(temp, turn, init, fin);
-			System.out.println("Valid: " + valid);
-			setInitFin();
+
+			if (valid == '?')
+				System.out.printf("Could not process %s.\n", temp);
+			else
+			{
+				System.out.printf("Processed %s. Init: (%d, %d) Fin: (%d, %d)\n", temp, init[0], init[1], fin[0], fin[1]);
+			}
+
+			turn = nextColorSilent(turn);
 		}
 
 		return false;

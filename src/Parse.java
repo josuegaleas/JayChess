@@ -1,41 +1,41 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.10.09
+ * Last Edit: 2018.10.11
  */
 
 public class Parse
 {
-	private static boolean convertRow(char b, int x)
+	private static boolean convertRow(char b, int p[])
 	{
-		x = 8 - b;
-		if (x >= 0 && x <= 7)
+		p[0] = 8 - Character.getNumericValue(b);
+		if (p[0] >= 0 && p[0] <= 7)
 			return true;
 
-		x = -1;
+		p[0] = -1;
 		return false;
 	}
 
-	private static boolean convertColumn(char a, int y)
+	private static boolean convertColumn(char a, int p[])
 	{
-		y = a - 97;
-		if (y >= 0 && y <= 7)
+		p[1] = a - 97;
+		if (p[1] >= 0 && p[1] <= 7)
 			return true;
 
-		y = -1;
+		p[1] = -1;
 		return false;
 	}
 
-	private static boolean convertPosition(char a, char b, int x, int y)
+	private static boolean convertPosition(char a, char b, int p[])
 	{
-		if (convertRow(b, x))
-			if (convertColumn(a, y))
+		if (convertRow(b, p))
+			if (convertColumn(a, p))
 				return true;
 
-		x = y = -1;
+		p[0] = p[1] = -1;
 		return false;
 	}
 
-	public static boolean convertMove(String m, char t, int i[], int f[])
+	public static char convertMove(String m, char t, int i[], int f[])
 	{
 		switch (m.charAt(0))
 		{
@@ -49,9 +49,9 @@ public class Parse
 				break;
 			case 'K':
 				break;
-			case '0':
+			case 'O': // Castling
 				i[1] = 4;
-				if (m.equals("0-0"))
+				if (m.equals("O-O"))
 				{
 					f[1] = 6;
 
@@ -59,8 +59,12 @@ public class Parse
 						i[0] = f[0] = 7;
 					else if (t == 'B')
 						i[0] = f[0] = 0;
+					else
+						return '?';
+
+					return '0';
 				}
-				else if (m.equals("0-0-0"))
+				else if (m.equals("O-O-O"))
 				{
 					f[1] = 2;
 
@@ -68,28 +72,39 @@ public class Parse
 						i[0] = f[0] = 7;
 					else if (t == 'B')
 						i[0] = f[0] = 0;
+					else
+						return '?';
+
+					return 'O';
 				}
 				break;
-			default:
-				// Pawns?
+			default: // Pawns, maybe
 				if (m.charAt(1) == 'x')
 				{
-					// If pawn captured
-					if (m.length() > 3)
+					// If pawn is capturing
+					if (m.length() >= 4)
 					{
-						boolean foo1 = convertPosition(m.charAt(2), m.charAt(3), f[0], f[1]);
+						boolean init = convertColumn(m.charAt(0), i);
+						boolean fin = convertPosition(m.charAt(2), m.charAt(3), f);
+
+						if (init && fin)
+							return 'P';
 					}
-						return false;
 				}
 				else
 				{
-					// If pawn is just moving
-					boolean foo2 = convertPosition(m.charAt(0), m.charAt(1), f[0], f[1]);
-					boolean foo3 = convertColumn(m.charAt(0), i[1]);
-					// i[0] is going to be difficult to determine
+					// If pawn is moving
+					if (m.length() >= 2)
+					{
+						boolean init = convertColumn(m.charAt(0), i);
+						boolean fin = convertPosition(m.charAt(0), m.charAt(1), f);
+
+						if (init && fin)
+							return 'P';
+					}
 				}
 		}
 
-		return false;
+		return '?';
 	}
 }
