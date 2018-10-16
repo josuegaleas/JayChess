@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.10.11
+ * Last Edit: 2018.10.16
  */
 
 public class Parse
@@ -39,15 +39,35 @@ public class Parse
 	{
 		switch (m.charAt(0))
 		{
-			case 'N':
-				break;
-			case 'B':
-				break;
-			case 'R':
-				break;
-			case 'Q':
-				break;
-			case 'K':
+			case 'N': // Knights
+			case 'B': // Bishops
+			case 'R': // Rooks
+			case 'Q': // Queens
+			case 'K': // Kings
+				if (m.length() >= 3)
+				{
+					if (convertPosition(m.charAt(1), m.charAt(2), f))
+					{
+						// Potentially risky, but this means that convertPosition
+						// was able to successfully convert the 2nd and 3rd characters,
+						// meaning that the is in the form of Txy... where x
+						// and y are the file and rank respectively
+						return m.charAt(0);
+					}
+				}
+				if (m.length() >= 4)
+				{
+					if (convertPosition(m.charAt(2), m.charAt(3), f))
+					{
+						if (m.charAt(1) == 'x')
+							return m.charAt(0);
+						else
+						{
+							if (convertColumn(m.charAt(1), i))
+								return m.charAt(0);
+						}
+					}
+				}
 				break;
 			case 'O': // Castling
 				i[1] = 4;

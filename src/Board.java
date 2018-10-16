@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.10.11
+ * Last Edit: 2018.10.16
  */
 
 import java.awt.Dimension;
@@ -151,27 +151,31 @@ public class Board extends JPanel
 
 	public boolean loadGame(File f)
 	{
-		// TODO
-		Object[] moves = pgn.ReadPGNFile(f); // Objects are type String
+		Object[] moves = pgn.ReadPGN(f); // Objects are type String
 		if (moves == null)
 			return false;
 
 		// TODO
-		String temp;
-		char turn = 'W';
+		newGame(); // Destructive
+		String move;
 		char valid = '?';
 
 		for (int i = 0; i < moves.length; i++)
 		{
 			setInitFin();
-			temp = (String)moves[i]; // I don't like this, but it's a String
-			valid = Parse.convertMove(temp, turn, init, fin);
+			move = (String)moves[i]; // I don't like this, but it's a String
+			valid = Parse.convertMove(move, turn, init, fin);
 
 			if (valid == '?')
-				System.out.printf("Could not process %s.\n", temp);
+			{
+				// TODO
+				System.out.printf("Could not process move: %s\n", move);
+				newGame();
+				return false;
+			}
 			else
 			{
-				System.out.printf("Processed %s. Init: (%d, %d) Fin: (%d, %d)\n", temp, init[0], init[1], fin[0], fin[1]);
+				System.out.printf("%s --> (%d, %d) to (%d, %d)\n", move, init[0], init[1], fin[0], fin[1]);
 			}
 
 			turn = nextColorSilent(turn);

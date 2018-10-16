@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.10.09
+ * Last Edit: 2018.10.16
  */
 
 import java.io.BufferedReader;
@@ -39,7 +39,7 @@ public class PGN
 		return false;
 	}
 
-	public Object[] ReadPGNFile(File f)
+	public Object[] ReadPGN(File f)
 	{
 		// Sort of unsafe reading, but this allows for flexibility in parsing
 		// data in PGN files, especially with the variety of tags there can be.

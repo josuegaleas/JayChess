@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.10.08
+ * Last Edit: 2018.10.16
  */
 
 import java.awt.Dimension;
@@ -117,7 +117,10 @@ public class SideBar extends JPanel implements ActionListener
 					if (choice == JFileChooser.APPROVE_OPTION)
 					{
 						chessBoard.board.loadGame(fileChooser.getSelectedFile());
-						buttons[1].setEnabled(false); // TODO: Kind of don't need this?
+						// TODO: Should check if read was successful
+						textBox.setText("");
+						// TODO: How do we determine progress?
+						buttons[1].setEnabled(false);
 					}
 					else if (choice == JFileChooser.ERROR_OPTION)
 						chessBoard.messageBox.setTempMessage("Error loading PGN file!");
