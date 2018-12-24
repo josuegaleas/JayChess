@@ -10,7 +10,7 @@ AFLAGS = -rc
 JC = javac
 J = java
 
-JAVA_HOME = /Library/Java/JavaVirtualMachines/openjdk-11.jdk/Contents/Home
+JAVA_HOME = /Library/Java/JavaVirtualMachines/openjdk-11.0.1.jdk/Contents/Home
 JNICFLAGS = -Wno-reserved-id-macro -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/darwin
 
 # Convenience Targets

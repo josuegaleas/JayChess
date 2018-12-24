@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.10.16
+ * Last Edit: 2018.12.24
  */
 
 import java.awt.Dimension;
@@ -12,8 +12,6 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class Board extends JPanel
 {
-	public ChessBoard chessBoard;
-	private PGN pgn;
 	private ChessPanel[][] chessPanels;
 	private HashMap<String, String> symbolMap;
 	private String an = "EMPTY";
@@ -28,7 +26,6 @@ public class Board extends JPanel
 		setPreferredSize(new Dimension(500, 500));
 		setBackground(Settings.borderColor);
 
-		pgn = new PGN(chessBoard);
 		chessPanels = new ChessPanel[8][8];
 		ChessPanel.board = this;
 		for (int x = 0; x < 8; x++)
@@ -42,7 +39,8 @@ public class Board extends JPanel
 		symbolMap.put("WR", "♖");
 		symbolMap.put("WQ", "♕");
 		symbolMap.put("WK", "♔");
-		symbolMap.put("BP", "♟");
+		// symbolMap.put("BP", "♟"); // TODO: Not displaying, weird bug with Java?
+		symbolMap.put("BP", "BP");
 		symbolMap.put("BN", "♞");
 		symbolMap.put("BB", "♝");
 		symbolMap.put("BR", "♜");
@@ -74,10 +72,12 @@ public class Board extends JPanel
 			chessPanels[x][y].setLabel("");
 		else
 		{
-			if (symbolMap.get(piece) != null)
-				chessPanels[x][y].setLabel(symbolMap.get(piece));
+			var symbol = symbolMap.get(piece);
+
+			if (symbol != null)
+				chessPanels[x][y].setLabel(symbol);
 			else
-				chessPanels[x][y].setLabel("ERROR");
+				chessPanels[x][y].setLabel(piece + "?");
 		}
 	}
 
@@ -89,7 +89,7 @@ public class Board extends JPanel
 
 	private void updateSideBar()
 	{
-		chessBoard.sideBar.updateTextBox(an, turn);
+		Game.sideBar.updateTextBox(an, turn);
 		an = "CLEARED";
 	}
 
@@ -105,26 +105,13 @@ public class Board extends JPanel
 		switch (col)
 		{
 			case 'W':
-				chessBoard.messageBox.setMessage("Black's Turn");
+				Game.messageBox.setMessage("Black's Turn");
 				return 'B';
 			case 'B':
-				chessBoard.messageBox.setMessage("White's Turn");
+				Game.messageBox.setMessage("White's Turn");
 				return 'W';
 			default:
-				chessBoard.messageBox.setMessage("ERROR: Turn could not be determined.");
-				return 'E';
-		}
-	}
-
-	private char nextColorSilent(char col)
-	{
-		switch (col)
-		{
-			case 'W':
-				return 'B';
-			case 'B':
-				return 'W';
-			default:
+				Game.messageBox.setMessage("ERROR: Turn could not be determined.");
 				return 'E';
 		}
 	}
@@ -139,21 +126,19 @@ public class Board extends JPanel
 		if (click)
 			chessPanels[init[0]][init[1]].setBackground();
 
-		pgn.clear();
+		Game.pgn.clear();
 		an = "EMPTY";
 		click = false;
 		turn = 'W';
 		setInitFin();
 
-		chessBoard.messageBox.setMessage("White's Turn");
+		Game.messageBox.setMessage("White's Turn");
 		repaint();
 	}
 
-	public boolean loadGame(File f)
+	public void loadGame(File f) throws Exception
 	{
-		Object[] moves = pgn.ReadPGN(f); // Objects are type String
-		if (moves == null)
-			return false;
+		Object[] moves = Game.pgn.ReadPGN(f); // Objects are type String
 
 		// TODO
 		newGame(); // Destructive
@@ -171,22 +156,25 @@ public class Board extends JPanel
 				// TODO
 				System.out.printf("Could not process move: %s\n", move);
 				newGame();
-				return false;
+				throw new Exception();
 			}
 			else
 			{
 				System.out.printf("%s --> (%d, %d) to (%d, %d)\n", move, init[0], init[1], fin[0], fin[1]);
 			}
 
-			turn = nextColorSilent(turn);
+			if (turn == 'W')
+				turn = 'B';
+			else if (turn == 'B')
+				turn = 'W';
+			else
+				throw new Exception();
 		}
-
-		return false;
 	}
 
 	public void processClick(int x, int y)
 	{
-		if (chessBoard.messageBox.getWaiting())
+		if (Game.messageBox.getWaiting())
 			return;
 
 		if (getCheckmate())
@@ -206,7 +194,7 @@ public class Board extends JPanel
 				chessPanels[x][y].setBackground(Settings.highlightTile);
 			}
 			else
-				chessBoard.messageBox.setTempMessage("Not your piece!");
+				Game.messageBox.setTempMessage("Not your piece!");
 		}
 		else
 		{
@@ -221,23 +209,23 @@ public class Board extends JPanel
 			if (move)
 			{
 				updateBoard();
-				pgn.addMove(an);
+				Game.pgn.addMove(an);
 				updateSideBar();
 
 				if (getCheckmate())
 				{
 					if (turn == 'W')
-						chessBoard.messageBox.setMessage("White Wins");
+						Game.messageBox.setMessage("White Wins");
 					else if (turn == 'B')
-						chessBoard.messageBox.setMessage("Black Wins");
+						Game.messageBox.setMessage("Black Wins");
 					else
-						chessBoard.messageBox.setMessage("ERROR: Checkmate could not be determined.");
+						Game.messageBox.setMessage("ERROR: Checkmate could not be determined.");
 				}
 				else
 					turn = nextColor(turn);
 			}
 			else
-				chessBoard.messageBox.setTempMessage("Not a valid move!");
+				Game.messageBox.setTempMessage("Not a valid move!");
 		}
 	}
 }

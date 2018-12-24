@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.10.16
+ * Last Edit: 2018.12.24
  */
 
 import java.io.BufferedReader;
@@ -10,14 +10,12 @@ import java.util.Vector;
 
 public class PGN
 {
-	public ChessBoard chessBoard;
 	private Vector<String> moves;
 	private Vector<String> games; // TODO: Another dimension for multiple games?
 	private String[] gameEndings = {"1-0", "0-1", "1/2-1/2", "*"};
 
-	public PGN(ChessBoard cb)
+	public PGN()
 	{
-		chessBoard = cb;
 		moves = new Vector<String>();
 		games = new Vector<String>();
 	}
@@ -39,70 +37,63 @@ public class PGN
 		return false;
 	}
 
-	public Object[] ReadPGN(File f)
+	public Object[] ReadPGN(File f) throws Exception
 	{
 		// Sort of unsafe reading, but this allows for flexibility in parsing
 		// data in PGN files, especially with the variety of tags there can be.
-		try
+		games.clear();
+		var reader = new BufferedReader(new FileReader(f));
+
+		String line;
+		while ((line = reader.readLine()) != null)
 		{
-			var reader = new BufferedReader(new FileReader(f));
-			games.clear();
+			games.add(line);
 
-			String line;
-			while ((line = reader.readLine()) != null)
+			if (endsWith(line))
+				break;
+		}
+
+		reader.close();
+		String moveLine = games.lastElement();
+		String[] moveList = moveLine.split(" ");
+
+		Integer tempNum = 1;
+		String expectedNum;
+		boolean comment = false;
+		var parsedMoves = new Vector<String>();
+
+		for (int i = 0; i < moveList.length; i++)
+		{
+			if (moveList[i].startsWith("{"))
 			{
-				games.add(line);
-
-				if (endsWith(line))
-					break;
+				comment = true;
+				continue;
 			}
-
-			reader.close();
-			String moveLine = games.lastElement();
-			String[] moveList = moveLine.split(" ");
-
-			// TODO: Clean the following up
-			Integer num = 1;
-			String number;
-			boolean comment = false;
-			var parsedMoves = new Vector<String>();
-
-			for (int i = 0; i < moveList.length; i++)
+			else if (moveList[i].endsWith("}"))
 			{
-				if (moveList[i].startsWith("{"))
-				{
-					comment = true;
-					continue;
-				}
-				else if (moveList[i].endsWith("}"))
-				{
-					comment = false;
-					continue;
-				}
-				else if (comment)
-					continue;
-				else if (i == moveList.length - 1)
-					break;
-				else if (moveList[i].endsWith("."))
-				{
-					number = num.toString() + ".";
+				comment = false;
+				continue;
+			}
+			else if (comment)
+				continue;
+			else if (i == moveList.length - 1)
+				break;
+			else if (moveList[i].endsWith("."))
+			{
+				expectedNum = tempNum.toString() + ".";
 
-					if (moveList[i].equals(number))
-						num++;
-					else
-						throw new Exception();
-				}
+				if (moveList[i].equals(expectedNum))
+					tempNum++;
 				else
-					parsedMoves.add(moveList[i]);
+				{
+					games.clear();
+					throw new Exception();
+				}
 			}
+			else
+				parsedMoves.add(moveList[i]);
+		}
 
-			return parsedMoves.toArray();
-		}
-		catch (Exception e)
-		{
-			chessBoard.messageBox.setTempMessage("Error loading PGN file!");
-			games.clear();
-			return null;
-		}
+		return parsedMoves.toArray();
 	}
 }

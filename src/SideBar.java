@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.10.16
+ * Last Edit: 2018.12.24
  */
 
 import java.awt.Dimension;
@@ -17,7 +17,6 @@ import javax.swing.JTextArea;
 @SuppressWarnings("serial")
 public class SideBar extends JPanel implements ActionListener
 {
-	public ChessBoard chessBoard;
 	private JButton[] buttons;
 	private JTextArea textBox;
 	private int progress = 1;
@@ -75,7 +74,7 @@ public class SideBar extends JPanel implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		if (chessBoard.messageBox.getWaiting())
+		if (Game.messageBox.getWaiting())
 			return;
 
 		var source = e.getSource();
@@ -83,7 +82,7 @@ public class SideBar extends JPanel implements ActionListener
 		if (source == buttons[0])
 		{
 			// New Game
-			chessBoard.board.newGame();
+			Game.board.newGame();
 			textBox.setText("");
 			progress = 1;
 			buttons[1].setEnabled(false);
@@ -100,7 +99,7 @@ public class SideBar extends JPanel implements ActionListener
 			// Load Game
 			if (buttons[1].isEnabled())
 			{
-				chessBoard.messageBox.setTempMessage("Game is not saved!");
+				Game.messageBox.setTempMessage("Current game is not saved!");
 				// TODO: Need to find out how to ignore unsaved games
 			}
 			else
@@ -116,18 +115,18 @@ public class SideBar extends JPanel implements ActionListener
 
 					if (choice == JFileChooser.APPROVE_OPTION)
 					{
-						chessBoard.board.loadGame(fileChooser.getSelectedFile());
-						// TODO: Should check if read was successful
+						var file = fileChooser.getSelectedFile();
+						Game.board.loadGame(file);
 						textBox.setText("");
 						// TODO: How do we determine progress?
 						buttons[1].setEnabled(false);
 					}
 					else if (choice == JFileChooser.ERROR_OPTION)
-						chessBoard.messageBox.setTempMessage("Error loading PGN file!");
+						Game.messageBox.setTempMessage("Error loading PGN file!");
 				}
 				catch (Exception error)
 				{
-					chessBoard.messageBox.setTempMessage("Error loading PGN file!");
+					Game.messageBox.setTempMessage("Error loading PGN file!");
 				}
 			}
 		}
@@ -140,6 +139,6 @@ public class SideBar extends JPanel implements ActionListener
 			// Settings
 		}
 		else
-			chessBoard.messageBox.setTempMessage("What button did you even press?");
+			Game.messageBox.setTempMessage("What button did you even press?");
 	}
 }
