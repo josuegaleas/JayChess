@@ -1,19 +1,18 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.10.06
+ * Last Edit: 2018.12.25
  */
 
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public class ChessPanel extends JPanel implements MouseListener
+public class ChessPanel extends JPanel
 {
-	public static Board board;
 	private JLabel label;
 	private int x, y;
 
@@ -24,11 +23,20 @@ public class ChessPanel extends JPanel implements MouseListener
 
 		setLayout(new GridBagLayout());
 		setBackground();
-		label = new JLabel("E");
-		label.setFont(new Font("Sans Serif", Font.PLAIN, 32));
 
+		var font = new Font("Sans Serif", Font.PLAIN, 32);
+		label = new JLabel("E");
+		label.setFont(font);
 		add(label);
-		addMouseListener(this);
+
+		var clickEvent = new MouseAdapter()
+		{
+			public void mouseClicked(MouseEvent e)
+			{
+				Game.board.processClick(x, y);
+			}
+		};
+		addMouseListener(clickEvent);
 	}
 
 	public void setLabel(String l) {label.setText(l);}
@@ -42,19 +50,4 @@ public class ChessPanel extends JPanel implements MouseListener
 		else
 			setBackground(Settings.darkTile);
 	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {board.processClick(x, y);}
-
-	@Override
-	public void mousePressed(MouseEvent e) {}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {}
-
-	@Override
-	public void mouseExited(MouseEvent e) {}
 }

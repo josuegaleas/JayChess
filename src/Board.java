@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.12.24
+ * Last Edit: 2018.12.25
  */
 
 import java.awt.Dimension;
@@ -27,7 +27,6 @@ public class Board extends JPanel
 		setBackground(Settings.borderColor);
 
 		chessPanels = new ChessPanel[8][8];
-		ChessPanel.board = this;
 		for (int x = 0; x < 8; x++)
 			for (int y = 0; y < 8; y++)
 				add(chessPanels[x][y] = new ChessPanel(x, y));
