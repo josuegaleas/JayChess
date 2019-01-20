@@ -21,7 +21,7 @@ public class MessageBox extends JPanel
 	{
 		setLayout(new GridBagLayout());
 		setPreferredSize(new Dimension(540, 30));
-		setBackground(Settings.boxColor);
+		setBackground(JayChess.boxColor);
 
 		message = new JLabel("White's Turn");
 		add(message);
@@ -44,7 +44,7 @@ public class MessageBox extends JPanel
 			}
 		};
 
-		var timer = new Timer(Settings.delay * 1000, restoreBackup);
+		var timer = new Timer(JayChess.delay * 1000, restoreBackup);
 		timer.setRepeats(false);
 		timer.start();
 	}

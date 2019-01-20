@@ -3,7 +3,7 @@
  * Last Edit: 2018.10.16
  */
 
-public class Parse
+public class Movement
 {
 	private static boolean convertRow(char b, int p[])
 	{

@@ -24,7 +24,7 @@ public class Board extends JPanel
 	{
 		setLayout(new GridLayout(8, 8));
 		setPreferredSize(new Dimension(500, 500));
-		setBackground(Settings.borderColor);
+		setBackground(JayChess.borderColor);
 
 		chessPanels = new ChessPanel[8][8];
 		for (int x = 0; x < 8; x++)
@@ -39,7 +39,7 @@ public class Board extends JPanel
 		symbolMap.put("WQ", "♕");
 		symbolMap.put("WK", "♔");
 		// symbolMap.put("BP", "♟"); // TODO: Not displaying, weird bug with Java?
-		symbolMap.put("BP", "BP");
+		symbolMap.put("BP", "P♟");
 		symbolMap.put("BN", "♞");
 		symbolMap.put("BB", "♝");
 		symbolMap.put("BR", "♜");
@@ -76,7 +76,7 @@ public class Board extends JPanel
 			if (symbol != null)
 				chessPanels[x][y].setLabel(symbol);
 			else
-				chessPanels[x][y].setLabel(piece + "?");
+				chessPanels[x][y].setLabel(piece);
 		}
 	}
 
@@ -88,7 +88,7 @@ public class Board extends JPanel
 
 	private void updateSideBar()
 	{
-		Game.sideBar.updateTextBox(an, turn);
+		JayChess.sideBar.updateTextBox(an, turn);
 		an = "CLEARED";
 	}
 
@@ -104,13 +104,13 @@ public class Board extends JPanel
 		switch (col)
 		{
 			case 'W':
-				Game.messageBox.setMessage("Black's Turn");
+				JayChess.messageBox.setMessage("Black's Turn");
 				return 'B';
 			case 'B':
-				Game.messageBox.setMessage("White's Turn");
+				JayChess.messageBox.setMessage("White's Turn");
 				return 'W';
 			default:
-				Game.messageBox.setMessage("ERROR: Turn could not be determined.");
+				JayChess.messageBox.setMessage("ERROR: Turn could not be determined.");
 				return 'E';
 		}
 	}
@@ -125,19 +125,19 @@ public class Board extends JPanel
 		if (click)
 			chessPanels[init[0]][init[1]].setBackground();
 
-		Game.pgn.clear();
+		JayChess.pgn.clear();
 		an = "EMPTY";
 		click = false;
 		turn = 'W';
 		setInitFin();
 
-		Game.messageBox.setMessage("White's Turn");
+		JayChess.messageBox.setMessage("White's Turn");
 		repaint();
 	}
 
 	public void loadGame(File f) throws Exception
 	{
-		Object[] moves = Game.pgn.ReadPGN(f); // Objects are type String
+		Object[] moves = JayChess.pgn.ReadPGN(f); // Objects are type String
 
 		// TODO
 		newGame(); // Destructive
@@ -148,7 +148,7 @@ public class Board extends JPanel
 		{
 			setInitFin();
 			move = (String)moves[i]; // I don't like this, but it's a String
-			valid = Parse.convertMove(move, turn, init, fin);
+			valid = Movement.convertMove(move, turn, init, fin);
 
 			if (valid == '?')
 			{
@@ -159,7 +159,7 @@ public class Board extends JPanel
 			}
 			else
 			{
-				System.out.printf("%s --> (%d, %d) to (%d, %d)\n", move, init[0], init[1], fin[0], fin[1]);
+				System.out.printf("%c: %s --> (%c, %d, %d) to (%d, %d)\n", turn, move, valid, init[0], init[1], fin[0], fin[1]);
 			}
 
 			if (turn == 'W')
@@ -171,9 +171,31 @@ public class Board extends JPanel
 		}
 	}
 
+	public boolean processMove(char type)
+	{
+		switch (type)
+		{
+			case 'P':
+				if (turn == 'W')
+				{
+
+				}
+				else if (turn == 'B')
+				{
+
+				}
+
+				break;
+			default:
+				break; // TODO: Remove later maybe
+		}
+
+		return false;
+	}
+
 	public void processClick(int x, int y)
 	{
-		if (Game.messageBox.getWaiting())
+		if (JayChess.messageBox.getWaiting())
 			return;
 
 		if (getCheckmate())
@@ -190,10 +212,10 @@ public class Board extends JPanel
 				init[0] = x;
 				init[1] = y;
 				click = true;
-				chessPanels[x][y].setBackground(Settings.highlightTile);
+				chessPanels[x][y].setBackground(JayChess.highlightTile);
 			}
 			else
-				Game.messageBox.setTempMessage("Not your piece!");
+				JayChess.messageBox.setTempMessage("Not your piece!");
 		}
 		else
 		{
@@ -208,23 +230,23 @@ public class Board extends JPanel
 			if (move)
 			{
 				updateBoard();
-				Game.pgn.addMove(an);
+				JayChess.pgn.addMove(an);
 				updateSideBar();
 
 				if (getCheckmate())
 				{
 					if (turn == 'W')
-						Game.messageBox.setMessage("White Wins");
+						JayChess.messageBox.setMessage("White Wins");
 					else if (turn == 'B')
-						Game.messageBox.setMessage("Black Wins");
+						JayChess.messageBox.setMessage("Black Wins");
 					else
-						Game.messageBox.setMessage("ERROR: Checkmate could not be determined.");
+						JayChess.messageBox.setMessage("ERROR: Checkmate could not be determined.");
 				}
 				else
 					turn = nextColor(turn);
 			}
 			else
-				Game.messageBox.setTempMessage("Not a valid move!");
+				JayChess.messageBox.setTempMessage("Not a valid move!");
 		}
 	}
 }

@@ -33,7 +33,7 @@ public class ChessPanel extends JPanel
 		{
 			public void mouseClicked(MouseEvent e)
 			{
-				Game.board.processClick(x, y);
+				JayChess.board.processClick(x, y);
 			}
 		};
 		addMouseListener(clickEvent);
@@ -46,8 +46,8 @@ public class ChessPanel extends JPanel
 		int tile = (x * 8) + y + (x % 2);
 
 		if (tile % 2 == 0)
-			setBackground(Settings.lightTile);
+			setBackground(JayChess.lightTile);
 		else
-			setBackground(Settings.darkTile);
+			setBackground(JayChess.darkTile);
 	}
 }

@@ -57,15 +57,19 @@ public class SideBar extends JPanel implements ActionListener
 	public void updateTextBox(String an, char col)
 	{
 		String box = an;
-		if (col == 'B')
-			progress++;
 
-		if (col == 'W')
-			box = textBox.getText() + progress + ". " + an + " ";
-		else if (col == 'B')
-			box = textBox.getText() + an + "\n";
-		else
-			box = "ERROR: Side bar could not be updated.";
+		switch (col)
+		{
+			case 'W':
+				box = textBox.getText() + progress + ". " + an + " ";
+				break;
+			case 'B':
+				progress++;
+				box = textBox.getText() + an + "\n";
+				break;
+			default:
+				box = "ERROR: Side bar could not be updated.";
+		}
 
 		buttons[1].setEnabled(true);
 		textBox.setText(box);
@@ -74,7 +78,7 @@ public class SideBar extends JPanel implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		if (Game.messageBox.getWaiting())
+		if (JayChess.messageBox.getWaiting())
 			return;
 
 		var source = e.getSource();
@@ -82,7 +86,7 @@ public class SideBar extends JPanel implements ActionListener
 		if (source == buttons[0])
 		{
 			// New Game
-			Game.board.newGame();
+			JayChess.board.newGame();
 			textBox.setText("");
 			progress = 1;
 			buttons[1].setEnabled(false);
@@ -99,7 +103,7 @@ public class SideBar extends JPanel implements ActionListener
 			// Load Game
 			if (buttons[1].isEnabled())
 			{
-				Game.messageBox.setTempMessage("Current game is not saved!");
+				JayChess.messageBox.setTempMessage("Current game is not saved!");
 				// TODO: Need to find out how to ignore unsaved games
 			}
 			else
@@ -116,17 +120,17 @@ public class SideBar extends JPanel implements ActionListener
 					if (choice == JFileChooser.APPROVE_OPTION)
 					{
 						var file = fileChooser.getSelectedFile();
-						Game.board.loadGame(file);
-						textBox.setText("");
+						JayChess.board.loadGame(file);
+						textBox.setText("LOADING");
 						// TODO: How do we determine progress?
 						buttons[1].setEnabled(false);
 					}
 					else if (choice == JFileChooser.ERROR_OPTION)
-						Game.messageBox.setTempMessage("Error loading PGN file!");
+						JayChess.messageBox.setTempMessage("Error loading PGN file!");
 				}
 				catch (Exception error)
 				{
-					Game.messageBox.setTempMessage("Error loading PGN file!");
+					JayChess.messageBox.setTempMessage("Error loading PGN file!");
 				}
 			}
 		}
@@ -139,6 +143,6 @@ public class SideBar extends JPanel implements ActionListener
 			// Settings
 		}
 		else
-			Game.messageBox.setTempMessage("What button did you even press?");
+			JayChess.messageBox.setTempMessage("What button did you even press?");
 	}
 }

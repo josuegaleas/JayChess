@@ -16,15 +16,15 @@ public class ChessBoard extends JPanel
 {
 	public ChessBoard()
 	{
-		Game.board = new Board();
-		Game.messageBox = new MessageBox();
-		Game.sideBar = new SideBar();
-		Game.pgn = new PGN();
+		JayChess.board = new Board();
+		JayChess.messageBox = new MessageBox();
+		JayChess.sideBar = new SideBar();
+		JayChess.pgn = new PGN();
 
 		var foo = new JPanel(new BorderLayout());
-		var border = BorderFactory.createLineBorder(Settings.borderColor, 2);
+		var border = BorderFactory.createLineBorder(JayChess.borderColor, 2);
 		foo.setBorder(border);
-		foo.add(Game.board);
+		foo.add(JayChess.board);
 		foo.add(new FilesBar(), BorderLayout.NORTH);
 		foo.add(new RanksBar(), BorderLayout.EAST);
 		foo.add(new FilesBar(), BorderLayout.SOUTH);
@@ -32,10 +32,10 @@ public class ChessBoard extends JPanel
 
 		var bar = new JPanel(new BorderLayout());
 		bar.add(foo);
-		bar.add(Game.messageBox, BorderLayout.SOUTH);
+		bar.add(JayChess.messageBox, BorderLayout.SOUTH);
 
 		add(bar);
-		add(Game.sideBar);
+		add(JayChess.sideBar);
 	}
 
 	private class FilesBar extends JPanel
@@ -44,13 +44,13 @@ public class ChessBoard extends JPanel
 		{
 			var center = new JPanel(new GridLayout(1, 8));
 			center.setPreferredSize(new Dimension(500, 20));
-			center.setBackground(Settings.boxColor);
+			center.setBackground(JayChess.boxColor);
 
 			for (Character file = 'a'; file <= 'h'; file++)
 				center.add(new JLabel(file.toString(), 0));
 
 			setLayout(new GridBagLayout());
-			setBackground(Settings.boxColor);
+			setBackground(JayChess.boxColor);
 			add(center);
 		}
 	}
@@ -61,13 +61,13 @@ public class ChessBoard extends JPanel
 		{
 			var center = new JPanel(new GridLayout(8, 1));
 			center.setPreferredSize(new Dimension(20, 500));
-			center.setBackground(Settings.boxColor);
+			center.setBackground(JayChess.boxColor);
 
 			for (Integer rank = 8; rank >= 1; rank--)
 				center.add(new JLabel(rank.toString(), 0));
 
 			setLayout(new GridBagLayout());
-			setBackground(Settings.boxColor);
+			setBackground(JayChess.boxColor);
 			add(center);
 		}
 	}
