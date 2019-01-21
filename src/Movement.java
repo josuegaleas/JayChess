@@ -127,4 +127,79 @@ public class Movement
 
 		return '?';
 	}
+
+	private static boolean inRange(int i)
+	{
+		return i >= 0 && i <= 7;
+	}
+
+	public static boolean processKnight(int i[], int f[])
+	{
+		for (i[0] = f[0] - 2; i[0] <= f[0] + 2; i[0]++)
+		{
+			if (i[0] == f[0])
+				continue;
+
+			for (i[1] = f[1] - 2; i[1] <= f[1] + 2; i[1]++)
+			{
+				if (i[1] == f[1])
+					continue;
+				if (!inRange(i[0]) || !inRange(i[1]))
+					continue;
+				if (Math.abs(i[0]) == Math.abs(i[1]))
+					continue;
+
+				if (JayChess.board.verifyMove(i, f))
+					return true;
+			}
+		}
+
+		return false;
+	}
+
+	public static boolean processPawn(char t, int i[], int f[])
+	{
+		if (t == 'W')
+		{
+			i[0] = f[0] + 1;
+			if (inRange(i[0]))
+			{
+				if (JayChess.board.verifyMove(i, f))
+					return true;
+			}
+			else
+				return false;
+
+			i[0]++;
+			if (inRange(i[0]))
+			{
+				if (JayChess.board.verifyMove(i, f))
+					return true;
+			}
+			else
+				return false;
+		}
+		else if (t == 'B')
+		{
+			i[0] = f[0] - 1;
+			if (inRange(i[0]))
+			{
+				if (JayChess.board.verifyMove(i, f))
+					return true;
+			}
+			else
+				return false;
+
+			i[0]--;
+			if (inRange(i[0]))
+			{
+				if (JayChess.board.verifyMove(i, f))
+					return true;
+			}
+			else
+				return false;
+		}
+
+		return false;
+	}
 }

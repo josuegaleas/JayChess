@@ -86,12 +86,6 @@ public class Board extends JPanel
 		fin[0] = fin[1] = -1;
 	}
 
-	private void updateSideBar()
-	{
-		JayChess.sideBar.updateTextBox(an, turn);
-		an = "CLEARED";
-	}
-
 	private void updateBoard()
 	{
 		for (int i = 0; i < 8; i++)
@@ -159,7 +153,20 @@ public class Board extends JPanel
 			}
 			else
 			{
-				System.out.printf("%c: %s --> (%c, %d, %d) to (%d, %d)\n", turn, move, valid, init[0], init[1], fin[0], fin[1]);
+				System.out.printf("%c%c: %s --> (%d, %d) to (%d, %d)\n", turn, valid, move, init[0], init[1], fin[0], fin[1]);
+				boolean m = processMove(valid);
+
+				if (m)
+				{
+					JayChess.pgn.addMove(an);
+					an = "CLEARED";
+				}
+				else
+				{
+					System.out.printf("Could not process move: %s\n", move);
+					newGame();
+					throw new Exception();
+				}
 			}
 
 			if (turn == 'W')
@@ -175,22 +182,23 @@ public class Board extends JPanel
 	{
 		switch (type)
 		{
+			case 'N':
+				return Movement.processKnight(init, fin);
+			case 'B':
+				return false;
+			case 'R':
+				return false;
+			case 'Q':
+				return false;
+			case 'K':
+				return false;
+			case 'O':
+				return verifyMove(init, fin);
 			case 'P':
-				if (turn == 'W')
-				{
-
-				}
-				else if (turn == 'B')
-				{
-
-				}
-
-				break;
+				return Movement.processPawn(turn, init, fin);
 			default:
-				break; // TODO: Remove later maybe
+				return false;
 		}
-
-		return false;
 	}
 
 	public void processClick(int x, int y)
@@ -231,7 +239,8 @@ public class Board extends JPanel
 			{
 				updateBoard();
 				JayChess.pgn.addMove(an);
-				updateSideBar();
+				JayChess.sideBar.updateTextBox(an, turn);
+				an = "CLEARED";
 
 				if (getCheckmate())
 				{
