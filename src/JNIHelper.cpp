@@ -67,9 +67,9 @@ std::string getAN(Move *m, Board *b)
 		int *rookPos = b->getRookPos();
 
 		if (rookPos[1] == 0)
-			return "0-0-0";
+			return "O-O-O";
 		else if (rookPos[1] == 7)
-			return "0-0";
+			return "O-O";
 	}
 
 	int *init = m->getInit();

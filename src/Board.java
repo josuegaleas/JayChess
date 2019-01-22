@@ -39,7 +39,7 @@ public class Board extends JPanel
 		symbolMap.put("WQ", "♕");
 		symbolMap.put("WK", "♔");
 		// symbolMap.put("BP", "♟"); // TODO: Not displaying, weird bug with Java?
-		symbolMap.put("BP", "P♟");
+		symbolMap.put("BP", "BP");
 		symbolMap.put("BN", "♞");
 		symbolMap.put("BB", "♝");
 		symbolMap.put("BR", "♜");
@@ -136,15 +136,16 @@ public class Board extends JPanel
 		// TODO
 		newGame(); // Destructive
 		String move;
-		char valid = '?';
+		char convert = '?';
+		boolean process = false;
 
 		for (int i = 0; i < moves.length; i++)
 		{
 			setInitFin();
 			move = (String)moves[i]; // I don't like this, but it's a String
-			valid = Movement.convertMove(move, turn, init, fin);
+			convert = Movement.convertMove(move, turn, init, fin);
 
-			if (valid == '?')
+			if (convert == '?')
 			{
 				// TODO
 				System.out.printf("Could not process move: %s\n", move);
@@ -153,18 +154,23 @@ public class Board extends JPanel
 			}
 			else
 			{
-				System.out.printf("%c%c: %s --> (%d, %d) to (%d, %d)\n", turn, valid, move, init[0], init[1], fin[0], fin[1]);
-				boolean m = processMove(valid);
+				System.out.printf("%c%c: %s --> (%d, %d) to (%d, %d)\n", turn, convert, move, init[0], init[1], fin[0], fin[1]);
+				process = Movement.processMove(convert, turn, init, fin);
+				System.out.printf("%c%c: %s --> (%d, %d) to (%d, %d)\n", turn, convert, move, init[0], init[1], fin[0], fin[1]);
 
-				if (m)
+				if (process)
 				{
 					JayChess.pgn.addMove(an);
+					if (!an.equals(move))
+						System.out.printf("Difference found: Expected %s, Generated %s.\n", move, an);
 					an = "CLEARED";
 				}
 				else
 				{
+					// TODO
+					updateBoard();
 					System.out.printf("Could not process move: %s\n", move);
-					newGame();
+					// newGame();
 					throw new Exception();
 				}
 			}
@@ -175,29 +181,6 @@ public class Board extends JPanel
 				turn = 'W';
 			else
 				throw new Exception();
-		}
-	}
-
-	public boolean processMove(char type)
-	{
-		switch (type)
-		{
-			case 'N':
-				return Movement.processKnight(init, fin);
-			case 'B':
-				return false;
-			case 'R':
-				return false;
-			case 'Q':
-				return false;
-			case 'K':
-				return false;
-			case 'O':
-				return verifyMove(init, fin);
-			case 'P':
-				return Movement.processPawn(turn, init, fin);
-			default:
-				return false;
 		}
 	}
 

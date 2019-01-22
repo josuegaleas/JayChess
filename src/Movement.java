@@ -82,7 +82,7 @@ public class Movement
 					else
 						return '?';
 
-					return '0';
+					return 'O';
 				}
 				else if (m.equals("O-O-O"))
 				{
@@ -148,6 +148,90 @@ public class Movement
 					continue;
 				if (Math.abs(i[0]) == Math.abs(i[1]))
 					continue;
+				if (JayChess.board.getType(i[0], i[1]) != 'N')
+					continue;
+
+				if (JayChess.board.verifyMove(i, f))
+					return true;
+			}
+		}
+
+		return false;
+	}
+
+	public static boolean processBishop(int i[], int f[], char match)
+	{
+		for (int x = -1; x <= 1; x += 2)
+		{
+			for (int y = -1; y <= 1; y += 2)
+			{
+				i[0] = f[0];
+				i[1] = f[1];
+
+				while (true)
+				{
+					i[0] += x;
+					i[1] += y;
+
+					if (!inRange(i[0]) || !inRange(i[1]))
+						break;
+					if (JayChess.board.getType(i[0], i[1]) != match)
+						continue;
+
+					if (JayChess.board.verifyMove(i, f))
+						return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	public static boolean processRook(int i[], int f[], char match)
+	{
+		for (int x = 0; x <= 1; x++)
+		{
+			for (int y = -1; y <= 1; y += 2)
+			{
+				i[0] = f[0];
+				i[1] = f[1];
+
+				while (true)
+				{
+					i[x] += y;
+
+					if (!inRange(i[x]))
+						break;
+					if (JayChess.board.getType(i[0], i[1]) != match)
+						continue;
+
+					if (JayChess.board.verifyMove(i, f))
+						return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	public static boolean processQueen(int i[], int f[])
+	{
+		if (processBishop(i, f, 'Q') || processRook(i, f, 'Q'))
+			return true;
+
+		return false;
+	}
+
+	public static boolean processKing(int i[], int f[])
+	{
+		for (i[0] = f[0] - 1; i[0] <= f[0] + 1; i[0]++)
+		{
+			for (i[1] = f[1] - 1; i[1] <= f[1] + 1; i[1]++)
+			{
+				if (!inRange(i[0]) || !inRange(i[1]))
+					continue;
+				if (JayChess.board.getType(i[0], i[1]) != 'K')
+					continue;
 
 				if (JayChess.board.verifyMove(i, f))
 					return true;
@@ -201,5 +285,28 @@ public class Movement
 		}
 
 		return false;
+	}
+
+	public static boolean processMove(char p, char t, int i[], int f[])
+	{
+		switch (p)
+		{
+			case 'N':
+				return processKnight(i, f);
+			case 'B':
+				return processBishop(i, f, p);
+			case 'R':
+				return processRook(i, f, p);
+			case 'Q':
+				return processQueen(i, f);
+			case 'K':
+				return processKing(i, f);
+			case 'O':
+				return JayChess.board.verifyMove(i, f);
+			case 'P':
+				return processPawn(t, i, f);
+			default:
+				return false;
+		}
 	}
 }
