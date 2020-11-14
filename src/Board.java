@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.12.25
+ * Last Edit: 2020.11.13
  */
 
 import java.awt.Dimension;
@@ -38,8 +38,7 @@ public class Board extends JPanel
 		symbolMap.put("WR", "♖");
 		symbolMap.put("WQ", "♕");
 		symbolMap.put("WK", "♔");
-		// symbolMap.put("BP", "♟"); // TODO: Not displaying, weird bug with Java?
-		symbolMap.put("BP", "BP");
+		symbolMap.put("BP", "♟");
 		symbolMap.put("BN", "♞");
 		symbolMap.put("BB", "♝");
 		symbolMap.put("BR", "♜");

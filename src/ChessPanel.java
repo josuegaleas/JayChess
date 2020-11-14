@@ -1,6 +1,6 @@
 /*
  * Author: Josue Galeas
- * Last Edit: 2018.12.25
+ * Last Edit: 2020.11.13
  */
 
 import java.awt.event.MouseAdapter;
@@ -24,7 +24,7 @@ public class ChessPanel extends JPanel
 		setLayout(new GridBagLayout());
 		setBackground();
 
-		var font = new Font("Sans Serif", Font.PLAIN, 32);
+		var font = new Font("SansSerif", Font.PLAIN, 48);
 		label = new JLabel("E");
 		label.setFont(font);
 		add(label);
